@@ -130,6 +130,7 @@
     &.booted {
       left: 19px;
       top: -20px;
+      transform: rotate(90deg);
     }
   }
 
@@ -147,6 +148,7 @@
     &.booted {
       left: 24px;
       top: -26px;
+      transform: rotate(90deg);
     }
   }
 
@@ -250,7 +252,7 @@
   .generate-attachments(@n, (@i + 1));
 }
 
-.generate-attachments(10, 1);
+.generate-attachments(5, 1);
 
 .card-dupe {
   margin-bottom: @attachment-offset;
@@ -323,17 +325,20 @@
 
 .counter {
   padding: 0;
-  font-size: 12px;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
+  font-size: @counter-dia*0.6;
+  width: @counter-dia;
+  height: @counter-dia;
+  line-height: @counter-dia;
   text-align: center;
   margin: 2px;
   text-shadow: 1px 1px 2px #000;
-  border-radius: 4px;
+  border: @counter-dia*0.1 dashed @out-color;
+  border-radius: @counter-dia/2;
+  color: white;
+  font-family: 'akenaten';
 
   &.fade-out {
-    opacity: 0.4;
+    opacity: 0.8;
   }
 
   &.cancel {
@@ -351,86 +356,52 @@
   }
 }
 
-.challenge-icon-token {
-  background-color: rgba(0, 0, 0, 0.85);
+.control {
+  background-color: @control-icon-color;
 }
 
-.faction-token {
-  background-color: rgba(0, 0, 0, 0.85);
+.influence {
+  background-color: @influence-icon-color;
 }
 
-.count-token {
+.card-control-token {
+  background-color: @control-icon-color;
+}
+
+.card-influence-token {
+  background-color: @influence-icon-color;
+}
+
+.attachment-control-token {
+  background-color: fade(@control-color, 50%);
+}
+
+.attachment-influence-token {
+  background-color: fade(@influence-color, 50%);
+}
+
+.bullets-draw-token {
+  background-color: @bullets-draw-icon-color;
+}
+
+.bullets-stud-token {
+  background-color: @bullets-stud-icon-color;
+}
+
+.bounty-token {
+  background-color: @bounty-icon-color;
+}
+
+.ghostrock-token {
+  background-color: @ghostrock-icon-color;
+}
+
+.production-token {
+  background-color: @production-icon-color;
+}
+
+.unboot-token {
   background-color: rgba(128,128,128,0.85);
-}
-
-.stand-token {
-  background-color: rgba(128,128,128,0.85);
-}
-
-.poison-token {
-  background-color: rgba(43,43, 0, 0.85);
-}
-
-.gold-token {
-    background-color: rgba(255, 215, 0, 0.85);
-}
-
-.valarmorghulis-token {
-  background-color: rgba(192, 192, 192, 0.85);
-}
-
-.betrayal-token {
-  background-color: rgba(153, 77, 0, 0.85);
-}
-
-.vengeance-token {
-  background-color: rgba(87, 17, 124, 0.85);
-}
-
-.ear-token {
-  background-color: rgba(162, 255, 81, 0.85);
-}
-
-.kiss-token {
-  background-color: rgba(127, 0, 255, 0.85);
-}
-
-.bell-token {
-  background-color: rgba(103, 105, 45, 0.85);
-}
-
-.blood-token {
-    background-color: rgba(128, 0, 0, 0.85);
-}
-
-.shadow-token {
-    background-color: rgba(128, 0, 128, 0.85);
-}
-
-.journey-token {
-  background-color: rgba(139,69,19, 0.85);
-}
-
-.prayer-token {
-  background-color: rgba(255, 255, 255, 0.85);
-  color: black;
-  text-shadow: 1px 1px 2px #888;
-}
-
-.tale-token {
-  background-color: rgba(146, 146, 146, 0.85);
-  color: black;
-  text-shadow: 1px 1px 2px #888;
-}
-
-.ghost-token {
-  background-color: rgba(255, 255, 255, 0.85);
-  color: black;
-  text-shadow: 1px 1px 2px #888;
-}
-
-.plot-selected {
-  box-shadow: 0 0 1px 2px @brand-danger;
 }
 
 .card-small {

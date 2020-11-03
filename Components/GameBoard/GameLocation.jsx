@@ -33,7 +33,11 @@ export class InnerGameLocation extends React.Component {
     }
 
     onDragDrop(card, source, target) {
-        this.props.sendGameMessage('drop', card.uuid, source, target, this.props.location.uuid);
+        var gameLocation = this.props.location.uuid;
+        if (this.isStreetSide()) {
+            gameLocation = this.props.source;
+        }
+        this.props.sendGameMessage('drop', card.uuid, source, target, gameLocation);
     }
 
     isStreetSide() {
