@@ -15,49 +15,32 @@ const validTargets = {
         'townsquare'
     ],
     'play area': [
+        'play area',
         'discard pile',
         'hand',
         'draw deck',
         'dead pile',
-        'out of game',
-        'conclave',
-        'shadows'
+        'out of game'
     ],
     'discard pile': [
         'dead pile',
         'hand',
         'draw deck',
         'play area',
-        'out of game',
-        'conclave',
-        'shadows'
+        'out of game'
     ],
     'dead pile': [
         'hand',
         'draw deck',
         'play area',
         'discard pile',
-        'out of game',
-        'conclave',
-        'shadows'
+        'out of game'
     ],
     'draw deck': [
         'hand',
         'discard pile',
         'dead pile',
         'play area',
-        'out of game',
-        'conclave',
-        'rookery',
-        'shadows'
-    ],
-    'plot deck': [
-        'revealed plots',
-        'out of game',
-        'rookery'
-    ],
-    'revealed plots': [
-        'plot deck',
         'out of game'
     ],
     'out of game': [
@@ -69,29 +52,6 @@ const validTargets = {
         'hand',
         'dead pile',
         'shadows'
-    ],
-    'conclave': [
-        'hand',
-        'play area',
-        'draw deck',
-        'discard pile',
-        'dead pile',
-        'out of game',
-        'shadows'
-    ],
-    'shadows': [
-        'dead pile',
-        'discard pile',
-        'draw deck',
-        'hand',
-        'out of game',
-        'play area'
-    ],
-    'full deck': [
-        'rookery'
-    ],
-    'rookery': [
-        'full deck'
     ]
 };
 
@@ -117,17 +77,66 @@ function collect(connect, monitor) {
         connectDropTarget: connect.dropTarget(),
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop(),
-        itemSource: item && item.source
+        item: item
     };
 }
 
 class Droppable extends React.Component {
+    isValidLocation() {
+        // if there is no location, it is a pile (hand, draw deck and so on)
+        if (!this.props.location || !this.props.source === 'play area') {
+            return true;
+        }
+        let emptyLocation = this.props.location && !this.props.location.uuid;
+        if (this.props.item && this.props.item.card) {
+            if (this.props.item.card.type_code === 'dude') {
+                let sameLocation = this.props.location && this.props.item.card.gamelocation === this.props.location.uuid;
+                if (emptyLocation) {
+                    return false;
+                }
+                if (sameLocation) {
+                    return false;
+                }
+                return true;
+            }
+            if (this.props.item.card.type_code === 'deed') {
+                if (!emptyLocation) {
+                    return false;
+                }
+                return true;
+            }
+            if (this.props.item.card.type_code === 'goods') {
+                // TODO M2 can add more retrictions
+                if (emptyLocation) {
+                    return false;
+                }
+                return true;
+            }
+            if (this.props.item.card.type_code === 'spell') {
+                // TODO can add more restrictions
+                if (emptyLocation) {
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        return true;
+    }
+
     render() {
-        let className = classNames('overlay', {
-            'drop-ok': this.props.isOver && this.props.canDrop,
-            'no-drop': this.props.isOver && !this.props.canDrop && this.props.source !== this.props.itemSource,
-            'can-drop': !this.props.isOver && this.props.canDrop
-        });
+        let className = 'overlay';
+        if (this.isValidLocation()) {
+            className = classNames('overlay', {
+                'drop-ok': this.props.isOver && this.props.canDrop,
+                'no-drop': this.props.isOver && !this.props.canDrop && this.props.item && this.props.source !== this.props.item.source,
+                'can-drop': !this.props.isOver && this.props.canDrop
+            });
+        }
+
+        if (className !== 'overlay') {
+            let bla = 'bla'
+        }
 
         return this.props.connectDropTarget(
             <div className='drop-target'>
@@ -142,7 +151,7 @@ Droppable.propTypes = {
     children: PropTypes.node,
     connectDropTarget: PropTypes.func,
     isOver: PropTypes.bool,
-    itemSource: PropTypes.string,
+    item: PropTypes.object,
     onDragDrop: PropTypes.func,
     source: PropTypes.string.isRequired,
     location: PropTypes.object

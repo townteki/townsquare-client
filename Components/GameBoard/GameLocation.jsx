@@ -44,44 +44,14 @@ export class InnerGameLocation extends React.Component {
         return this.props.source === 'street-right' || this.props.source ==='street-left';
     }
 
-    /*
-    getCards(thisPlayer, otherPlayer) {
-        var thisPlayerCards = [];
-
-        var index = 0;
-
-        var thisCardsInPlay = this.getCardsHere(thisPlayer, true);
-        _.each(thisCardsInPlay, cards => {
-            thisPlayerCards.push(<div className='card-row' key={'this-loc' + index++}>{cards}</div>);
-        });
-        var otherPlayerCards = [];
-
-        if(otherPlayer) {
-            _.each(this.getCardsHere(otherPlayer, false), cards => {
-                otherPlayerCards.push(<div className='card-row' key={'other-loc' + index++}>{cards}</div>);
-            });
-        }
-
-        for(var i = thisPlayerCards.length; i < 2; i++) {
-            thisPlayerCards.push(<div className='card-row' key={'this-empty' + i} />);
-        }
-
-        for(i = otherPlayerCards.length; i < 2; i++) {
-            thisPlayerCards.push(<div className='card-row' key={'other-empty' + i} />);
-        }
-    }
-    */
-
     cardsHereByPlayer(player) {
         if(!player || this.isStreetSide()) {
             return <div className='card-row'/>;
         }
 
-        var cardRow = _.map(player.cardPiles.cardsInPlay, (card) => {
-            if(card.gamelocation === this.props.location.uuid) {
-                return (<Card key={card.uuid} source='play area' card={card} disableMouseOver={card.facedown && !card.code} onMenuItemClick={this.props.onMenuItemClick}
+        var cardRow = _.each(player.getDudesInLocation(this.props.location.uuid), (card) => {
+            return (<Card key={card.uuid} source='play area' card={card} disableMouseOver={card.facedown && !card.code} onMenuItemClick={this.props.onMenuItemClick}
                               onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop} />);
-            }
         });
 
         return <div className='card-row'>{cardRow}</div>;
