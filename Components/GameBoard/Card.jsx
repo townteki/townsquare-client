@@ -289,14 +289,14 @@ class InnerCard extends React.Component {
             return 'selected';
         } else if(this.props.card.selectable) {
             return 'selectable';
-        } else if(this.props.card.inDanger) {
-            return 'in-danger';
         } else if(this.props.card.saved) {
             return 'saved';
-        } else if(this.props.card.inChallenge) {
-            return 'challenge';
-        } else if(this.props.card.stealth) {
-            return 'stealth';
+        } else if(this.props.card.shootoutStatus === 'calling out' || this.props.card.shootoutStatus === 'called out') {
+            return 'callout';
+        } else if(this.props.card.shootoutStatus === 'leader posse') {
+            return 'attacking';
+        } else if(this.props.card.shootoutStatus === 'mark posse') {
+            return 'defending';
         } else if(this.props.card.controlled) {
             return 'controlled';
         } else if(this.props.card.new) {
@@ -330,6 +330,7 @@ InnerCard.propTypes = {
         controlled: PropTypes.bool,
         facedown: PropTypes.bool,
         gamelocation: PropTypes.string,
+        shootoutStatus: PropTypes.string,
         iconsAdded: PropTypes.array,
         iconsRemoved: PropTypes.array,
         inChallenge: PropTypes.bool,
