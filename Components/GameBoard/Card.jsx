@@ -293,6 +293,10 @@ class InnerCard extends React.Component {
             return 'saved';
         } else if(this.props.card.shootoutStatus === 'calling out' || this.props.card.shootoutStatus === 'called out') {
             return 'callout';
+        } else if(this.props.card.shootoutStatus === 'leader shooter') {
+            return 'shooter-attack';
+        } else if(this.props.card.shootoutStatus === 'mark shooter') {
+            return 'shooter-defend';
         } else if(this.props.card.shootoutStatus === 'leader posse') {
             return 'attacking';
         } else if(this.props.card.shootoutStatus === 'mark posse') {
