@@ -11,6 +11,7 @@ class DrawDeck extends React.Component {
         this.handlePullClick = this.handlePullClick.bind(this);
         this.handleShowDeckClick = this.handleShowDeckClick.bind(this);
         this.handleShuffleClick = this.handleShuffleClick.bind(this);
+        this.handleDrawToDrawHandClick = this.handleDrawToDrawHandClick.bind(this);
         this.handlePopupChange = this.handlePopupChange.bind(this);
     }
 
@@ -31,6 +32,12 @@ class DrawDeck extends React.Component {
             this.props.onShuffleClick();
         }
     }
+
+    handleDrawToDrawHandClick() {
+        if(this.props.onDrawToDrawHandClick) {
+            this.props.onDrawToDrawHandClick();
+        }
+    }    
 
     handlePopupChange(event) {
         if(this.props.onPopupChange && !event.visible) {
@@ -53,7 +60,7 @@ class DrawDeck extends React.Component {
         }
 
         var drawDeckMenu = [
-            { text: 'Pull', handler: this.onPullClick},
+            { text: 'Draw to Draw Hand', handler: this.handleDrawToDrawHandClick},
             { text: 'Show', handler: this.handleShowDeckClick, showPopup: true },
             { text: 'Shuffle', handler: this.handleShuffleClick}
         ];        
@@ -93,6 +100,7 @@ DrawDeck.propTypes = {
     onPullClick: PropTypes.func,
     onPopupChange: PropTypes.func,
     onShuffleClick: PropTypes.func,
+    onDrawToDrawHandClick: PropTypes.func,
     popupLocation: PropTypes.oneOf(['top', 'bottom']),
     revealTopCard: PropTypes.bool,
     showDeck: PropTypes.bool,

@@ -71,6 +71,7 @@ class PlayerRow extends React.Component {
             username={ this.props.username }
             maxCards={ 5 }
             onCardClick={ this.props.onCardClick }
+            onMenuItemClick={ this.props.onMenuItemClick }
             onMouseOut={ this.props.onMouseOut }
             onMouseOver={ this.props.onMouseOver }
             source='draw hand'
@@ -83,6 +84,7 @@ class PlayerRow extends React.Component {
             numDrawCards={ this.props.numDrawCards }
             onPopupChange={ this.props.onDrawPopupChange }
             onShuffleClick={ this.props.onShuffleClick }
+            onDrawToDrawHandClick={ this.props.onDrawToDrawHandClick }
             revealTopCard={ this.props.revealTopCard }
             showDeck={ this.props.showDeck }
             spectating={ this.props.spectating }
@@ -125,6 +127,7 @@ PlayerRow.propTypes = {
     onMouseOut: PropTypes.func,
     onMouseOver: PropTypes.func,
     onShuffleClick: PropTypes.func,
+    onDrawToDrawHandClick: PropTypes.func,
     outOfGamePile: PropTypes.array,
     showDeck: PropTypes.bool,
     side: PropTypes.oneOf(['top', 'bottom']),

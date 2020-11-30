@@ -12,6 +12,7 @@ const validTargets = {
         'draw deck',
         'dead pile',
         'out of game',
+        'draw hand',
         'townsquare'
     ],
     'play area': [
@@ -27,6 +28,7 @@ const validTargets = {
         'hand',
         'draw deck',
         'play area',
+        'draw hand',
         'out of game'
     ],
     'dead pile': [
@@ -41,17 +43,20 @@ const validTargets = {
         'discard pile',
         'dead pile',
         'play area',
+        'draw hand',
         'out of game'
     ],
+    'draw hand': [
+        'hand',
+        'discard pile',
+        'dead pile'
+    ],
     'out of game': [
-        'plot deck',
-        'revealed plots',
         'draw deck',
         'play area',
         'discard pile',
         'hand',
-        'dead pile',
-        'shadows'
+        'dead pile'
     ]
 };
 

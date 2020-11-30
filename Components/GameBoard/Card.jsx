@@ -59,13 +59,11 @@ class InnerCard extends React.Component {
     }
 
     isAllowedMenuSource() {
-        // Explicitly disable menus on agendas when they're selectable during a
-        // card select prompt.
-        if(this.props.source === 'agenda' && this.props.card.selectable) {
+        if(this.props.card.selectable) {
             return false;
         }
 
-        return this.props.source === 'play area' || this.props.source === 'legend' || this.props.source === 'revealed plots';
+        return this.props.source === 'play area' || this.props.source === 'legend' || this.props.source === 'draw hand';
     }
 
     onClick(event, card) {
