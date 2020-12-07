@@ -59,6 +59,7 @@ class PlayerRow extends React.Component {
             username={ this.props.username }
             maxCards={ 5 }
             onCardClick={ this.props.onCardClick }
+            onMenuItemClick={ this.props.onMenuItemClick }
             onMouseOut={ this.props.onMouseOut }
             onMouseOver={ this.props.onMouseOver }
             source='hand'
