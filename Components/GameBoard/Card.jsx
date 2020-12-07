@@ -59,13 +59,11 @@ class InnerCard extends React.Component {
     }
 
     isAllowedMenuSource() {
-        // Explicitly disable menus on agendas when they're selectable during a
-        // card select prompt.
-        if(this.props.source === 'agenda' && this.props.card.selectable) {
+        if(this.props.card.selectable) {
             return false;
         }
 
-        return this.props.source === 'play area' || this.props.source === 'legend' || this.props.source === 'revealed plots';
+        return this.props.source === 'play area' || this.props.source === 'legend' || this.props.source === 'draw hand';
     }
 
     onClick(event, card) {
@@ -289,14 +287,18 @@ class InnerCard extends React.Component {
             return 'selected';
         } else if(this.props.card.selectable) {
             return 'selectable';
-        } else if(this.props.card.inDanger) {
-            return 'in-danger';
         } else if(this.props.card.saved) {
             return 'saved';
-        } else if(this.props.card.inChallenge) {
-            return 'challenge';
-        } else if(this.props.card.stealth) {
-            return 'stealth';
+        } else if(this.props.card.shootoutStatus === 'calling out' || this.props.card.shootoutStatus === 'called out') {
+            return 'callout';
+        } else if(this.props.card.shootoutStatus === 'leader shooter') {
+            return 'shooter-attack';
+        } else if(this.props.card.shootoutStatus === 'mark shooter') {
+            return 'shooter-defend';
+        } else if(this.props.card.shootoutStatus === 'leader posse') {
+            return 'attacking';
+        } else if(this.props.card.shootoutStatus === 'mark posse') {
+            return 'defending';
         } else if(this.props.card.controlled) {
             return 'controlled';
         } else if(this.props.card.new) {
@@ -330,6 +332,7 @@ InnerCard.propTypes = {
         controlled: PropTypes.bool,
         facedown: PropTypes.bool,
         gamelocation: PropTypes.string,
+        shootoutStatus: PropTypes.string,
         iconsAdded: PropTypes.array,
         iconsRemoved: PropTypes.array,
         inChallenge: PropTypes.bool,

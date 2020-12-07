@@ -53,7 +53,7 @@ export class GameBoard extends React.Component {
         this.onConcedeClick = this.onConcedeClick.bind(this);
         this.onLeaveClick = this.onLeaveClick.bind(this);
         this.onShuffleClick = this.onShuffleClick.bind(this);
-        this.onPullClick = this.onPullClick.bind(this);
+        this.onDrawToDrawHandClick = this.onDrawToDrawHandClick.bind(this);
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.sendChatMessage = this.sendChatMessage.bind(this);
         this.onSettingsClick = this.onSettingsClick.bind(this);
@@ -213,8 +213,8 @@ export class GameBoard extends React.Component {
         this.props.sendGameMessage('shuffleDeck');
     }
 
-    onPullClick() {
-        this.props.sendGameMessage('pullCard');
+    onDrawToDrawHandClick() {
+        this.props.sendGameMessage('drawCardToHand', 'draw hand');
     }
             
 
@@ -363,6 +363,7 @@ export class GameBoard extends React.Component {
                         numDrawCards={ thisPlayer.numDrawCards }
                         onDrawPopupChange={ this.handleDrawPopupChange }
                         onShuffleClick={ this.onShuffleClick }
+                        onDrawToDrawHandClick={ this.onDrawToDrawHandClick }
                         outOfGamePile={ thisPlayer.cardPiles.outOfGamePile }
                         drawDeck={ thisPlayer.cardPiles.drawDeck }
                         onDragDrop={ this.onDragDrop }

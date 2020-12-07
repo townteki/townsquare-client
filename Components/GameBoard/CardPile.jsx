@@ -215,10 +215,6 @@ class CardPile extends React.Component {
         let topCard = this.props.topCard || (this.props.cards ? this.props.cards[0] : null);
         let cardOrientation = this.props.orientation === 'horizontal' && topCard && topCard.facedown ? 'booted' : this.props.orientation;
 
-        if(this.props.hiddenTopCard && !this.props.topCard) {
-            topCard = { facedown: true };
-        }
-
         return (
             <div className={ className } onClick={ this.onCollectionClick }>
                 <div className='panel-header'>
