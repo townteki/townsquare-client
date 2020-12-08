@@ -63,7 +63,7 @@ class InnerCard extends React.Component {
             return false;
         }
 
-        return this.props.source === 'play area' || this.props.source === 'legend' || this.props.source === 'draw hand';
+        return this.props.source === 'play area' || this.props.source === 'legend' || this.props.source === 'draw hand' || this.props.source === 'hand';
     }
 
     onClick(event, card) {
