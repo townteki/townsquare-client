@@ -91,16 +91,18 @@ class InnerCard extends React.Component {
     getCountersForCard(card) {
         let counters = [];
 
-        if(card.shooter === 'Draw' && card.bullets !== null) {
-            counters.push({ name: 'bullets-draw', count: card.bullets, fade: true, shortName: 'D' });
-        } else if(card.shooter === 'Stud' && card.bullets !== null) {
-            counters.push({ name: 'bullets-stud', count: card.bullets, fade: true, shortName: 'S' });
+        if(card.shooter !== card.printedStats.shooter || card.bullets !== card.printedStats.bullets) {
+            if(card.shooter === 'Draw' && card.bullets !== null) {
+                counters.push({ name: 'bullets-draw', count: card.bullets, fade: true, shortName: 'D' });
+            } else if(card.shooter === 'Stud' && card.bullets !== null) {
+                counters.push({ name: 'bullets-stud', count: card.bullets, fade: true, shortName: 'S' });
+            }
         }
 
-        if (card.control) {
+        if(card.control && card.control !== card.printedStats.control) {
              counters.push({ name: 'card-control', count: card.control, fade: true, shortName: 'C' });
         }
-        if (card.influence) {
+        if (card.influence && card.influence !== card.printedStats.influence) {
             counters.push({ name: 'card-influence', count: card.influence, fade: true, shortName: 'I' });        
         }
 
