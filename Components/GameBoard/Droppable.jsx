@@ -139,10 +139,6 @@ class Droppable extends React.Component {
             });
         }
 
-        if (className !== 'overlay') {
-            let bla = 'bla'
-        }
-
         return this.props.connectDropTarget(
             <div className='drop-target'>
                 <div className={ className } />
