@@ -74,23 +74,28 @@ class HowToPlay extends React.Component {
                         <h3 className='htp-title' id='commands'>Manual Commands</h3>
                         <p>Every once in a while something happens during a game that shouldn’t have happened. This can occur due to a misclick, an unimplemented card or a bug in the software. To fix the game state in such situations a variety of manual commands are implemented. Typing these commands as a chatmessage during a game will have the following effect:</p>
                         <ul>
-                            <li>/bestow x - Adds x gold to the selected card. You must have enough gold to add.</li>
-                            <li>/cancel-challenge - Cancels the current challenge after it has been initiated. <strong>Note:</strong> both players will need to manually stand any knelt characters and undo any abilities used.</li>
+                            <li>/ace - aces a card (moves it to boot hill). You can do this also by draging and droping the card to boot hill.</li>
+                            <li>/add-card name | code - Adds a card to the draw deck. This card can be identified by name or code (can be found in dtdb)</li>
+                            <li>/add-keyword k - adds keyword k to a card.</li>
+                            <li>/blank - Blanks a card.</li>
+                            <li>/bullets x - Sets the bullets of a dude to x.</li>
+                            <li>/cancel-shootout - Cancels the current shootout. NOT WORKING YET. <strong>Note:</strong> both players will need to manually stand any knelt characters and undo any abilities used.</li>
                             <li>/cancel-prompt - Clears the current prompt and resume the game flow.  Use with caution and only when the prompt is 'stuck' and you are unable to continue.</li>
+                            <li>/clear-shooter - Clears the shooter type set by the chat command.</li>
+                            <li>/control x - Sets the control of a card to x.</li>
                             <li>/discard x - Discards x cards randomly from your hand.</li>
                             <li>/draw x - Draws x cards from your deck to your hand.</li>
                             <li>/give-control - Gives control of a card to your opponent.  Use with caution.</li>
-                            <li>/give-icon x - Gives a character an x icon; where 'x' is one of 'military', 'intrigue', 'power'.</li>
-                            <li>/kill - Kills a character.  Use with caution.</li>
+                            <li>/inf x - Sets the influence of a dude to x.</li>
+                            <li>/join-posse - Adds a dude to the respective posse in the current shootout.</li>
                             <li>/move-bottom - Moves a card to the bottom of your draw deck.</li>
-                            <li>/pillage - Discards the top card from your deck.</li>
-                            <li>/power x - Sets the power of a card to x.</li>
                             <li>/rematch - Start over a new game with the current opponent.</li>
                             <li>/remove-from-game - Removes a card from the game.</li>
+                            <li>/remove-from-posse - Removes a dude from the posse in the current shootout.</li>
                             <li>/reveal-hand - Reveals your hand to the opponent.</li>
-                            <li>/strength x - Sets the strength of a card to x.</li>
-                            <li>/take-icon x - Takes an x icon from a character; where 'x' is as per '/give-icon'.</li>
-                            <li>/token t x - Sets the token count of a card of type 't' to 'x'. Currently used token types are: 'bell', betrayal', 'ear', 'ghost', 'gold', 'journey', 'kiss', 'poison', 'prayer', 'stand', 'tale', 'valarmorghulis', 'vengeance' and 'venom'.</li>
+                            <li>/shooter stud | draw - Sets shooter type of a dude to stud or draw.</li>
+                            <li>/token t x - Sets the token count of a card of type 't' to 'x'. Currently used token types are: 'bounty'.<br></br><strong>Note:</strong> For stud and draw use /shooter command, dor bullets, control and influence use their respective commands.</li>
+                            <li>/unblank - Unblanks a card.</li>
                         </ul>
                     </div>
                     <div className='htp-topic'>
