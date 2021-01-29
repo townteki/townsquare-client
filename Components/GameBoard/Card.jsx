@@ -99,11 +99,17 @@ class InnerCard extends React.Component {
             }
         }
 
-        if(card.control && card.control !== card.printedStats.control) {
+        if(card.control != null && card.control !== card.printedStats.control) {
              counters.push({ name: 'card-control', count: card.control, fade: true, shortName: 'C' });
         }
-        if (card.influence && card.influence !== card.printedStats.influence) {
+        if (card.influence != null && card.influence !== card.printedStats.influence) {
             counters.push({ name: 'card-influence', count: card.influence, fade: true, shortName: 'I' });        
+        }
+        if (card.upkeep != null && card.upkeep !== card.printedStats.upkeep) {
+            counters.push({ name: 'card-upkeep', count: card.upkeep, fade: true, shortName: 'U' });        
+        }
+        if (card.production != null && card.production !== card.printedStats.production) {
+            counters.push({ name: 'card-production', count: card.production, fade: true, shortName: 'P' });        
         }
 
         for(const [key, token] of Object.entries(card.tokens || {})) {
