@@ -37,7 +37,7 @@ export class InnerGameLocation extends React.Component {
         if (this.isStreetSide()) {
             gameLocation = this.props.source;
         }
-        this.props.sendGameMessage('drop', card.uuid, source, target, gameLocation);
+        this.props.sendGameMessage('drop', card.uuid, target, gameLocation);
     }
 
     isStreetSide() {
