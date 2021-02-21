@@ -219,7 +219,7 @@ export class GameBoard extends React.Component {
             
 
     onDragDrop(card, source, target) {
-        this.props.sendGameMessage('drop', card.uuid, source, target);
+        this.props.sendGameMessage('drop', card.uuid, target);
     }
 
     getTimer() {
