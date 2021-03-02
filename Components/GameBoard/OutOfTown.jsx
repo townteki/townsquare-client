@@ -7,14 +7,15 @@ class OutOfTown extends React.Component {
     buildOutOfTown(player) {
         let onStreet = [];
 
-        let className = this.props.className;
-
-        className = 'out-of-town ' + className;
+        let className = 'out-of-town ';
+        if(this.props.className) {
+            className = className + this.props.className;
+        }
 
         if(player) {
             let filteredLocations = _.filter(player.locations, (location) => location.order === null);
             _.each(filteredLocations, (location) => {
-                _.map(player.cardsInPlay, (card) => {
+                _.map(player.cardPiles.cardsInPlay, (card) => {
                     if(card.uuid === location.uuid) {
                         onStreet.push(<GameLocation key={location.uuid}
                                     location={card}

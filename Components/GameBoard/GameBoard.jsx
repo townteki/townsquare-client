@@ -15,7 +15,6 @@ import ActivePlayerPrompt from './ActivePlayerPrompt';
 import CardZoom from './CardZoom';
 import GameChat from './GameChat';
 import GameConfigurationModal from './GameConfigurationModal';
-import Droppable from './Droppable';
 import * as actions from '../../actions';
 import TimeLimitClock from './TimeLimitClock';
 
@@ -308,6 +307,7 @@ export class GameBoard extends React.Component {
                 </div>
                 <div className='board-inner'>
                     <div className='prompt-area'>
+
                         <div className='inset-pane'>
                             <ActivePlayerPrompt
                                 cards={ this.props.cards }
@@ -351,6 +351,17 @@ export class GameBoard extends React.Component {
                             </div>								
 
 
+                    </div>
+                    <div className='out-of-town-area'>
+                        <div className='out-of-town' onDragOver={this.onDragOver}>
+                            <OutOfTown onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onMenuItemClick={this.onMenuItemClick}
+                                className={'other-side'} owner={otherPlayer} otherPlayer={otherPlayer} thisPlayer={thisPlayer}/>
+                        </div>
+
+                        <div className='out-of-town' onDragOver={this.onDragOver}>
+                            <OutOfTown onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onMenuItemClick={this.onMenuItemClick}
+                                owner={thisPlayer} otherPlayer={otherPlayer} thisPlayer={thisPlayer}/>
+                        </div>
                     </div>
                 </div>
                 <div className='player-home-row our-side'>
