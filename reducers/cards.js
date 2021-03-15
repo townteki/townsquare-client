@@ -1,4 +1,4 @@
-import { validateDeck, formatDeckAsFullCards } from 'throneteki-deck-helper';
+import { validateDeck, formatDeckAsFullCards } from 'townsquare-deck-helper';
 
 function selectDeck(state, deck) {
     if(state.decks.length !== 0) {

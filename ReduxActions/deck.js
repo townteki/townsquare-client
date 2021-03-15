@@ -1,4 +1,4 @@
-import { formatDeckAsShortCards } from 'throneteki-deck-helper';
+import { formatDeckAsShortCards } from 'townsquare-deck-helper';
 
 export function loadDecks() {
     return {
