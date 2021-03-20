@@ -14,7 +14,7 @@ export class AddDeck extends React.Component {
 
         this.state = {
             error: '',
-            faction: {},
+            outfit: {},
             deck: undefined
         };
 
@@ -72,13 +72,13 @@ export class AddDeck extends React.Component {
 AddDeck.displayName = 'AddDeck';
 AddDeck.propTypes = {
     addDeck: PropTypes.func,
-    agendas: PropTypes.object,
     apiError: PropTypes.string,
     cards: PropTypes.object,
     deckSaved: PropTypes.bool,
-    factions: PropTypes.object,
+    legends: PropTypes.object,
     loading: PropTypes.bool,
     navigate: PropTypes.func,
+    outfits: PropTypes.object,							  
     saveDeck: PropTypes.func
 };
 
@@ -88,8 +88,9 @@ function mapStateToProps(state) {
         apiError: state.api.message,
         cards: state.cards.cards,
         deckSaved: state.cards.deckSaved,
-        factions: state.cards.factions,
+        legends: state.cards.legends,
         loading: state.api.loading,
+        outfits: state.cards.outfits,									 
         socket: state.lobby.socket
     };
 }
