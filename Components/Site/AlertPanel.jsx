@@ -33,6 +33,7 @@ class AlertPanel extends React.Component {
             { this.props.noIcon ? null : <span className={ icon } aria-hidden='true' /> }
             { this.props.title ? <span className='sr-only'>{ this.props.title }</span> : null }
             { this.props.message ? <span>&nbsp;{ this.props.message }</span> : null }
+            { this.props.link ? <span>&nbsp;see <a href={ this.props.link }>link</a></span> : null }
             &nbsp;{ this.props.children }
         </div>);
     }
@@ -41,6 +42,7 @@ class AlertPanel extends React.Component {
 AlertPanel.displayName = 'AlertPanel';
 AlertPanel.propTypes = {
     children: PropTypes.any,
+    link: PropTypes.string,
     message: PropTypes.string,
     multiLine: PropTypes.bool,
     noIcon: PropTypes.bool,
