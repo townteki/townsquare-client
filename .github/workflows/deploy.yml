@@ -39,6 +39,7 @@ jobs:
         username: ${{ secrets.REMOTE_TEST_USER }}
         key: ${{ secrets.TEST_SERVER_SSH_KEY }}
         script: |
+          cd ${{ secrets.REMOTE_TEST_TARGET }}
           git fetch
           git reset --hard origin/master
           git submodule update --remote
