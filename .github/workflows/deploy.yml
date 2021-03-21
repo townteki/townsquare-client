@@ -23,11 +23,41 @@ jobs:
       run: npm install
     - name: Run build task
       run: npm run build --if-present
+    - name: Stop services
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_TEST_HOST }}
+        username: ${{ secrets.REMOTE_TEST_USER }}
+        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
+        script: |
+          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl stop townsquare.service
+          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl stop gamenode.service
+    - name: Git update
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_TEST_HOST }}
+        username: ${{ secrets.REMOTE_TEST_USER }}
+        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
+        script: |
+          git fetch
+          git reset --hard origin/master
+          git submodule update --remote
+    - name: Cleanup
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_TEST_HOST }}
+        username: ${{ secrets.REMOTE_TEST_USER }}
+        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
+        script: |
+          rm -f ${{ secrets.REMOTE_TEST_TARGET }}/public/*
+          rm -f ${{ secrets.REMOTE_TEST_TARGET }}/public/img/*
+          rm -r ${{ secrets.REMOTE_TEST_TARGET }}/public/fonts      
+          rm -r ${{ secrets.REMOTE_TEST_TARGET }}/public/sound  
     - name: Deploy dist to Server
       uses: easingthemes/ssh-deploy@v2.1.5
       env:
           SSH_PRIVATE_KEY: ${{ secrets.TEST_SERVER_SSH_KEY }}
-          ARGS: "-rltgoDzvO --delete"
+          ARGS: "-rltgoDzvO"
           SOURCE: "dist/"
           REMOTE_HOST: ${{ secrets.REMOTE_TEST_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_TEST_USER }}
@@ -42,3 +72,12 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_TEST_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_TEST_USER }}
           TARGET: ${{ secrets.REMOTE_TEST_TARGET }}
+    - name: Start services
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_TEST_HOST }}
+        username: ${{ secrets.REMOTE_TEST_USER }}
+        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
+        script: |
+          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl start townsquare.service
+          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl start gamenode.service
