@@ -62,7 +62,7 @@ jobs:
           SOURCE: "dist/"
           REMOTE_HOST: ${{ secrets.REMOTE_TEST_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_TEST_USER }}
-          TARGET: ${{ secrets.REMOTE_TEST_TARGET }}
+          TARGET: ${{ secrets.REMOTE_TEST_TARGET }}/public
           EXCLUDE: "/images/cards/, /node_modules/"
     - name: Deploy assets to Server
       uses: easingthemes/ssh-deploy@v2.1.5
@@ -72,7 +72,7 @@ jobs:
           SOURCE: "assets/"
           REMOTE_HOST: ${{ secrets.REMOTE_TEST_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_TEST_USER }}
-          TARGET: ${{ secrets.REMOTE_TEST_TARGET }}
+          TARGET: ${{ secrets.REMOTE_TEST_TARGET }}/public
     - name: Start services
       uses: appleboy/ssh-action@master
       with:
