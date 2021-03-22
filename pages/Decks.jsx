@@ -34,19 +34,19 @@ class Decks extends React.Component {
 
         let successPanel = null;
 
-        if(process.env.TEST === 'true') {
-            let notImplementedMessage = 'The Deck management is not yet implemented. Please use one of the standalone decks. ';
-            let infoMessage = 'For the current progress of the feature, ';
-            return (
-                <div className='full-height'>
-                    <div className='col-xs-12'>
-                        { <AlertPanel type='error' message={ notImplementedMessage } /> }
-                    </div>
-                    <div className='col-xs-12'>
-                        { <AlertPanel type='info' message={ infoMessage } link='https://github.com/orgs/townteki/projects/4' /> }
-                    </div>
-                </div>);
-        }
+        // **** TODO M2 This is just a temporary code to disable Deck building feature until it is implemented
+        let notImplementedMessage = 'The Deck management is not yet implemented. Please use one of the standalone decks. ';
+        let infoMessage = 'For the current progress of the feature, ';
+        return (
+            <div className='full-height'>
+                <div className='col-xs-12'>
+                    { <AlertPanel type='error' message={ notImplementedMessage } /> }
+                </div>
+                <div className='col-xs-12'>
+                    { <AlertPanel type='info' message={ infoMessage } link='https://github.com/orgs/townteki/projects/4' /> }
+                </div>
+            </div>);
+        //******************************************************
 
         if(this.props.deckDeleted) {
             setTimeout(() => {
