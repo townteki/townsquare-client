@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import AlertPanel from '../Components/Site/AlertPanel';
 import ApiStatus from '../Components/Site/ApiStatus';
 import Panel from '../Components/Site/Panel';
 import Form from '../Components/Form/Form';
@@ -40,7 +41,6 @@ export class Register extends React.Component {
     }
 
     render() {
-
         return (
             <div className='col-sm-6 col-sm-offset-3'>
                 <ApiStatus apiState={ this.props.apiState } successMessage={ this.state.successMessage } />
