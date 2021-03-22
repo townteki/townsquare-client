@@ -41,20 +41,6 @@ export class Register extends React.Component {
     }
 
     render() {
-        if(process.env.TEST === 'true') {
-            let notAvailableMessage = 'This is Development server for the Doomtown Online and public registration is disabled. ';
-            let infoMessage = 'If you want to register and contribute to the project, ';
-            return (
-                <div className='full-height'>
-                    <div className='col-xs-12'>
-                        { <AlertPanel type='error' message={ notAvailableMessage } /> }
-                    </div>
-                    <div className='col-xs-12'>
-                        { <AlertPanel type='info' message={ infoMessage } link='https://github.com/townteki/townsquare/blob/master/docs/contributing.md' /> }
-                    </div>
-                </div>);
-        }
-
         return (
             <div className='col-sm-6 col-sm-offset-3'>
                 <ApiStatus apiState={ this.props.apiState } successMessage={ this.state.successMessage } />
