@@ -39,9 +39,9 @@ jobs:
         username: ${{ secrets.REMOTE_TEST_USER }}
         key: ${{ secrets.TEST_SERVER_SSH_KEY }}
         script: |
-          cd ${{ secrets.REMOTE_TEST_TARGET }}
           git fetch
           git reset --hard origin/master
+          git clean -fd
           git submodule update --remote
     - name: Cleanup
       uses: appleboy/ssh-action@master
@@ -50,15 +50,15 @@ jobs:
         username: ${{ secrets.REMOTE_TEST_USER }}
         key: ${{ secrets.TEST_SERVER_SSH_KEY }}
         script: |
-          rm -f ${{ secrets.REMOTE_TEST_TARGET }}/public/*
-          rm -f ${{ secrets.REMOTE_TEST_TARGET }}/public/img/*
-          rm -r ${{ secrets.REMOTE_TEST_TARGET }}/public/fonts      
-          rm -r ${{ secrets.REMOTE_TEST_TARGET }}/public/sound  
+          rm -f ${{ secrets.REMOTE_TEST_TARGET }}/public/* || true
+          rm -f ${{ secrets.REMOTE_TEST_TARGET }}/public/img/* || true
+          rm -r ${{ secrets.REMOTE_TEST_TARGET }}/public/fonts || true    
+          rm -r ${{ secrets.REMOTE_TEST_TARGET }}/public/sound || true 
     - name: Deploy dist to Server
       uses: easingthemes/ssh-deploy@v2.1.5
       env:
           SSH_PRIVATE_KEY: ${{ secrets.TEST_SERVER_SSH_KEY }}
-          ARGS: "-rltgoDzvO"
+          ARGS: "-rltgoDzvO --delete"
           SOURCE: "dist/"
           REMOTE_HOST: ${{ secrets.REMOTE_TEST_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_TEST_USER }}
