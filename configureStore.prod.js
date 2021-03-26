@@ -12,10 +12,9 @@ const enhancer = compose(
             let ret = Object.assign({}, state);
             delete ret.auth;
 
-            delete ret.cards.agendas;
-            delete ret.cards.banners;
+            delete ret.cards.legends;
             delete ret.cards.cards;
-            delete ret.cards.factions;
+            delete ret.cards.outfits;
             delete ret.cards.packs;
             delete ret.account.user.email;
 

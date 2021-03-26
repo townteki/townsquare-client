@@ -42,7 +42,6 @@ class Application extends React.Component {
 
         this.props.loadCards();
         this.props.loadPacks();
-        this.props.loadFactions();
         this.props.loadRestrictedList();
 
         $(document).ajaxError((event, xhr) => {
@@ -111,7 +110,6 @@ Application.propTypes = {
     connectLobby: PropTypes.func,
     currentGame: PropTypes.object,
     loadCards: PropTypes.func,
-    loadFactions: PropTypes.func,
     loadPacks: PropTypes.func,
     loadRestrictedList: PropTypes.func,
     navigate: PropTypes.func,
