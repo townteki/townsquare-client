@@ -9,6 +9,11 @@ import Typeahead from '../Form/Typeahead';
 import TextArea from '../Form/TextArea';
 import ApiStatus from '../Site/ApiStatus';
 import * as actions from '../../actions';
+import { lookupCardByName } from './DeckParser';
+
+const plainHeader = /^([^()]+)(\(.+\))??$/;
+const bbHeader = /^\[.*?\](.*?)\[.*\]/;
+const mdHeader = /^\[(.*)\].*$/;
 
 class DeckEditor extends React.Component {
     constructor(props) {
@@ -49,7 +54,7 @@ class DeckEditor extends React.Component {
 
     componentWillReceiveProps(props) {
         if(props.outfits && !this.state.outfit) {
-            this.setState({ outfit: props.outfits['lawdogs'] }, this.triggerDeckUpdated);
+            this.setState({ outfit: props.outfits['law dogs'] }, this.triggerDeckUpdated);
         }
     }
 
@@ -129,71 +134,69 @@ class DeckEditor extends React.Component {
     }
 
     onCardListChange(event) {
+        
         let split = event.target.value.split('\n');
         let { deckName, outfit, legend, drawCards } = this.state;
-
-        /*
-        let headerMark = split.findIndex(line => line.match(/^Packs:/));
+        let options = { 
+            imported: false,
+            bbCode: false,
+            markdown: false
+        };
+        if(event.target.value.startsWith('[b]')) {
+            options.bbCode = true;
+        }
+        if(event.target.value.startsWith('# ')) {
+            options.markdown = true;
+        }        
+        let headerMark = split.findIndex(line => line.match(/^(#+\s+|(\[.+\]))?Dude/));
         if(headerMark >= 0) {
-            // ThronesDB-style deck header found
-            // extract deck title, faction, agenda, and banners
+            options.imported = true;
+            // Beginning of the card data found,
+            // extract deck title and outfit
             let header = split.slice(0, headerMark).filter(line => line !== '');
             split = split.slice(headerMark);
 
             if(header.length >= 2) {
                 deckName = header[0];
-
-                let newFaction = Object.values(this.props.factions).find(faction => faction.name === header[1].trim());
-                if(newFaction) {
-                    faction = newFaction;
+                if(options.bbCode) {
+                    deckName = header[0].trim().match(bbHeader)[1];
+                }
+                if(options.markdown) {
+                    deckName = header[0].trim().match(/^#+\s+(.*)$/)[1];
                 }
 
-                header = header.slice(2);
-                if(header.length >= 1) {
-                    let rawAgenda, rawBanners;
-
-                    if(header.some(line => {
-                        return line.trim() === 'Alliance';
-                    })) {
-                        rawAgenda = 'Alliance';
-                        rawBanners = header.filter(line => line.trim() !== 'Alliance');
-                    } else {
-                        rawAgenda = header[0].trim();
-                    }
-
-                    let newAgenda = Object.values(this.props.agendas).find(agenda => agenda.name === rawAgenda);
-                    if(newAgenda) {
-                        agenda = newAgenda;
-                    }
-
-                    if(rawBanners) {
-                        let banners = [];
-                        for(let rawBanner of rawBanners) {
-                            let banner = this.props.banners.find(banner => {
-                                return rawBanner.trim() === banner.label;
-                            });
-
-                            if(banner) {
-                                banners.push(banner);
-                            }
-                        }
-
-                        bannerCards = banners;
-                    }
+                let headerMatch = header[1].trim().match(plainHeader);
+                if(options.bbCode) {
+                    headerMatch = header[1].trim().match(bbHeader);
+                }
+                if(options.markdown) {
+                    headerMatch = header[1].trim().match(mdHeader);
+                }
+                let newOutfit = Object.values(this.props.outfits).find(outfit => outfit.title === headerMatch[1].trim());
+                if(newOutfit && headerMatch[1]) {
+                    outfit = newOutfit;
                 }
             }
         }
 
-        plotCards = [];
         drawCards = [];
+        let parsingLegend = false;
 
         for(const line of split) {
-            let { card, count } = this.parseCardLine(line);
+            if(line.trim().match(/^(#+\s+|(\[.+\]))?Legend/)) {
+                parsingLegend = true;
+                continue;
+            }
+            let { card, count, starting } = this.parseCardLine(line, options);
             if(card) {
-                this.addCard(card.type === 'plot' ? plotCards : drawCards, card, count);
+                if(parsingLegend) {
+                    legend = Object.values(this.props.legends).find(legend => legend.title === card.title);
+                    parsingLegend = false;
+                    continue;
+                }
+                this.addCard(drawCards, card, count, starting);
             }
         }
-        */
 
         this.setState({
             cardList: event.target.value,
@@ -204,8 +207,8 @@ class DeckEditor extends React.Component {
         }, this.triggerDeckUpdated);
     }
 
-    parseCardLine(line) {
-        const pattern = /^(\d+)x?\s+([^()]+)(\s+\((.+)\))?$/;
+    parseCardLine(line, options) {
+        const pattern = /^\*?\s?(\d+)x?\s+(.+)$/;
 
         let match = line.trim().match(pattern);
         if(!match) {
@@ -213,92 +216,27 @@ class DeckEditor extends React.Component {
         }
 
         let count = parseInt(match[1]);
-        let cardName = match[2].trim().toLowerCase();
-        //remove [J] and [M] restricted list, and [B] banned list indicators in a card name when the list is copied from thronesdb, trim at the end to remove the space between cardname and []
-        cardName = cardName.replace(/\[(b|j|m)\]/g,'').trim();
-        let packName = match[4] && match[4].trim().toLowerCase();
-        let pack = packName && this.props.packs.find(pack => pack.code.toLowerCase() === packName || pack.name.toLowerCase() === packName);
-
-        if(cardName.startsWith('Custom ')) {
-            return { count: count, card: this.createCustomCard(cardName) };
+        let cardTitle = match[2];
+        let starting = 0;
+        if(cardTitle.indexOf('*') > -1) {
+            starting = 1;
+            cardTitle = cardTitle.replace('*', '');
         }
-
-        let cards = Object.values(this.props.cards);
-
-        let matchingCards = cards.filter(card => {
-            if(this.props.agendas[card.code]) {
-                return false;
-            }
-
-            if(pack) {
-                return pack.code === card.packCode && card.name.toLowerCase() === cardName;
-            }
-
-            return card.name.toLowerCase() === cardName;
+        let card = lookupCardByName({ 
+            cardTitle: cardTitle, 
+            cards: Object.values(this.props.cards), 
+            packs: this.props.packs,
+            options
         });
 
-        matchingCards.sort((a, b) => this.compareCardByAvailableDate(a, b));
-
-        return { count: count, card: matchingCards[0] };
+        return { count: count, starting: starting, card: card };
     }
 
-    createCustomCard(cardName) {
-        let match = /Custom (.*) - (.*)/.exec(cardName);
-        if(!match) {
-            return null;
-        }
-
-        let type = match[1].toLowerCase();
-        let name = match[2];
-
-        return {
-            code: 'custom_' + type,
-            cost: 0,
-            custom: true,
-            faction: 'neutral',
-            icons: {
-                military: true,
-                intrigue: true,
-                power: true
-            },
-            label: name + ' (Custom)',
-            loyal: false,
-            name: name,
-            packCode: 'Custom',
-            plotStats: {
-                claim: 0,
-                income: 0,
-                initiative: 0,
-                reserve: 0
-            },
-            strength: 0,
-            text: 'Custom',
-            traits: [],
-            type: type,
-            unique: name.includes('*')
-        };
-    }
-
-    compareCardByAvailableDate(a, b) {
-        let packA = this.props.packs.find(pack => pack.code === a.pack_code);
-        let packB = this.props.packs.find(pack => pack.code === b.pack_code);
-
-        if(!packA.available && packB.available) {
-            return 1;
-        }
-
-        if(!packB.available && packA.available) {
-            return -1;
-        }
-
-        return new Date(packA.available) < new Date(packB.available) ? -1 : 1;
-    }
-
-    addCard(list, card, number) {
+    addCard(list, card, number, starting) {
         if(list[card.code]) {
             list[card.code].count += number;
         } else {
-            list.push({ count: number, card: card });
+            list.push({ count: number, card: card, starting: starting });
         }
     }
 
@@ -338,13 +276,13 @@ class DeckEditor extends React.Component {
                     <Input name='deckName' label='Deck Name' labelClass='col-sm-3' fieldClass='col-sm-9' placeholder='Deck Name'
                         type='text' onChange={ this.onChange.bind(this, 'deckName') } value={ this.state.deckName } />
                     <Select name='outfit' label='Outfit' labelClass='col-sm-3' fieldClass='col-sm-9' options={ Object.values(this.props.outfits) }
-                        onChange={ this.onOutfitChange.bind(this) } value={ this.state.outfit ? this.state.outfit.title : undefined }
-                        valueKey='code' nameKey='title' blankOption={ { label: '- Select -', code: '' } } />
+                        onChange={ this.onOutfitChange.bind(this) } value={ this.state.outfit ? this.state.outfit.code : undefined }
+                        valueKey='code' nameKey='title' blankOption={ { title: '- Select -', code: '' } } />
                     <Select name='legend' label='Legend' labelClass='col-sm-3' fieldClass='col-sm-9' options={ Object.values(this.props.legends) }
-                        onChange={ this.onLegendChange.bind(this) } value={ this.state.legend ? this.state.legend.title : undefined }
-                        valueKey='code' nameKey='title' blankOption={ { label: '- Select -', code: '' } } />
+                        onChange={ this.onLegendChange.bind(this) } value={ this.state.legend ? this.state.legend.code : undefined }
+                        valueKey='code' nameKey='title' blankOption={ { title: '- Select -', code: '' } } />
 
-                    <Typeahead label='Card' labelClass={ 'col-sm-3 col-xs-2' } fieldClass='col-sm-4 col-xs-5' labelKey={ 'label' } options={ Object.values(this.props.cards) }
+                    <Typeahead label='Card' labelClass={ 'col-sm-3 col-xs-2' } fieldClass='col-sm-4 col-xs-5' labelKey={ 'title' } options={ Object.values(this.props.cards) }
                         onChange={ this.addCardChange.bind(this) }>
                         <Input name='numcards' type='text' label='Num' labelClass='col-xs-1 no-x-padding' fieldClass='col-xs-2'
                             value={ this.state.numberToAdd.toString() } onChange={ this.onNumberToAddChange.bind(this) } noGroup>
