@@ -19,6 +19,7 @@ class Decks extends React.Component {
 
     componentWillMount() {
         this.props.loadDecks();
+        this.props.loadStandaloneDecks();
     }
 
     handleEditDeck(deck) {
@@ -33,20 +34,6 @@ class Decks extends React.Component {
         let content = null;
 
         let successPanel = null;
-
-        // **** TODO M2 This is just a temporary code to disable Deck building feature until it is implemented
-        let notImplementedMessage = 'The Deck management is not yet implemented. Please use one of the standalone decks. ';
-        let infoMessage = 'For the current progress of the feature, ';
-        return (
-            <div className='full-height'>
-                <div className='col-xs-12'>
-                    { <AlertPanel type='error' message={ notImplementedMessage } /> }
-                </div>
-                <div className='col-xs-12'>
-                    { <AlertPanel type='info' message={ infoMessage } link='https://github.com/orgs/townteki/projects/4' /> }
-                </div>
-            </div>);
-        //******************************************************
 
         if(this.props.deckDeleted) {
             setTimeout(() => {
@@ -72,6 +59,9 @@ class Decks extends React.Component {
                             <Link className='btn btn-primary' href='/decks/add'>New Deck</Link>
                             <DeckList className='deck-list' activeDeck={ this.props.selectedDeck } decks={ this.props.decks } onSelectDeck={ this.props.selectDeck } />
                         </Panel>
+                        <Panel title='Standalone decks'>
+                            <DeckList className='deck-list' activeDeck={ this.props.selectedDeck } standaloneDecks decks={ this.props.standaloneDecks } onSelectDeck={ this.props.selectDeck } />
+                        </Panel>
                     </div>
                     { !!this.props.selectedDeck &&
                         <ViewDeck deck={ this.props.selectedDeck } cards={ this.props.cards } onEditDeck={ this.handleEditDeck } onDeleteDeck={ this.handleDeleteDeck } />
@@ -94,10 +84,12 @@ Decks.propTypes = {
     decks: PropTypes.array,
     deleteDeck: PropTypes.func,
     loadDecks: PropTypes.func,
+    loadStandaloneDecks: PropTypes.func,
     loading: PropTypes.bool,
     navigate: PropTypes.func,
     selectDeck: PropTypes.func,
-    selectedDeck: PropTypes.object
+    selectedDeck: PropTypes.object,
+    standaloneDecks: PropTypes.array
 };
 
 function mapStateToProps(state) {
@@ -109,7 +101,8 @@ function mapStateToProps(state) {
         deckDeleted: state.cards.deckDeleted,
         decks: state.cards.decks,
         loading: state.api.loading,
-        selectedDeck: state.cards.selectedDeck
+        selectedDeck: state.cards.selectedDeck,
+        standaloneDecks: state.cards.standaloneDecks
     };
 }
 

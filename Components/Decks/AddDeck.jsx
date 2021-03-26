@@ -84,7 +84,6 @@ AddDeck.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        agendas: state.cards.agendas,
         apiError: state.api.message,
         cards: state.cards.cards,
         deckSaved: state.cards.deckSaved,

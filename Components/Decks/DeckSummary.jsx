@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import _ from 'underscore';
 
 import DeckStatus from './DeckStatus';
+import AltCard from '../GameBoard/AltCard';
 
 class DeckSummary extends React.Component {
     constructor() {
@@ -18,7 +20,7 @@ class DeckSummary extends React.Component {
 
     onCardMouseOver(event) {
         let cardToDisplay = Object.values(this.props.cards).filter(card => {
-            return event.target.innerText === card.label;
+            return event.target.innerText === card.title;
         });
 
         this.setState({ cardToShow: cardToDisplay[0] });
@@ -70,7 +72,11 @@ class DeckSummary extends React.Component {
 
         return (
             <div className='deck-summary col-xs-12'>
-				{ this.state.cardToShow ? <img className='hover-image' src={ '/img/cards/' + this.state.cardToShow.code + '.jpg' } /> : null }
+                { this.state.cardToShow ?
+                    <div className={ classNames('hover-card') }>
+                        <img className='hover-image' src={ '/img/cards/' + this.state.cardToShow.code + '.jpg' } />
+                        <AltCard card={ this.state.cardToShow } />
+                    </div> : null }
                 <div className='decklist'>
                     <div className='col-xs-2 col-sm-3 no-x-padding'>{ this.props.deck.outfit ? <img className='img-responsive' src={ '/img/cards/' + this.props.deck.outfit.code + '.jpg' } /> : null }</div>
                     <div className='col-xs-8 col-sm-6'>

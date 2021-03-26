@@ -29,10 +29,13 @@ class ViewDeck extends React.Component {
         return (
             <div className='col-sm-7'>
                 <Panel title={ deck.name }>
-                    <div className='btn-group col-xs-12'>
-                        <button className='btn btn-primary' onClick={ this.handleEditClick }>Edit</button>
-                        <ConfirmedButton onClick={ this.handleDeleteClick }>Delete</ConfirmedButton>
-                    </div>
+                    { !deck.standaloneDeckId ?
+                        <div className='btn-group col-xs-12'>
+                            <button className='btn btn-primary' onClick={ this.handleEditClick }>Edit</button>
+                            <ConfirmedButton onClick={ this.handleDeleteClick }>Delete</ConfirmedButton>
+                        </div> 
+                        : null 
+                    }
                     <DeckSummary deck={ deck } cards={ cards } />
                 </Panel>
             </div>);
