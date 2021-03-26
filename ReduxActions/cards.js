@@ -20,17 +20,6 @@ export function loadPacks() {
     };
 }
 
-export function loadFactions() {
-    return {
-        types: ['REQUEST_FACTIONS', 'RECEIVE_FACTIONS'],
-        shouldCallAPI: (state) => {
-            return !state.cards.factions;
-        },
-        APIParams: { url: '/api/factions', cache: false },
-        skipAuth: true
-    };
-}
-
 export function loadRestrictedList() {
     return {
         types: ['REQUEST_RESTRICTED_LIST', 'RECEIVE_RESTRICTED_LIST'],

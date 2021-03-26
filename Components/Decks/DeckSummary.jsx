@@ -49,7 +49,17 @@ class DeckSummary extends React.Component {
             let index = 0;
 
             for(const card of cardList) {
-                cards.push(<div key={ `${card.card.code}${index++}` }><span>{ card.count + 'x ' }</span><span className='card-link' onMouseOver={ this.onCardMouseOver } onMouseOut={ this.onCardMouseOut }>{ card.card.title }</span></div>);
+                let cardClassName = 'card-link';
+                if(card.starting) {
+                    cardClassName += ' starting';
+                } 
+                cards.push(
+                    <div key={ `${card.card.code}${index++}` }>
+                        <span>{ card.count + 'x ' }</span>
+                        <span className={ cardClassName } onMouseOver={ this.onCardMouseOver } onMouseOut={ this.onCardMouseOut }>
+                            { card.card.title }
+                        </span>
+                    </div>);
                 count += parseInt(card.count);
             }
 

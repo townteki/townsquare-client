@@ -39,24 +39,23 @@ export default function(state = { decks: [] }, action) {
     let newState;
     switch(action.type) {
         case 'RECEIVE_CARDS':
-            var agendas = {};
+            var legends = {};
+            var outfits = {};
 
             for(const card of Object.values(action.response.cards)) {
-                if(card.type === 'agenda') {
-                    agendas[card.code] = card;
+                if(card.type_code === 'legend') {
+                    legends[card.code] = card;
+                }
+                if(card.type_code === 'outfit') {
+                    outfits[card.title.trim().toLowerCase()] = card;
                 }
             }
 
-            var banners = Object.values(agendas).filter(card => {
-                return card.traits.includes('Banner');
-            });
-
             newState = Object.assign({}, state, {
                 cards: action.response.cards,
-                agendas: agendas,
-                banners: banners
+                legends: legends,
+                outfits: outfits
             });
-
             // In case the card list is received after the decks, updated the decks now
             newState.decks = processDecks(newState.decks, newState);
 
@@ -65,21 +64,6 @@ export default function(state = { decks: [] }, action) {
             return Object.assign({}, state, {
                 packs: action.response.packs
             });
-        case 'RECEIVE_FACTIONS':
-            var factions = {};
-
-            for(const faction of action.response.factions) {
-                factions[faction.value] = faction;
-            }
-
-            newState = Object.assign({}, state, {
-                factions: factions
-            });
-
-            // In case the factions are received after the decks, updated the decks now
-            newState.decks = processDecks(newState.decks, newState);
-
-            return newState;
         case 'RECEIVE_RESTRICTED_LIST':
             newState = Object.assign({}, state, {
                 restrictedList: action.response.restrictedList
