@@ -22,7 +22,8 @@ DeckList.propTypes = {
     activeDeck: PropTypes.object,
     className: PropTypes.string,
     decks: PropTypes.array,
-    onSelectDeck: PropTypes.func
+    onSelectDeck: PropTypes.func,
+    standaloneDecks: PropTypes.bool
 };
 
 export default DeckList;
