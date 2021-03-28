@@ -8,6 +8,7 @@ import Select from '../Form/Select';
 import Typeahead from '../Form/Typeahead';
 import TextArea from '../Form/TextArea';
 import ApiStatus from '../Site/ApiStatus';
+import RestrictedListDropdown from './RestrictedListDropdown';
 import * as actions from '../../actions';
 import { lookupCardByName } from './DeckParser';
 
@@ -58,7 +59,7 @@ class DeckEditor extends React.Component {
         }
     }
 
-    getDeckFromState() {
+    getDeckFromState(restrictedList) {
         let deck = {
             _id: this.state._id,
             name: this.state.deckName,
@@ -67,17 +68,19 @@ class DeckEditor extends React.Component {
             drawCards: this.state.drawCards
         };
 
-        //if(!this.props.restrictedList) {
-        deck.status = {status: 'Valid', drawCount: 52, isValid: true};
-        //} else {
-        //    deck.status = validateDeck(deck, { packs: this.props.packs });
-        //}
+        if(!this.props.restrictedList && !this.props.currentRestrictedList) {
+            deck.status = {};
+        } else {
+            const selectedRestrictedList = restrictedList || this.props.currentRestrictedList;
+            const restrictedLists = selectedRestrictedList ? [selectedRestrictedList] : this.props.restrictedList;
+            deck.status = validateDeck(deck, { packs: this.props.packs, restrictedLists });
+        }
 
         return deck;
     }
 
-    triggerDeckUpdated() {
-        const deck = this.getDeckFromState();
+    triggerDeckUpdated(restrictedList) {
+        const deck = this.getDeckFromState(restrictedList);
 
         if(this.props.onDeckUpdated) {
             this.props.onDeckUpdated(deck);
@@ -91,7 +94,7 @@ class DeckEditor extends React.Component {
             return card.count + ' Custom ' + typeName + ' - ' + card.card.title;
         }
 
-        return card.count + ' ' + card.card.title;
+        return card.count + ' ' + card.card.title + (card.starting ? '*' : '');
     }
 
     onChange(field, event) {
@@ -270,8 +273,15 @@ class DeckEditor extends React.Component {
                     </div>
                 </div>
 
-                <h4>Either type the cards manually into the box below, add the cards one by one using the card box and autocomplete or for best results, copy and paste a decklist from <a href='http://dtdb.co' target='_blank'>DTDB</a> into the box below.</h4>
+                <div className='form-group'>
+                    <RestrictedListDropdown
+                        currentRestrictedList={ this.props.currentRestrictedList }
+                        onChange={ (restrictedList) => this.triggerDeckUpdated(restrictedList) }
+                        restrictedLists={ this.props.restrictedList }
+                        setCurrentRestrictedList={ this.props.setCurrentRestrictedList } />
+                </div>
 
+                <h4>Either type the cards manually into the box below, add the cards one by one using the card box and autocomplete or for best results, copy and paste a decklist from <a href='http://dtdb.co' target='_blank'>DTDB</a> into the box below.</h4>
                 <form className='form form-horizontal'>
                     <Input name='deckName' label='Deck Name' labelClass='col-sm-3' fieldClass='col-sm-9' placeholder='Deck Name'
                         type='text' onChange={ this.onChange.bind(this, 'deckName') } value={ this.state.deckName } />
@@ -311,6 +321,7 @@ DeckEditor.displayName = 'DeckEditor';
 DeckEditor.propTypes = {
     apiState: PropTypes.object,
     cards: PropTypes.object,
+    currentRestrictedList: PropTypes.object,
     deck: PropTypes.object,
     legends: PropTypes.object,
     navigate: PropTypes.func,
@@ -318,6 +329,8 @@ DeckEditor.propTypes = {
     onDeckUpdated: PropTypes.func,
     outfits: PropTypes.object,
     packs: PropTypes.array,
+    restrictedList: PropTypes.array,
+    setCurrentRestrictedList: PropTypes.func,
     updateDeck: PropTypes.func
 };
 
@@ -325,11 +338,13 @@ function mapStateToProps(state) {
     return {
         apiState: state.api.SAVE_DECK,
         cards: state.cards.cards,
+        currentRestrictedList: state.cards.currentRestrictedList,
         decks: state.cards.decks,
         legends: state.cards.legends,
         loading: state.api.loading,
         outfits: state.cards.outfits,
-        packs: state.cards.packs
+        packs: state.cards.packs,
+        restrictedList: state.cards.restrictedList
     };
 }
 

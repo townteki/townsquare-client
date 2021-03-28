@@ -1,8 +1,22 @@
 export function deckStatusLabel(status) {
-    if(!status.isValid) {
+    if(!status.basicRules) {
         return 'Invalid';
     }
-    const category = 'Tournament';
+    if(!status.noBannedCards) {
+        return 'Banned';
+    }
+    if(!status.noUnreleasedCards) {
+        return 'Casual';
+    }
 
-    return `${category} (Legal)`;
+    return 'Legal';
+}
+
+export function cardSetLabel(cardSet) {
+    switch(cardSet) {
+        case 'original':
+            return 'Original Cards';
+    }
+
+    return 'Unknown';
 }
