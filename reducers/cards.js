@@ -24,13 +24,15 @@ function processDeck(deck, state) {
     }
 
     let formattedDeck = formatDeckAsFullCards(deck, state);
+    
+    const fallbackRestrictedList = state.restrictedList ? state.restrictedList.slice(0, 1) : undefined;
+    const restrictedLists = state.currentRestrictedList ? [state.currentRestrictedList] : fallbackRestrictedList;
 
-    //if(!restrictedLists) {
-    //    formattedDeck.status = {};
-    //} else {
-        //formattedDeck.status = validateDeck(formattedDeck, { packs: state.packs, restrictedLists });
-		formattedDeck.status = {status: 'Valid', drawCount: 52, isValid: true};
-   // }
+    if(!restrictedLists) {
+        formattedDeck.status = {};
+    } else {
+        formattedDeck.status = validateDeck(formattedDeck, { packs: state.packs, restrictedLists });
+    }
 
     return formattedDeck;
 }

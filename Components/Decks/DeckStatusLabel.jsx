@@ -6,10 +6,11 @@ import {deckStatusLabel} from './DeckHelper';
 
 export default function DeckStatusLabel({className, status}) {
     const text = status ? deckStatusLabel(status) : 'Loading...';
-    const restrictionsFollowed = status.faqJoustRules && status.noUnreleasedCards;
+    const restrictionsFollowed = status.noUnreleasedCards;
     let fullClassName = classNames(className, 'label', {
-        'label-danger': !status.isValid,
-        'label-success': status.isValid
+        'label-danger': !status.basicRules || !status.noBannedCards,
+        'label-warning': status.basicRules && status.noBannedCards && !restrictionsFollowed,
+        'label-success': status.basicRules && status.noBannedCards && restrictionsFollowed
     });
     return <span className={ fullClassName }>{ text }</span>;
 }
