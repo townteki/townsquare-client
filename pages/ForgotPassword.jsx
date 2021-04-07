@@ -45,7 +45,7 @@ class ForgotPassword extends React.Component {
                         <Form name='forgotpassword' buttonClass='col-sm-offset-2 col-sm-3' buttonText='Submit' onSubmit={ this.onSubmit } apiLoading={ this.props.apiLoading }>
                             <div className='form-group'>
                                 <div className='col-sm-offset-2 col-sm-3'>
-                                    <ReCAPTCHA ref='recaptcha' sitekey='6LcM_Z8aAAAAAI3D-C08btnT85yju3SzOtkHh5Ig' theme='dark' onChange={ this.onCaptchaChange.bind(this) } />
+                                    <ReCAPTCHA ref='recaptcha' sitekey='6LfqD6AaAAAAAHjKTaVofPrHAOJKL6JQQpWZd3M-' theme='dark' onChange={ this.onCaptchaChange.bind(this) } />
                                 </div>
                             </div>
                         </Form>
