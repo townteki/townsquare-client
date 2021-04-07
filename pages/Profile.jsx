@@ -144,14 +144,18 @@ class Profile extends React.Component {
         this.setState(newState);
     }
 
-    onSaveClick() {
-        this.setState({ successMessage: undefined });
+    onSaveClick(state) {
+        this.setState({ 
+            newPassword: state.newPassword, 
+            email: state.email,
+            successMessage: undefined
+        });
 
         document.getElementsByClassName('wrapper')[0].scrollTop = 0;
 
         this.props.saveProfile(this.props.user.username, {
-            email: this.state.email,
-            password: this.state.newPassword,
+            email: state.email,
+            password: state.newPassword,
             promptedActionWindows: this.state.promptedActionWindows,
             enableGravatar: this.state.enableGravatar,
             settings: {
@@ -198,7 +202,7 @@ class Profile extends React.Component {
     }
 
     onUnlinkClick() {
-        this.props.unlinkPatreon();
+        //this.props.unlinkPatreon();
     }
 
     isPatreonLinked() {
@@ -228,7 +232,6 @@ class Profile extends React.Component {
         }
 
         let initialValues = { email: this.props.user.email };
-        let callbackUrl = process.env.NODE_ENV === 'production' ? 'https://theironthrone.net/patreon' : 'http://localhost:8080/patreon';
 
         return (
             <div className='col-sm-8 col-sm-offset-2 profile full-height'>
@@ -241,8 +244,6 @@ class Profile extends React.Component {
                             onChange={ e => this.setState({ enableGravatar: e.target.checked }) } checked={ this.state.enableGravatar } />
                         <div className='col-sm-3 text-center'>Current profile picture</div>
                         <button type='button' className='btn btn-default col-sm-offset-1 col-sm-3' onClick={ this.onUpdateAvatarClick }>Update avatar</button>
-                        { !this.isPatreonLinked() && <a className='btn btn-default col-sm-offset-1 col-sm-3' href={ `https://www.patreon.com/oauth2/authorize?response_type=code&client_id=317bxGpXD7sAOlyFKp6D-LOBRX731lLK-2YYQSFfBmJCrVSiJI77eUgRoLoN2KoI&redirect_uri=${callbackUrl}` }><img src='/img/Patreon_Mark_Coral.jpg' style={ {height:'21px'} } />&nbsp;Link Patreon account</a> }
-                        { this.isPatreonLinked() && <button type='button' className='btn btn-default col-sm-offset-1 col-sm-3' onClick={ this.onUnlinkClick }>Unlink Patreon account</button> }
                         <div className='col-sm-12 profile-inner'>
                             <Panel title='Action window defaults'>
                                 <p className='help-block small'>If an option is selected here, you will always be prompted if you want to take an action in that window.  If an option is not selected, you will receive no prompts for that window.  For some windows (e.g. dominance) this could mean the whole window is skipped.</p>
