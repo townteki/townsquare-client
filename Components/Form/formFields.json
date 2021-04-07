@@ -173,7 +173,7 @@
       "validationProperties": {
         "data-val": true,
         "data-val-equalto": "The passwords you have entered do not match",
-        "data-val-equalto-other": "password"
+        "data-val-equalto-other": "newPassword"
       },
       "labelClass": "col-sm-4",
       "fieldClass": "col-sm-7"
