@@ -6,6 +6,7 @@ import CardPile from './CardPile';
 import SquishableCardPanel from './SquishableCardPanel';
 import DrawDeck from './DrawDeck';
 import Droppable from './Droppable';
+import DrawHandPanel from './DrawHandPanel';
 
 class PlayerRow extends React.Component {
     getOutOfGamePile() {
@@ -43,14 +44,16 @@ class PlayerRow extends React.Component {
     }
 
     render() {
-        let cardPileProps = {
-            onCardClick: this.props.onCardClick,
+        let popupProps = {
             onDragDrop: this.props.onDragDrop,
-            onMouseOut: this.props.onMouseOut,
-            onMouseOver: this.props.onMouseOver,
             popupLocation: this.props.side,
             size: this.props.cardSize
         };
+        let cardPileProps = Object.assign(popupProps, {
+            onCardClick: this.props.onCardClick,
+            onMouseOut: this.props.onMouseOut,
+            onMouseOver: this.props.onMouseOver
+        });
 
         let hand = (<SquishableCardPanel
             cards={ this.props.hand }
@@ -65,16 +68,19 @@ class PlayerRow extends React.Component {
             source='hand'
             title='Hand'
             cardSize={ this.props.cardSize } />);
-        let drawHand = (<SquishableCardPanel
+        let drawHand = (<DrawHandPanel
             cards={ this.props.drawHand }
             className='panel hand'
             groupVisibleCards
+            isMe={ this.props.isMe }
             username={ this.props.username }
             maxCards={ 5 }
             onCardClick={ this.props.onCardClick }
+            onDiscardSelectedClick={ this.props.onDiscardSelectedClick }
             onMenuItemClick={ this.props.onMenuItemClick }
             onMouseOut={ this.props.onMouseOut }
             onMouseOver={ this.props.onMouseOver }
+            onPopupChange={ this.props.onDrawPopupChange }
             source='draw hand'
             title='Draw Hand'
             cardSize={ this.props.cardSize } />);			
@@ -122,6 +128,7 @@ PlayerRow.propTypes = {
     isMe: PropTypes.bool,
     numDrawCards: PropTypes.number,
     onCardClick: PropTypes.func,
+    onDiscardSelectedClick: PropTypes.func,
     onDragDrop: PropTypes.func,
     onDrawPopupChange: PropTypes.func,
     onMenuItemClick: PropTypes.func,

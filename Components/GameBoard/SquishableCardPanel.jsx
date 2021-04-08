@@ -3,8 +3,142 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import Card from './Card';
+import MovablePanel from './MovablePanel';
+import Droppable from './Droppable';
+import CardTiledList from './CardTiledList';
 
 class SquishableCardPanel extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showPopup: !!props.cards && props.cards.some(card => card.selectable),
+            showMenu: false
+        };
+
+        this.onPanelClick = this.onPanelClick.bind(this);
+        this.onCardClick = this.onCardClick.bind(this);
+        this.onCloseClick = this.onCloseClick.bind(this);
+    }
+
+    onCardClick(card) {
+        if(this.props.disablePopup || (card && card.selectable) || this.state.showPopup) {
+            if(this.props.onCardClick) {
+                this.props.onCardClick(card);
+            }
+
+            return;
+        }
+
+        this.togglePopup();
+    }
+
+    onCloseClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.togglePopup();
+    }
+
+    onPopupMenuItemClick(menuItem) {
+        if(menuItem.handler) {
+            menuItem.handler();
+        }
+
+        if(menuItem.close) {
+            this.togglePopup();
+        }
+    }
+
+    onPanelClick(event) {
+        event.preventDefault();
+        this.togglePopup();
+    }
+
+    togglePopup() {
+        this.updatePopupVisibility(!this.state.showPopup && this.props.cards && this.props.cards.length > 0);
+    }
+
+    updatePopupVisibility(value) {
+        this.setState({ showPopup: value });
+
+        if(this.props.onPopupChange) {
+            this.props.onPopupChange({ source: this.props.source, visible: value });
+        }
+    }
+
+    getPopup() {
+        let popup = null;
+        let cardList = [];
+
+        let listProps = {
+            disableMouseOver: this.props.disableMouseOver,
+            onCardClick: this.onCardClick.bind(this),
+            onCardMouseOut: this.props.onMouseOut,
+            onCardMouseOver: this.props.onMouseOver,
+            onTouchMove: this.props.onTouchMove,
+            size: this.props.cardSize,
+            source: this.props.source
+        };
+
+        if(this.props.cards && this.props.cards.some(card => card.group)) {
+            const cardGroup = this.props.cards.reduce((grouping, card) => {
+                (grouping[card.group] = grouping[card.group] || []).push(card);
+
+                return grouping;
+            }, {});
+            const sortedKeys = Object.keys(cardGroup).sort();
+            for(const key of sortedKeys) {
+                cardList.push(
+                    <CardTiledList cards={ cardGroup[key] } key={ key } title={ key } { ...listProps } />
+                );
+            }
+        } else {
+            cardList = (
+                <CardTiledList cards={ this.props.cards } { ...listProps } />);
+        }
+
+        if(this.props.disablePopup || !this.state.showPopup) {
+            return null;
+        }
+
+        let popupClass = classNames('panel', {
+            'our-side': this.props.popupLocation === 'bottom'
+        });
+
+        let innerClass = classNames('inner', this.props.cardSize);
+
+        let linkIndex = 0;
+
+        let popupMenu = this.props.popupMenu && (
+            <div className='card-pile-buttons'>
+                { this.props.popupMenu.map(menuItem => {
+                    return (
+                        <a className='btn btn-default' key={ linkIndex++ } onClick={ () => this.onPopupMenuItemClick(menuItem) }>
+                            { menuItem.icon && <span className={ `glyphicon glyphicon-${menuItem.icon}` }/> }
+                            { ' ' }
+                            { menuItem.text }
+                        </a>);
+                }) }
+            </div>
+        );
+
+        popup = (
+            <MovablePanel title={ this.props.title } name={ this.props.source } onCloseClick={ this.onCloseClick } side={ this.props.popupLocation }>
+                <Droppable onDragDrop={ this.props.onDragDrop } source={ this.props.source }>
+                    <div className={ popupClass } onClick={ event => event.stopPropagation() }>
+                        { popupMenu }                        
+                        <div className={ innerClass }>
+                            { cardList }
+                        </div>
+                    </div>
+                </Droppable>
+            </MovablePanel>
+        );
+
+        return popup;
+    }
+
     getCards(needsSquish) {
         let overallDimensions = this.getOverallDimensions();
         let dimensions = this.getCardDimensions();
@@ -35,10 +169,10 @@ class SquishableCardPanel extends React.Component {
             return (<Card key={ card.uuid }
                 card={ card }
                 disableMouseOver={ !card.code }
-                onClick={ this.props.onCardClick }
+                onClick={ this.onCardClick }
                 onMouseOver={ this.props.onMouseOver }
                 onMouseOut={ this.props.onMouseOut }
-                onMenuItemClick={this.props.onMenuItemClick}
+                onMenuItemClick={ this.props.onMenuItemClick }
                 size={ this.props.cardSize }
                 style={ style }
                 source={ this.props.source } />);
@@ -97,13 +231,14 @@ class SquishableCardPanel extends React.Component {
         };
 
         return (
-            <div className={ className } style={ style }>
+            <div className={ className } style={ style } onClick= { this.onPanelClick }>
                 { this.props.title &&
                     <div className='panel-header'>
                         { `${this.props.title} (${cards.length})` }
                     </div>
                 }
                 { cards }
+                { this.getPopup() }
             </div>
         );
     }
@@ -114,12 +249,18 @@ SquishableCardPanel.propTypes = {
     cardSize: PropTypes.string,
     cards: PropTypes.array,
     className: PropTypes.string,
+    closeOnClick: PropTypes.bool,
+    disablePopup: PropTypes.bool,
     groupVisibleCards: PropTypes.bool,
     maxCards: PropTypes.number,
     onCardClick: PropTypes.func,
+    onDragDrop: PropTypes.func,  
     onMenuItemClick: PropTypes.func,
     onMouseOut: PropTypes.func,
     onMouseOver: PropTypes.func,
+    onPopupChange: PropTypes.func,
+    popupLocation: PropTypes.string,
+    popupMenu: PropTypes.array,
     source: PropTypes.string,
     title: PropTypes.string,
     username: PropTypes.string
