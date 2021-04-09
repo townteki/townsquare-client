@@ -22,12 +22,12 @@ function Game(props) {
             if(props.showJoinButton) {
                 players.push(
                     <div key={ players[0].name } className={ 'game-player-row other-player' }>
-                        <div className='game-faction-row other-player'>
+                        <div className='game-outfit-row other-player'>
                             <button className='btn btn-primary gamelist-button img-responsive' onClick={ props.onJoinGame }>Join</button>
                         </div>
                     </div>);
             } else {
-                players.push(<div key={ players[0].name } className='game-faction-row other-player' />);
+                players.push(<div key={ players[0].name } className='game-outfit-row other-player' />);
             }
         }
 

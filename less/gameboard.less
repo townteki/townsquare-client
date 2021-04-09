@@ -377,17 +377,12 @@
   }
 }
 
-// Alliance agenda
-.agenda-06018 {
-  .inner {
-    .calculate-tiled-card-prop(width, 2, width);
-  }
-}
-
-// Conclave agenda
-.agenda-09045 {
-  .inner {
-    .calculate-tiled-card-prop(width, 7, width);
+.hand {
+  .popup {
+    .inner {
+      .calculate-tiled-card-prop(min-height, 1, height);
+      .calculate-tiled-card-prop(width, 7, width, @scrollbar-width);
+    }
   }
 }
 
@@ -583,6 +578,13 @@ span.down-arrow {
 
 .squishable-card-panel.squish .card-wrapper {
   position: absolute;
+}
+
+.squishable-card-panel.squish .popup .card-wrapper {
+  vertical-align: middle;
+  display: inline-block;
+  position: relative;
+  margin: 0 5px 5px 0;
 }
 
 .card-row {

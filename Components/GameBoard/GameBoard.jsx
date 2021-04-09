@@ -53,6 +53,7 @@ export class GameBoard extends React.Component {
         this.onLeaveClick = this.onLeaveClick.bind(this);
         this.onShuffleClick = this.onShuffleClick.bind(this);
         this.onDiscardFromDrawHandClick = this.onDiscardFromDrawHandClick.bind(this);
+        this.onDrawPopupClose = this.onDrawPopupClose.bind(this);
         this.onDrawToDrawHandClick = this.onDrawToDrawHandClick.bind(this);
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.sendChatMessage = this.sendChatMessage.bind(this);
@@ -211,6 +212,10 @@ export class GameBoard extends React.Component {
 
     onDiscardFromDrawHandClick() {
         this.props.sendGameMessage('discardFromDrawHand');
+    }
+
+    onDrawPopupClose() {
+        this.props.sendGameMessage('clearDrawHandSelection');
     }
 
     onShuffleClick() {
@@ -376,10 +381,11 @@ export class GameBoard extends React.Component {
                         onMouseOver={ this.onMouseOver }
                         onMouseOut={ this.onMouseOut }
                         numDrawCards={ thisPlayer.numDrawCards }
-                        onDiscardSelectedClick = { this.onDiscardFromDrawHandClick }
+                        onDiscardSelectedClick={ this.onDiscardFromDrawHandClick }
                         onDrawPopupChange={ this.handleDrawPopupChange }
                         onShuffleClick={ this.onShuffleClick }
                         onDrawToDrawHandClick={ this.onDrawToDrawHandClick }
+                        onDrawPopupClose={ this.onDrawPopupClose }
                         outOfGamePile={ thisPlayer.cardPiles.outOfGamePile }
                         drawDeck={ thisPlayer.cardPiles.drawDeck }
                         onDragDrop={ this.onDragDrop }

@@ -10,21 +10,21 @@ function GamePlayer(props) {
         'other-player': !props.firstPlayer
     });
 
-    let playerAndFactionAgenda;
+    let playerAndOutfitLegend;
 
     if(props.firstPlayer) {
-        playerAndFactionAgenda = (<div className='game-faction-row first-player'>
+        playerAndOutfitLegend = (<div className='game-outfit-row first-player'>
             <div className='game-player-name'>
                 <span className='gamelist-avatar'><Avatar username={ props.player.name } /></span>
                 <span className='bold'>{ props.player.name }</span>
             </div>
-            <div className='agenda-mini'>{ <img className='img-responsive' src={ `/img/cards/${props.player.agenda || 'cardback'}.png` } /> }</div>
-            <div className='faction-mini'>{ <img className='img-responsive' src={ `/img/cards/${props.player.faction || 'cardback'}.png` } /> }</div>
+            <div className='legend-mini'>{ <img className='img-responsive' src={ `/img/cards/${props.player.legend || 'cardback'}.jpg` } /> }</div>
+            <div className='outfit-mini'>{ <img className='img-responsive' src={ `/img/cards/${props.player.outfit || 'cardback'}.jpg` } /> }</div>
         </div >);
     } else {
-        playerAndFactionAgenda = (<div className='game-faction-row other-player'>
-            <div className='faction-mini'>{ <img className='img-responsive' src={ `/img/cards/${props.player.faction || 'cardback'}.png` } /> }</div>
-            <div className='agenda-mini'>{ <img className='img-responsive' src={ `/img/cards/${props.player.agenda || 'cardback'}.png` } /> }</div>
+        playerAndOutfitLegend = (<div className='game-outfit-row other-player'>
+            <div className='outfit-mini'>{ <img className='img-responsive' src={ `/img/cards/${props.player.outfit || 'cardback'}.jpg` } /> }</div>
+            <div className='legend-mini'>{ <img className='img-responsive' src={ `/img/cards/${props.player.legend || 'cardback'}.jpg` } /> }</div>
             <div className='game-player-name'>
                 <span className='bold'>{ props.player.name }</span>
                 <span className='gamelist-avatar'><Avatar username={ props.player.name } /></span>
@@ -34,7 +34,7 @@ function GamePlayer(props) {
 
     return (<div key={ props.player.name } className={ classes }>
         <div>
-            { playerAndFactionAgenda }
+            { playerAndOutfitLegend }
         </div>
     </div>);
 }
