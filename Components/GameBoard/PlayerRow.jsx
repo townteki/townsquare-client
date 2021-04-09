@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
 import CardPile from './CardPile';
 import SquishableCardPanel from './SquishableCardPanel';
 import DrawDeck from './DrawDeck';
 import Droppable from './Droppable';
+import DrawHandPanel from './DrawHandPanel';
 
 class PlayerRow extends React.Component {
     getOutOfGamePile() {
@@ -43,14 +43,16 @@ class PlayerRow extends React.Component {
     }
 
     render() {
-        let cardPileProps = {
-            onCardClick: this.props.onCardClick,
+        let popupProps = {
             onDragDrop: this.props.onDragDrop,
-            onMouseOut: this.props.onMouseOut,
-            onMouseOver: this.props.onMouseOver,
             popupLocation: this.props.side,
             size: this.props.cardSize
         };
+        let cardPileProps = Object.assign(popupProps, {
+            onCardClick: this.props.onCardClick,
+            onMouseOut: this.props.onMouseOut,
+            onMouseOver: this.props.onMouseOver
+        });
 
         let hand = (<SquishableCardPanel
             cards={ this.props.hand }
@@ -62,19 +64,23 @@ class PlayerRow extends React.Component {
             onMenuItemClick={ this.props.onMenuItemClick }
             onMouseOut={ this.props.onMouseOut }
             onMouseOver={ this.props.onMouseOver }
+            disablePopup
             source='hand'
             title='Hand'
             cardSize={ this.props.cardSize } />);
-        let drawHand = (<SquishableCardPanel
+        let drawHand = (<DrawHandPanel
             cards={ this.props.drawHand }
             className='panel hand'
             groupVisibleCards
+            isMe={ this.props.isMe }
             username={ this.props.username }
             maxCards={ 5 }
             onCardClick={ this.props.onCardClick }
+            onDiscardSelectedClick={ this.props.onDiscardSelectedClick }
             onMenuItemClick={ this.props.onMenuItemClick }
             onMouseOut={ this.props.onMouseOut }
             onMouseOver={ this.props.onMouseOver }
+            onPopupClose={ this.props.onDrawPopupClose }
             source='draw hand'
             title='Draw Hand'
             cardSize={ this.props.cardSize } />);			
@@ -86,7 +92,6 @@ class PlayerRow extends React.Component {
             onPopupChange={ this.props.onDrawPopupChange }
             onShuffleClick={ this.props.onShuffleClick }
             onDrawToDrawHandClick={ this.props.onDrawToDrawHandClick }
-            revealTopCard={ this.props.revealTopCard }
             showDeck={ this.props.showDeck }
             spectating={ this.props.spectating }
             { ...cardPileProps } />);
@@ -95,7 +100,7 @@ class PlayerRow extends React.Component {
         let deadPile = (<CardPile className='dead' title='Boot Hill' source='dead pile' cards={ this.props.deadPile }
             orientation='booted'
             { ...cardPileProps } />);
-		// <HandRank onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut} handrank={this.props.handrank} />
+        // <HandRank onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut} handrank={this.props.handrank} />
         return (
             <div className='player-home-row-container'>
                 { this.renderDroppablePile('hand', hand) }
@@ -105,7 +110,7 @@ class PlayerRow extends React.Component {
 
                 { this.getOutOfGamePile() }
 				
-				{ this.renderDroppablePile('draw hand', drawHand) }				
+                { this.renderDroppablePile('draw hand', drawHand) }				
             </div>
         );
     }
@@ -117,18 +122,20 @@ PlayerRow.propTypes = {
     deadPile: PropTypes.array,
     discardPile: PropTypes.array,
     drawDeck: PropTypes.array,
-    hand: PropTypes.array,
-    drawHand: PropTypes.array,	
+    drawHand: PropTypes.array,
+    hand: PropTypes.array,	
     isMe: PropTypes.bool,
     numDrawCards: PropTypes.number,
     onCardClick: PropTypes.func,
+    onDiscardSelectedClick: PropTypes.func,
     onDragDrop: PropTypes.func,
     onDrawPopupChange: PropTypes.func,
+    onDrawPopupClose: PropTypes.func,
+    onDrawToDrawHandClick: PropTypes.func,
     onMenuItemClick: PropTypes.func,
     onMouseOut: PropTypes.func,
     onMouseOver: PropTypes.func,
     onShuffleClick: PropTypes.func,
-    onDrawToDrawHandClick: PropTypes.func,
     outOfGamePile: PropTypes.array,
     showDeck: PropTypes.bool,
     side: PropTypes.oneOf(['top', 'bottom']),

@@ -63,7 +63,7 @@ class InnerCard extends React.Component {
             return false;
         }
 
-        return this.props.source === 'play area' || this.props.source === 'legend' || this.props.source === 'draw hand' || this.props.source === 'hand';
+        return this.props.source === 'play area' || this.props.source === 'legend' || this.props.source === 'hand';
     }
 
     onClick(event, card) {
@@ -235,14 +235,14 @@ class InnerCard extends React.Component {
             return <div />;
         }
 
-        let cardClass = classNames('card', `card-type-${this.props.card.type_code}`, this.props.className, this.statusClass, {
+        let cardClass = classNames('card', `card-type-${this.props.card.type_code}`, this.props.className, this.sizeClass, this.statusClass, {
             'custom-card': this.props.card.code && this.props.card.code.startsWith('custom'),
             'horizontal': this.props.orientation !== 'vertical' || this.props.card.booted,
             'vertical': this.props.orientation === 'vertical' && !this.props.card.booted,
             'unselectable': this.props.card.unselectable,
             'dragging': this.props.isDragging
         });
-        let imageClass = classNames('card-image', {
+        let imageClass = classNames('card-image', this.sizeClass, {
             'horizontal': this.props.orientation === 'horizontal',
             'vertical': this.props.orientation !== 'horizontal',
             'booted': this.props.orientation === 'booted' || this.props.card.booted || this.props.orientation === 'horizontal'
