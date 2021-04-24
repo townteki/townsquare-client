@@ -8,8 +8,6 @@ import CardMenu from './CardMenu';
 import CardCounters from './CardCounters';
 import { ItemTypes } from '../../constants';
 
-import SquishableCardPanel from './SquishableCardPanel';
-
 const cardSource = {
     beginDrag(props) {
         return {
@@ -35,15 +33,27 @@ class InnerCard extends React.Component {
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
+        this.handleExpand = this.handleExpand.bind(this);
 
         this.state = {
-            showMenu: false
+            showMenu: false,
+            isExpanded: false
         };
 
         this.shortNames = {
             ghostrock: 'G',
             bounty: 'B'
         };
+    }
+
+    handleExpand() {
+        if(this.props.handleExpand) {
+            this.props.handleExpand();
+            return;
+        }
+        this.setState({
+            isExpanded: !this.state.isExpanded
+        });
     }
 
     onMouseOver(card) {
@@ -125,50 +135,47 @@ class InnerCard extends React.Component {
     }
 
     getAttachments() {
-        if(!['rookery', 'full deck', 'play area'].includes(this.props.source)) {
+        if(this.props.source !== 'play area') {
             return null;
         }
 
-        var index = 1;
-        var attachments = this.props.card.attachments.map(attachment => {
-            var returnedAttachment = (<Card key={ attachment.uuid } source={ this.props.source } card={ attachment }
-                className={ classNames('attachment', `attachment-${index}`) } wrapped={ false }
-                hideTokens
-                onMouseOver={ this.props.disableMouseOver ? null : this.onMouseOver.bind(this, attachment) }
-                onMouseOut={ this.props.disableMouseOver ? null : this.onMouseOut }
-                onClick={ this.props.onClick }
-                onMenuItemClick={ this.props.onMenuItemClick }
-                size={ this.props.size } />);
-
-            index += 1;
-
-            return returnedAttachment;
-        });
-
-        return attachments;
-    }
-
-    renderUnderneathCards() {
-        // TODO: Right now it is assumed that all cards in the childCards array
-        // are being placed underneath the current card. In the future there may
-        // be other types of cards in this array and it should be filtered.
-        let underneathCards = this.props.card.childCards;
-        if(!underneathCards || underneathCards.length === 0) {
-            return;
+        if(this.props.card.attachments.length <= 3 || this.state.isExpanded) {
+            var index = 1;
+            return this.props.card.attachments.map(attachment => {
+                var returnedAttachment = (<Card key={ attachment.uuid } source={ this.props.source } card={ attachment }
+                    className={ classNames('attachment', `attachment-${index}`, { 'opponent': this.props.isOpponent }) } wrapped={ false }
+                    hideTokens
+                    attIndex={ index }
+                    attPanelNumber={ this.state.isExpanded ? this.props.card.attachments.length : 0 }
+                    handleExpand={ this.handleExpand.bind(this) }
+                    onMouseOver={ this.props.disableMouseOver ? null : this.onMouseOver.bind(this, attachment) }
+                    onMouseOut={ this.props.disableMouseOver ? null : this.onMouseOut }
+                    onClick={ this.props.onClick }
+                    onMenuItemClick={ this.props.onMenuItemClick }
+                    size={ this.props.size } />);
+    
+                index += 1;
+    
+                return returnedAttachment;
+            });
         }
 
-        let maxCards = 1 + (underneathCards.length - 1) / 6;
+        var attachment = this.props.card.attachments[0];
 
         return (
-            <SquishableCardPanel
-                cardSize={ this.props.size }
-                cards={ underneathCards }
-                className='underneath'
-                maxCards={ maxCards }
-                onCardClick={ this.props.onClick }
-                onMouseOut={ this.props.onMouseOut }
-                onMouseOver={ this.props.onMouseOver }
-                source='underneath' />);
+            <Card key={ attachment.uuid } source={ this.props.source } card={ attachment }
+                className={ classNames('attachment', 'attachment-1', { 'opponent': this.props.isOpponent }) } wrapped={ false }
+                hideTokens
+                attIndex={ 1 }
+                attPanelNumber={ this.props.card.attachments.length }
+                handleExpand={ this.handleExpand.bind(this) }
+                onMouseOver={ this.props.disableMouseOver ? null : this.onMouseOver.bind(this, attachment) }
+                onMouseOut={ this.props.disableMouseOver ? null : this.onMouseOut.bind(this, attachment) }
+                onClick={ this.props.onClick }
+                onMenuItemClick={ this.props.onMenuItemClick }
+                size={ this.props.size } />
+        );
+
     }
 
     getCardOrder() {
@@ -184,7 +191,7 @@ class InnerCard extends React.Component {
             return false;
         }
 
-        if(this.props.card.facedown || this.props.card.type === 'attachment') {
+        if(this.props.card.facedown || this.props.card.type_code === 'goods' || this.props.card.type_code === 'spell') {
             return false;
         }
 
@@ -235,12 +242,16 @@ class InnerCard extends React.Component {
             return <div />;
         }
 
-        let cardClass = classNames('card', `card-type-${this.props.card.type_code}`, this.props.className, this.sizeClass, this.statusClass, {
+        var className = this.props.className ? this.props.className : '';
+
+        let cardClass = classNames('card', `card-type-${this.props.card.type_code}`, className, this.sizeClass, this.statusClass, {
             'custom-card': this.props.card.code && this.props.card.code.startsWith('custom'),
             'horizontal': this.props.orientation !== 'vertical' || this.props.card.booted,
             'vertical': this.props.orientation === 'vertical' && !this.props.card.booted,
             'unselectable': this.props.card.unselectable,
-            'dragging': this.props.isDragging
+            'dragging': this.props.isDragging,
+            'opponent': this.props.isOpponent,
+            'play-area': this.props.source === 'play area'
         });
         let imageClass = classNames('card-image', this.sizeClass, {
             'horizontal': this.props.orientation === 'horizontal',
@@ -259,7 +270,12 @@ class InnerCard extends React.Component {
                     onMouseOut={ this.props.disableMouseOver ? null : this.onMouseOut }
                     onClick={ ev => this.onClick(ev, this.props.card) }>
                     <div>
-                        <span className='card-name'>{ this.props.card.name }</span>
+                        { this.props.attPanelNumber && this.props.attIndex === 1 &&
+                            <div className='att-header' onClick={ this.handleExpand.bind() }>
+                                <span className='glyphicon glyphicon-th-list'/>
+                                { ` (${this.props.attPanelNumber})` }
+                            </div>
+                        }
                         { image }
                     </div>
                     { this.showCounters() ? <CardCounters counters={ this.getCountersForCard(this.props.card) } /> : null }
@@ -281,8 +297,9 @@ class InnerCard extends React.Component {
     }
 
     get sizeClass() {
+        var sizeName = this.props.size ? this.props.size : 'normal';
         return {
-            [this.props.size]: this.props.size !== 'normal'
+            [sizeName]: sizeName !== 'normal'
         };
     }
 
@@ -295,8 +312,6 @@ class InnerCard extends React.Component {
             return 'selected';
         } else if(this.props.card.selectable) {
             return 'selectable';
-        } else if(this.props.card.saved) {
-            return 'saved';
         } else if(this.props.card.shootoutStatus === 'calling out' || this.props.card.shootoutStatus === 'called out') {
             return 'callout';
         } else if(this.props.card.shootoutStatus === 'leader shooter') {
@@ -312,6 +327,8 @@ class InnerCard extends React.Component {
         } else if(this.props.card.new) {
             return 'new';
         }
+
+        return '';
     }
 
     render() {
@@ -320,7 +337,6 @@ class InnerCard extends React.Component {
                 <div className='card-wrapper' style={ this.props.style }>
                     { this.getCard() }
                     { this.getAttachments() }
-                    { this.renderUnderneathCards() }
                 </div>);
         }
 
@@ -330,6 +346,8 @@ class InnerCard extends React.Component {
 
 InnerCard.displayName = 'Card';
 InnerCard.propTypes = {
+    attIndex: PropTypes.number,
+    attPanelNumber: PropTypes.number,
     card: PropTypes.shape({
         attached: PropTypes.bool,
         attachments: PropTypes.array,
@@ -341,39 +359,35 @@ InnerCard.propTypes = {
         facedown: PropTypes.bool,
         gamelocation: PropTypes.string,
         shootoutStatus: PropTypes.string,
-        iconsAdded: PropTypes.array,
-        iconsRemoved: PropTypes.array,
-        inChallenge: PropTypes.bool,
-        inDanger: PropTypes.bool,
+        location: PropTypes.array,
         menu: PropTypes.array,
         name: PropTypes.string,
         new: PropTypes.bool,
         order: PropTypes.number,
-        power: PropTypes.number,
         production: PropTypes.number,
-        saved: PropTypes.bool,
         selectable: PropTypes.bool,
         selected: PropTypes.bool,
-        stealth: PropTypes.bool,
-        strength: PropTypes.number,
         tokens: PropTypes.object,
-        type: PropTypes.string,
-        unselectable: PropTypes.bool
+        type_code: PropTypes.string,
+        unselectable: PropTypes.bool,
+        uuid: PropTypes.string
     }).isRequired,
     className: PropTypes.string,
     connectDragPreview: PropTypes.func,
     connectDragSource: PropTypes.func,
     disableMouseOver: PropTypes.bool,
     dragOffset: PropTypes.object,
+    handleExpand: PropTypes.func,
     hideTokens: PropTypes.bool,
     isDragging: PropTypes.bool,
+    isOpponent: PropTypes.bool,
     onClick: PropTypes.func,
     onMenuItemClick: PropTypes.func,
     onMouseOut: PropTypes.func,
     onMouseOver: PropTypes.func,
     orientation: PropTypes.oneOf(['horizontal', 'booted', 'vertical']),
     size: PropTypes.string,
-    source: PropTypes.oneOf(['hand', 'discard pile', 'play area', 'boothill pile', 'draw deck', 'draw hand', 'attachment', 'legend', 'outfit', 'additional']).isRequired,
+    source: PropTypes.oneOf(['hand', 'discard pile', 'play area', 'dead pile', 'draw deck', 'draw hand', 'attachment', 'legend', 'outfit', 'additional']).isRequired,
     style: PropTypes.object,
     wrapped: PropTypes.bool
 };

@@ -16,6 +16,15 @@
   overflow: hidden;
   z-index: @layer-cards;
 
+  &.opponent {
+    z-index: @layer-cards-opp;
+  }
+
+  &.play-area:hover {
+    z-index: @layer-hover;
+    box-shadow: 0 0 10px 1px fadeout(lighten(@brand-primary, 60%), 10%);
+  }
+
   &.small {
     &.vertical {
       height: @card-sm-height;
@@ -256,6 +265,20 @@
 .generate-attachments(@n, @i: 1) when (@i =< @n) {
   .attachment-@{i} {
     z-index: @layer-cards - @i;
+
+    &:hover {
+      z-index: @layer-hover;
+      box-shadow: 0 0 10px 1px fadeout(lighten(@brand-primary, 60%), 10%);      
+    }
+
+    &.opponent {
+      z-index: @layer-cards-opp - @i;
+    }
+
+    &.opponent:hover {
+      z-index: @layer-hover;
+      box-shadow: 0 0 10px 1px fadeout(lighten(@brand-primary, 60%), 10%);      
+    }
   }
   .generate-attachments(@n, (@i + 1));
 }
