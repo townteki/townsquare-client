@@ -170,7 +170,7 @@ class InnerCard extends React.Component {
                 attPanelNumber={ this.props.card.attachments.length }
                 handleExpand={ this.handleExpand.bind(this) }
                 onMouseOver={ this.props.disableMouseOver ? null : this.onMouseOver.bind(this, attachment) }
-                onMouseOut={ this.props.disableMouseOver ? null : this.onMouseOut.bind(this, attachment) }
+                onMouseOut={ this.props.disableMouseOver ? null : this.onMouseOut }
                 onClick={ this.props.onClick }
                 onMenuItemClick={ this.props.onMenuItemClick }
                 size={ this.props.size } />
