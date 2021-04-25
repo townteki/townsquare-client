@@ -95,7 +95,9 @@ class InnerCard extends React.Component {
     onMenuItemClick(menuItem) {
         if(this.props.onMenuItemClick) {
             this.props.onMenuItemClick(this.props.card, menuItem);
-            this.setState({ showMenu: !this.state.showMenu });
+            const currentShowMenu = !this.state.showMenu;
+            this.setState({ showMenu: currentShowMenu });
+            this.props.handleMenuChange(this, currentShowMenu);
         }
     }
 
