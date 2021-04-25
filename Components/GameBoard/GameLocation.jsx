@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'underscore';
 import 'jquery-nearest';
-import {tryParseJSON} from '../../util.js';
 
 import Card from './Card.jsx';
 import Droppable from './Droppable';
@@ -34,14 +33,14 @@ export class InnerGameLocation extends React.Component {
 
     onDragDrop(card, source, target) {
         var gameLocation = this.props.location.uuid;
-        if (this.isStreetSide()) {
+        if(this.isStreetSide()) {
             gameLocation = this.props.source;
         }
         this.props.sendGameMessage('drop', card.uuid, target, gameLocation);
     }
 
     isStreetSide() {
-        return this.props.source === 'street-right' || this.props.source ==='street-left';
+        return this.props.source === 'street-right' || this.props.source === 'street-left';
     }
 
     cardsHereByPlayer(player) {
@@ -51,22 +50,33 @@ export class InnerGameLocation extends React.Component {
 
         var cardRow = _.map(player.cardPiles.cardsInPlay, (card) => {
             if(card.gamelocation === this.props.location.uuid && card.type_code === 'dude') {
-                return (<Card key={card.uuid} source='play area' card={card} disableMouseOver={card.facedown && !card.code} onMenuItemClick={this.props.onMenuItemClick}
-                handleMenuChange={ this.props.handleMenuChange } onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop} />);
+                return (<Card 
+                    key={ card.uuid } 
+                    source='play area' 
+                    card={ card } 
+                    disableMouseOver={ card.facedown && !card.code } 
+                    handleMenuChange={ this.props.handleMenuChange }
+                    onMenuItemClick={ this.props.onMenuItemClick }
+                    onMouseOver={ this.onMouseOver } 
+                    onMouseOut={ this.onMouseOut } 
+                    onClick={ this.onCardClick } 
+                    onDragDrop={ this.onDragDrop } 
+                    isOpponent={ this.props.otherPlayer === player }
+                />);
             }
         });
 
-        return <div className='card-row'>{cardRow}</div>;
+        return <div className='card-row'>{ cardRow }</div>;
     }
 
     getImageLocation(imageClass) {
-        return (<img className={imageClass} src={'/img/' + (this.props.location.uuid + '.jpg')} />);
+        return (<img className={ imageClass } src={ '/img/' + (this.props.location.uuid + '.jpg') } />);
     }
 
     getCardLocation(card) {
         return (
-            <div><Card key={card.uuid} source='play area' card={card} disableMouseOver={card.facedown && !card.code} onMenuItemClick={this.props.onMenuItemClick}
-            handleMenuChange={ this.props.handleMenuChange } onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop} /></div>
+            <Card key={ card.uuid } source='play area' card={ card } disableMouseOver={ card.facedown && !card.code } onMenuItemClick={ this.props.onMenuItemClick }
+                handleMenuChange={ this.props.handleMenuChange } onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop } />
         );
     }
 
@@ -91,12 +101,11 @@ export class InnerGameLocation extends React.Component {
         }
 
         return (
-                <div className={frameClass} ref='locationFrame'>
-                    <div className={locationClass} >
-                        <span className='location-name'>{this.props.location.name}</span>
-                        { isCard ? this.getCardLocation(this.props.location) : this.getImageLocation(imageClass) }
-                    </div>
-                </div>);
+            <div className={ frameClass } ref='locationFrame'>
+                <div className={ locationClass } >
+                    { isCard ? this.getCardLocation(this.props.location) : this.getImageLocation(imageClass) }
+                </div>
+            </div>);
     }
 
     render() {
@@ -110,11 +119,11 @@ export class InnerGameLocation extends React.Component {
         }
 
         return (
-            <Droppable onDragDrop={this.onDragDrop} source='play area' location={this.props.location}>
-                <div className={className} style={this.props.style}>
-                    {this.cardsHereByPlayer(this.props.otherPlayer)}
-                    {this.getLocation()}
-                    {this.cardsHereByPlayer(this.props.thisPlayer)}
+            <Droppable onDragDrop={ this.onDragDrop } source='play area' location={ this.props.location }>
+                <div className={ className } style={ this.props.style }>
+                    { this.cardsHereByPlayer(this.props.otherPlayer) }
+                    { this.getLocation() }
+                    { this.cardsHereByPlayer(this.props.thisPlayer) }
                 </div>
             </Droppable>
         );
@@ -137,6 +146,7 @@ InnerGameLocation.propTypes = {
     order: PropTypes.number,
     otherPlayer: PropTypes.object,
     sendGameMessage: PropTypes.func,
+    source: PropTypes.string,
     style: PropTypes.object,
     thisPlayer: PropTypes.object,
     zoomCard: PropTypes.func
