@@ -71,8 +71,9 @@ class InnerCard extends React.Component {
         event.stopPropagation();
 
         if(this.isAllowedMenuSource() && this.props.card.menu && this.props.card.menu.length !== 0) {
-            this.setState({ showMenu: !this.state.showMenu });
-
+            const currentShowMenu = !this.state.showMenu;
+            this.setState({ showMenu: currentShowMenu });
+            this.props.handleMenuChange(this, currentShowMenu);
             return;
         }
 
@@ -134,6 +135,7 @@ class InnerCard extends React.Component {
             var returnedAttachment = (<Card key={ attachment.uuid } source={ this.props.source } card={ attachment }
                 className={ classNames('attachment', `attachment-${index}`) } wrapped={ false }
                 hideTokens
+                handleMenuChange={ this.props.handleMenuChange }
                 onMouseOver={ this.props.disableMouseOver ? null : this.onMouseOver.bind(this, attachment) }
                 onMouseOut={ this.props.disableMouseOver ? null : this.onMouseOut }
                 onClick={ this.props.onClick }
@@ -365,6 +367,7 @@ InnerCard.propTypes = {
     connectDragSource: PropTypes.func,
     disableMouseOver: PropTypes.bool,
     dragOffset: PropTypes.object,
+    handleMenuChange: PropTypes.func,
     hideTokens: PropTypes.bool,
     isDragging: PropTypes.bool,
     onClick: PropTypes.func,

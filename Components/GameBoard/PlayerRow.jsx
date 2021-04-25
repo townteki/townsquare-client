@@ -18,6 +18,7 @@ class PlayerRow extends React.Component {
         let outOfGamePile = (<CardPile
             cards={ pile }
             className='additional-cards'
+            handleMenuChange={ this.props.handleMenuChange }
             onCardClick={ this.props.onCardClick }
             onDragDrop={ this.props.onDragDrop }
             onMenuItemClick={ this.props.onMenuItemClick }
@@ -60,6 +61,7 @@ class PlayerRow extends React.Component {
             groupVisibleCards
             username={ this.props.username }
             maxCards={ 5 }
+            handleMenuChange={ this.props.handleMenuChange }
             onCardClick={ this.props.onCardClick }
             onMenuItemClick={ this.props.onMenuItemClick }
             onMouseOut={ this.props.onMouseOut }
@@ -88,6 +90,7 @@ class PlayerRow extends React.Component {
             cardCount={ this.props.numDrawCards }
             cards={ this.props.drawDeck }
             isMe={ this.props.isMe }
+            handleMenuChange={ this.props.handleMenuChange }
             numDrawCards={ this.props.numDrawCards }
             onPopupChange={ this.props.onDrawPopupChange }
             onShuffleClick={ this.props.onShuffleClick }
@@ -124,6 +127,7 @@ PlayerRow.propTypes = {
     drawDeck: PropTypes.array,
     drawHand: PropTypes.array,
     hand: PropTypes.array,	
+    handleMenuChange: PropTypes.func,
     isMe: PropTypes.bool,
     numDrawCards: PropTypes.number,
     onCardClick: PropTypes.func,

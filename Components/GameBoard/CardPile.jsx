@@ -86,7 +86,9 @@ class CardPile extends React.Component {
 
     onTopCardClick() {
         if(this.props.menu) {
-            this.setState({ showMenu: !this.state.showMenu });
+            const currentShowMenu = !this.state.showMenu;
+            this.setState({ showMenu: currentShowMenu });
+            this.props.handleMenuChange(this, currentShowMenu);
             return;
         }
 
@@ -224,6 +226,7 @@ class CardPile extends React.Component {
                     onMouseOver={ this.props.onMouseOver }
                     onMouseOut={ this.props.onMouseOut }
                     disableMouseOver={ this.props.hiddenTopCard }
+                    handleMenuChange={ this.props.handleMenuChange }
                     onClick={ this.onTopCardClick }
                     onMenuItemClick={ this.props.onMenuItemClick }
                     orientation={ cardOrientation }
@@ -242,6 +245,7 @@ CardPile.propTypes = {
     closeOnClick: PropTypes.bool,
     disableMouseOver: PropTypes.bool,
     disablePopup: PropTypes.bool,
+    handleMenuChange: PropTypes.func,
     hiddenTopCard: PropTypes.bool,
     menu: PropTypes.array,
     onCardClick: PropTypes.func,

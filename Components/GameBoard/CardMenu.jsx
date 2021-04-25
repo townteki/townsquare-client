@@ -16,7 +16,14 @@ class CardMenu extends React.Component {
             let className = classNames('menu-item', {
                 'disabled': !!menuItem.disabled
             });
-            return <div key={ menuIndex++ } className={ className } onClick={ this.onMenuItemClick.bind(this, menuItem) }>{ menuItem.text }</div>;
+            let spanClass = 'card-menu';
+            if(menuItem.menuIcon) {
+                spanClass += ` glyphicon glyphicon-${menuItem.menuIcon}`;
+            }
+            return (<div key={ menuIndex++ } className={ className } onClick={ this.onMenuItemClick.bind(this, menuItem) }>
+                <span className={ spanClass }/>
+                { ' ' + menuItem.text }
+            </div>);
         });
 
         return (

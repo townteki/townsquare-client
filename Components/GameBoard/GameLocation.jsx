@@ -52,7 +52,7 @@ export class InnerGameLocation extends React.Component {
         var cardRow = _.map(player.cardPiles.cardsInPlay, (card) => {
             if(card.gamelocation === this.props.location.uuid && card.type_code === 'dude') {
                 return (<Card key={card.uuid} source='play area' card={card} disableMouseOver={card.facedown && !card.code} onMenuItemClick={this.props.onMenuItemClick}
-                              onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop} />);
+                handleMenuChange={ this.props.handleMenuChange } onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop} />);
             }
         });
 
@@ -66,7 +66,7 @@ export class InnerGameLocation extends React.Component {
     getCardLocation(card) {
         return (
             <div><Card key={card.uuid} source='play area' card={card} disableMouseOver={card.facedown && !card.code} onMenuItemClick={this.props.onMenuItemClick}
-                                onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop} /></div>
+            handleMenuChange={ this.props.handleMenuChange } onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop} /></div>
         );
     }
 
@@ -127,6 +127,7 @@ InnerGameLocation.propTypes = {
     cards: PropTypes.array,
     className: PropTypes.string,
     clearZoom: PropTypes.func,
+    handleMenuChange: PropTypes.func,
     location: PropTypes.object.isRequired,
     name: PropTypes.string,
     onClick: PropTypes.func,

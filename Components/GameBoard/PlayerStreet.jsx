@@ -22,6 +22,7 @@ class PlayerStreet extends React.Component {
                         onStreet.push(
                                     <GameLocation key={location.uuid}
                                     location={card}
+                                    handleMenuChange={this.props.handleMenuChange}
                                     onMenuItemClick={this.props.onMenuItemClick}
                                     onMouseOver={this.props.onMouseOver}
                                     onMouseOut={this.props.onMouseOut}
@@ -57,6 +58,7 @@ class PlayerStreet extends React.Component {
 PlayerStreet.displayName = 'PlayerStreet';
 PlayerStreet.propTypes = {
     className: PropTypes.string,
+    handleMenuChange: PropTypes.func,
     onClick: PropTypes.func,
     onDragDrop: PropTypes.func,
     onMenuItemClick: PropTypes.func,
