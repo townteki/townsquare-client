@@ -81,8 +81,9 @@ class InnerCard extends React.Component {
         event.stopPropagation();
 
         if(this.isAllowedMenuSource() && this.props.card.menu && this.props.card.menu.length !== 0) {
-            this.setState({ showMenu: !this.state.showMenu });
-
+            const currentShowMenu = !this.state.showMenu;
+            this.setState({ showMenu: currentShowMenu });
+            this.props.handleMenuChange(this, currentShowMenu);
             return;
         }
 
@@ -94,7 +95,9 @@ class InnerCard extends React.Component {
     onMenuItemClick(menuItem) {
         if(this.props.onMenuItemClick) {
             this.props.onMenuItemClick(this.props.card, menuItem);
-            this.setState({ showMenu: !this.state.showMenu });
+            const currentShowMenu = !this.state.showMenu;
+            this.setState({ showMenu: currentShowMenu });
+            this.props.handleMenuChange(this, currentShowMenu);
         }
     }
 
@@ -166,6 +169,7 @@ class InnerCard extends React.Component {
             <Card key={ attachment.uuid } source={ this.props.source } card={ attachment }
                 className={ classNames('attachment', 'attachment-1', { 'opponent': this.props.isOpponent }) } wrapped={ false }
                 hideTokens
+                handleMenuChange={ this.props.handleMenuChange }
                 attIndex={ 1 }
                 attPanelNumber={ this.props.card.attachments.length }
                 handleExpand={ this.handleExpand.bind(this) }
@@ -378,6 +382,7 @@ InnerCard.propTypes = {
     disableMouseOver: PropTypes.bool,
     dragOffset: PropTypes.object,
     handleExpand: PropTypes.func,
+    handleMenuChange: PropTypes.func,
     hideTokens: PropTypes.bool,
     isDragging: PropTypes.bool,
     isOpponent: PropTypes.bool,

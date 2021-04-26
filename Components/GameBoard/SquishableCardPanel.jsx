@@ -174,6 +174,7 @@ class SquishableCardPanel extends React.Component {
             return (<Card key={ card.uuid }
                 card={ card }
                 disableMouseOver={ !card.code }
+                handleMenuChange={ this.props.handleMenuChange }
                 onClick={ this.onCardClick }
                 onMouseOver={ this.props.onMouseOver }
                 onMouseOut={ this.props.onMouseOut }
@@ -257,6 +258,7 @@ SquishableCardPanel.propTypes = {
     closeOnClick: PropTypes.bool,
     disablePopup: PropTypes.bool,
     groupVisibleCards: PropTypes.bool,
+    handleMenuChange: PropTypes.func,
     maxCards: PropTypes.number,
     onCardClick: PropTypes.func,
     onDragDrop: PropTypes.func,  

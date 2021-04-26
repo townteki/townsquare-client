@@ -64,6 +64,7 @@ class DrawDeck extends React.Component {
             cardCount={ this.props.cardCount }
             cards={ this.props.cards }
             disablePopup={ !hasVisibleCards && (this.props.spectating || !this.props.isMe) }
+            handleMenuChange={ this.props.handleMenuChange }
             hiddenTopCard={ !this.props.revealTopCard }
             onCardClick={ this.props.onCardClick }
             onDragDrop={ this.props.onDragDrop }
@@ -84,6 +85,7 @@ class DrawDeck extends React.Component {
 DrawDeck.propTypes = {
     cardCount: PropTypes.number,
     cards: PropTypes.array,
+    handleMenuChange: PropTypes.func,
     isMe: PropTypes.bool,
     onCardClick: PropTypes.func,
     onDragDrop: PropTypes.func,

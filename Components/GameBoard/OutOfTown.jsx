@@ -19,6 +19,7 @@ class OutOfTown extends React.Component {
                     if(card.uuid === location.uuid) {
                         onStreet.push(<GameLocation key={location.uuid}
                                     location={card}
+                                    handleMenuChange={ this.props.handleMenuChange }
                                     onMenuItemClick={this.props.onMenuItemClick}
                                     onMouseOver={this.props.onMouseOver}
                                     onMouseOut={this.props.onMouseOut}
@@ -52,6 +53,7 @@ class OutOfTown extends React.Component {
 OutOfTown.displayName = 'OutOfTown';
 OutOfTown.propTypes = {
     className: PropTypes.string,
+    handleMenuChange: PropTypes.func,
     onClick: PropTypes.func,
     onDragDrop: PropTypes.func,
     onMenuItemClick: PropTypes.func,

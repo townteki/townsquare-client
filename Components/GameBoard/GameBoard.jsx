@@ -47,6 +47,7 @@ export class GameBoard extends React.Component {
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onCardClick = this.onCardClick.bind(this);
         this.handleDrawPopupChange = this.handleDrawPopupChange.bind(this);
+        this.handleMenuChange = this.handleMenuChange.bind(this);
         this.onDragDrop = this.onDragDrop.bind(this);
         this.onCommand = this.onCommand.bind(this);
         this.onConcedeClick = this.onConcedeClick.bind(this);
@@ -200,7 +201,18 @@ export class GameBoard extends React.Component {
 	
     onOutfitCardClick() {
         this.props.sendGameMessage('outfitCardClicked');
-    }	
+    }
+
+    handleMenuChange(component, showMenuState) {
+        if(this.componentWithMenu) {
+            this.componentWithMenu.setState({ showMenu: false });
+        }
+        if(showMenuState) {
+            this.componentWithMenu = component;
+        } else {
+            this.componentWithMenu = null;
+        }
+    }
 
     handleDrawPopupChange(event) {
         this.props.sendGameMessage('showDrawDeck', event.visible);
@@ -339,12 +351,13 @@ export class GameBoard extends React.Component {
                             <div className='player-street'>
                                 <PlayerStreet onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop}
                                      onMenuItemClick={this.onMenuItemClick} className='other-side'  owner={otherPlayer} otherPlayer={otherPlayer} 
-                                     thisPlayer={thisPlayer}/>
+                                     handleMenuChange={this.handleMenuChange} thisPlayer={thisPlayer}/>
                             </div>					
 
                             <div>
                                 <GameLocation location={{uuid:'townsquare', name:'Town Square'}}
                                     cardLocation='townsquare' className='townsquare'
+                                    handleMenuChange={this.handleMenuChange}
                                     onMouseOver={this.onMouseOver}
                                     onMouseOut={this.onMouseOut}
                                     onDragDrop={this.onDragDrop}
@@ -356,7 +369,7 @@ export class GameBoard extends React.Component {
 								
                             <div className='player-street'>
                                 <PlayerStreet onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop} className='our-side'
-                                     onMenuItemClick={this.onMenuItemClick} owner={thisPlayer} otherPlayer={otherPlayer} thisPlayer={thisPlayer}/>
+                                     handleMenuChange={ this.handleMenuChange } onMenuItemClick={this.onMenuItemClick} owner={thisPlayer} otherPlayer={otherPlayer} thisPlayer={thisPlayer}/>
                             </div>								
 
 
@@ -364,12 +377,12 @@ export class GameBoard extends React.Component {
                     <div className='out-of-town-area'>
                         <div className='out-of-town' onDragOver={this.onDragOver}>
                             <OutOfTown onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onMenuItemClick={this.onMenuItemClick}
-                                className={'other-side'} owner={otherPlayer} otherPlayer={otherPlayer} thisPlayer={thisPlayer}/>
+                                handleMenuChange={this.handleMenuChange} className={'other-side'} owner={otherPlayer} otherPlayer={otherPlayer} thisPlayer={thisPlayer}/>
                         </div>
 
                         <div className='out-of-town' onDragOver={this.onDragOver}>
                             <OutOfTown onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onMenuItemClick={this.onMenuItemClick}
-                                owner={thisPlayer} otherPlayer={otherPlayer} thisPlayer={thisPlayer}/>
+                                handleMenuChange={this.handleMenuChange} owner={thisPlayer} otherPlayer={otherPlayer} thisPlayer={thisPlayer}/>
                         </div>
                     </div>
                 </div>
@@ -395,6 +408,7 @@ export class GameBoard extends React.Component {
                         showDeck={ thisPlayer.showDeck }
                         spectating={ this.state.spectating }
                         title={ thisPlayer.title }
+                        handleMenuChange={ this.handleMenuChange }
                         onMenuItemClick={ this.onMenuItemClick }
                         cardSize={ this.props.user.settings.cardSize }
                         side='bottom' />
