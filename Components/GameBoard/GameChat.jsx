@@ -3,18 +3,54 @@ import PropTypes from 'prop-types';
 import $ from 'jquery';
 
 import Messages from './Messages';
+import Typeahead from '../Form/Typeahead';
+
+const commands = [ 
+    '/ace ',
+    '/add-keyword ',
+    '/add-card ',
+    '/attach ',
+    '/bullets ',
+    '/blank ',
+    '/bounty ',
+    '/cancel-prompt ',
+    '/cancel-shootout ',
+    '/clear-shooter ',
+    '/clear-suit ',
+    '/clear-effects ',
+    '/control ',
+    '/discard ',
+    '/disconnectme ',
+    '/draw ',
+    '/give-control ',
+    '/inf ',
+    '/join-posse ',
+    '/move ',
+    '/rematch ',
+    '/remove-from-game ',
+    '/remove-from-posse ',
+    '/remove-keyword ',
+    '/reset-abilities ',
+    '/reveal-hand ',
+    '/shooter stud',
+    '/shooter draw',
+    '/suit ',
+    '/token ',
+    '/unblank ',
+    '/value '
+];
 
 class GameChat extends React.Component {
     constructor() {
         super();
 
-        this.onChange = this.onChange.bind(this);
+        this.onInputChange = this.onInputChange.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
         this.onScroll = this.onScroll.bind(this);
 
         this.state = {
             canScroll: true,
-            message: ''
+            minLength: 20
         };
     }
 
@@ -42,26 +78,28 @@ class GameChat extends React.Component {
         }, 500);
     }
 
-    onChange(event) {
-        this.setState({ message: event.target.value });
+    onInputChange(event) {
+        if(event[0] === '/') {
+            this.setState({ minLength: 1 });
+        } else {
+            this.setState({ minLength: 20 });
+        }
     }
 
     onKeyPress(event) {
         if(event.key === 'Enter') {
-            this.sendMessage();
-
+            this.sendMessage(event.target.value);
+            this.refs.message.clear();
             event.preventDefault();
         }
     }
 
-    sendMessage() {
-        if(this.state.message === '') {
+    sendMessage(message) {
+        if(!message) {
             return;
         }
 
-        this.props.onSendChat(this.state.message);
-
-        this.setState({ message: '' });
+        this.props.onSendChat(message);
     }
 
     render() {
@@ -71,8 +109,8 @@ class GameChat extends React.Component {
                     <Messages messages={ this.props.messages } onCardMouseOver={ this.props.onCardMouseOver } onCardMouseOut={ this.props.onCardMouseOut } />
                 </div>
                 <form className='form chat-form'>
-                    <input className='form-control' placeholder='Chat...' onKeyPress={ this.onKeyPress } onChange={ this.onChange }
-                        value={ this.state.message } />
+                    <Typeahead ref='message' options={ commands } emptyLabel={ '' } minLength={ this.state.minLength } dropup
+                        placeholder='Chat...' onKeyDown={ this.onKeyPress } onInputChange={ this.onInputChange } />
                 </form>
             </div>);
     }
