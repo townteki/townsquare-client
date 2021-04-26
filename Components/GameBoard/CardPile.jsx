@@ -48,7 +48,9 @@ class CardPile extends React.Component {
         event.preventDefault();
 
         if(this.props.menu) {
-            this.setState({ showMenu: !this.state.showMenu });
+            const currentShowMenu = !this.state.showMenu;
+            this.setState({ showMenu: currentShowMenu });
+            this.props.handleMenuChange(this, currentShowMenu);
             return;
         }
 
