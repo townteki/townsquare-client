@@ -142,11 +142,12 @@ class InnerCard extends React.Component {
             return null;
         }
 
-        if(this.props.card.attachments.length <= 3 || this.state.isExpanded) {
+        if(this.props.card.attachments.length <= 2 || this.state.isExpanded) {
             var index = 1;
             return this.props.card.attachments.map(attachment => {
                 var returnedAttachment = (<Card key={ attachment.uuid } source={ this.props.source } card={ attachment }
-                    className={ classNames('attachment', `attachment-${index}`, { 'opponent': this.props.isOpponent }) } wrapped={ false }
+                    className={ classNames('attachment', `attachment-${index}`, { 'opponent': this.props.isOpponent }) } 
+                    wrapped={ false }
                     hideTokens
                     attIndex={ index }
                     attPanelNumber={ this.state.isExpanded ? this.props.card.attachments.length : 0 }
@@ -336,9 +337,13 @@ class InnerCard extends React.Component {
     }
 
     render() {
+        let className = 'card-wrapper';
+        if(this.state.isExpanded) {
+            className += ' expanded';
+        }
         if(this.props.wrapped) {
             return (
-                <div className='card-wrapper' style={ this.props.style }>
+                <div className={ className } style={ this.props.style }>
                     { this.getCard() }
                     { this.getAttachments() }
                 </div>);

@@ -94,7 +94,6 @@ class PlayerRow extends React.Component {
             numDrawCards={ this.props.numDrawCards }
             onPopupChange={ this.props.onDrawPopupChange }
             onShuffleClick={ this.props.onShuffleClick }
-            onDrawToDrawHandClick={ this.props.onDrawToDrawHandClick }
             showDeck={ this.props.showDeck }
             spectating={ this.props.spectating }
             { ...cardPileProps } />);
@@ -135,7 +134,6 @@ PlayerRow.propTypes = {
     onDragDrop: PropTypes.func,
     onDrawPopupChange: PropTypes.func,
     onDrawPopupClose: PropTypes.func,
-    onDrawToDrawHandClick: PropTypes.func,
     onMenuItemClick: PropTypes.func,
     onMouseOut: PropTypes.func,
     onMouseOver: PropTypes.func,
