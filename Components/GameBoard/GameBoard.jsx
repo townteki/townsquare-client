@@ -55,7 +55,6 @@ export class GameBoard extends React.Component {
         this.onShuffleClick = this.onShuffleClick.bind(this);
         this.onDiscardFromDrawHandClick = this.onDiscardFromDrawHandClick.bind(this);
         this.onDrawPopupClose = this.onDrawPopupClose.bind(this);
-        this.onDrawToDrawHandClick = this.onDrawToDrawHandClick.bind(this);
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.sendChatMessage = this.sendChatMessage.bind(this);
         this.onSettingsClick = this.onSettingsClick.bind(this);
@@ -234,10 +233,6 @@ export class GameBoard extends React.Component {
         this.props.sendGameMessage('shuffleDeck');
     }
 
-    onDrawToDrawHandClick() {
-        this.props.sendGameMessage('drawCardToHand', 'draw hand');
-    }
-
     onDragDrop(card, source, target) {
         this.props.sendGameMessage('drop', card.uuid, target);
     }
@@ -348,7 +343,7 @@ export class GameBoard extends React.Component {
                     </div>
                     <div className='play-area' onDragOver={this.onDragOver}>
 					
-                            <div className='player-street'>
+                            <div className='player-street other-side'>
                                 <PlayerStreet onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop}
                                      onMenuItemClick={this.onMenuItemClick} className='other-side'  owner={otherPlayer} otherPlayer={otherPlayer} 
                                      handleMenuChange={this.handleMenuChange} thisPlayer={thisPlayer}/>
@@ -397,7 +392,6 @@ export class GameBoard extends React.Component {
                         onDiscardSelectedClick={ this.onDiscardFromDrawHandClick }
                         onDrawPopupChange={ this.handleDrawPopupChange }
                         onShuffleClick={ this.onShuffleClick }
-                        onDrawToDrawHandClick={ this.onDrawToDrawHandClick }
                         onDrawPopupClose={ this.onDrawPopupClose }
                         outOfGamePile={ thisPlayer.cardPiles.outOfGamePile }
                         drawDeck={ thisPlayer.cardPiles.drawDeck }
