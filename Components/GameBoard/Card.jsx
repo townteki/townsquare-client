@@ -60,12 +60,18 @@ class InnerCard extends React.Component {
         if(this.props.onMouseOver) {
             this.props.onMouseOver(card);
         }
+        this.setState({ 
+            isHovered: true
+        });
     }
 
     onMouseOut() {
         if(this.props.onMouseOut) {
             this.props.onMouseOut();
         }
+        this.setState({ 
+            isHovered: false
+        });
     }
 
     isAllowedMenuSource() {
@@ -146,7 +152,7 @@ class InnerCard extends React.Component {
             var index = 1;
             return this.props.card.attachments.map(attachment => {
                 var returnedAttachment = (<Card key={ attachment.uuid } source={ this.props.source } card={ attachment }
-                    className={ classNames('attachment', `attachment-${index}`, { 'opponent': this.props.isOpponent }) } 
+                    className={ classNames('attachment', `attachment-${index}`, { 'opponent': this.props.isOpponent, 'hovered': this.state.isHovered }) } 
                     wrapped={ false }
                     hideTokens
                     attIndex={ index }
@@ -168,7 +174,7 @@ class InnerCard extends React.Component {
 
         return (
             <Card key={ attachment.uuid } source={ this.props.source } card={ attachment }
-                className={ classNames('attachment', 'attachment-1', { 'opponent': this.props.isOpponent }) } wrapped={ false }
+                className={ classNames('attachment', 'attachment-1', { 'opponent': this.props.isOpponent, 'hovered': this.state.isHovered }) } wrapped={ false }
                 hideTokens
                 handleMenuChange={ this.props.handleMenuChange }
                 attIndex={ 1 }
@@ -256,7 +262,8 @@ class InnerCard extends React.Component {
             'unselectable': this.props.card.unselectable,
             'dragging': this.props.isDragging,
             'opponent': this.props.isOpponent,
-            'play-area': this.props.source === 'play area'
+            'play-area': this.props.source === 'play area', 
+            'hovered': this.state.isHovered
         });
         let imageClass = classNames('card-image', this.sizeClass, {
             'horizontal': this.props.orientation === 'horizontal',

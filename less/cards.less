@@ -24,8 +24,14 @@
     z-index: @layer-cards-opp;
   }
 
-  &.play-area:hover {
-    z-index: @layer-hover;
+  &.play-area:not(.attachment) {
+    &.hovered {
+      z-index: @layer-hover;
+    }
+
+    &:hover {
+      z-index: @layer-hover;
+    }
   }
 
   &.small {
@@ -252,77 +258,52 @@
 .attachment {
   margin-top: @attachment-offset - @card-height;
 
+  &:hover {
+    margin-left: @attachment-offset-left;
+  }
+
   &.small {
     margin-top: @attachment-offset - @card-sm-height;
   }
 
   &.large {
     margin-top: @attachment-offset-lg - @card-lg-height;
+
+    &:hover {
+      margin-left: @attachment-offset-lg-left;
+    }
   }
 
   &.x-large {
     margin-top: @attachment-offset-xl - @card-xl-height;
+
+    &:hover {
+      margin-left: @attachment-offset-xl-left;
+    }      
   }
+
 }
 
 .generate-attachments(@n, @i: 1) when (@i =< @n) {
   .attachment-@{i} {
     z-index: @layer-cards - @i;
 
-    &:hover {
-      z-index: @layer-hover;
+    &.hovered {
+      z-index: @layer-hover - @i;
     }
 
     &.opponent {
       z-index: @layer-cards-opp - @i;
     }
 
-    &.opponent:hover {
-      z-index: @layer-hover;
+    &.opponent.hovered {
+      z-index: @layer-hover - @i;
     }
   }
   .generate-attachments(@n, (@i + 1));
 }
 
 .generate-attachments(5, 1);
-
-.card-dupe {
-  margin-bottom: @attachment-offset;
-  margin-top: -(@attachment-offset + @card-height);
-
-  &.small {
-    margin-top: -(@attachment-offset + @card-sm-height);
-  }
-
-  &.large {
-    margin-top: -(@attachment-offset-lg + @card-lg-height);
-  }
-
-  &.x-large {
-    margin-top: -(@attachment-offset-xl + @card-xl-height);
-  }
-}
-
-.generate-card-dupes(@n, @i: 1) when (@i =< @n) {
-  .card-dupe-@{i} {
-    z-index: @layer-cards - @i;
-    top: -((@i - 1) * @attachment-offset);
-
-    &.large {
-      top: -((@i - 1) * @attachment-offset-lg);
-    }
-
-    &.x-large {
-      top: -((@i - 1) * @attachment-offset-xl);
-    }
-  }
-  .generate-card-dupes(@n, (@i + 1));
-}
-.generate-card-dupes(5, 1);
-
-.card-type-faction.horizontal {
-    margin: 10px 0 0 0;
-}
 
 .counters {
   color: white;
