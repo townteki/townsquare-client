@@ -310,6 +310,7 @@ export class GameBoard extends React.Component {
                         discardPile={ otherPlayer.cardPiles.discardPile }
                         deadPile={ otherPlayer.cardPiles.deadPile }
                         drawDeck={ otherPlayer.cardPiles.drawDeck }
+                        beingPlayed={ otherPlayer.cardPiles.beingPlayed }
                         onCardClick={ this.onCardClick }
                         onMouseOver={ this.onMouseOver }
                         onMouseOut={ this.onMouseOut }
@@ -341,43 +342,42 @@ export class GameBoard extends React.Component {
                                 stopAbilityTimer={ this.props.stopAbilityTimer } />
                         </div>
                     </div>
-                    <div className='play-area' onDragOver={this.onDragOver}>
+                    <div className='play-area' onDragOver={ this.onDragOver }>
 					
-                            <div className='player-street other-side'>
-                                <PlayerStreet onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop}
-                                     onMenuItemClick={this.onMenuItemClick} className='other-side'  owner={otherPlayer} otherPlayer={otherPlayer} 
-                                     handleMenuChange={this.handleMenuChange} thisPlayer={thisPlayer}/>
-                            </div>					
+                        <div className='player-street other-side'>
+                            <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop }
+                                onMenuItemClick={ this.onMenuItemClick } className='other-side' owner={ otherPlayer } otherPlayer={ otherPlayer } 
+                                handleMenuChange={ this.handleMenuChange } thisPlayer={ thisPlayer }/>
+                        </div>					
 
-                            <div>
-                                <GameLocation location={{uuid:'townsquare', name:'Town Square'}}
-                                    cardLocation='townsquare' className='townsquare'
-                                    handleMenuChange={this.handleMenuChange}
-                                    onMouseOver={this.onMouseOver}
-                                    onMouseOut={this.onMouseOut}
-                                    onDragDrop={this.onDragDrop}
-                                    onMenuItemClick={this.onMenuItemClick}
-                                    onClick={this.onCardClick}
-                                    otherPlayer={otherPlayer}
-                                    thisPlayer={thisPlayer}/>
-                            </div>
+                        <div>
+                            <GameLocation location={ {uuid:'townsquare', name:'Town Square'} }
+                                cardLocation='townsquare' className='townsquare'
+                                handleMenuChange={ this.handleMenuChange }
+                                onMouseOver={ this.onMouseOver }
+                                onMouseOut={ this.onMouseOut }
+                                onDragDrop={ this.onDragDrop }
+                                onMenuItemClick={ this.onMenuItemClick }
+                                onClick={ this.onCardClick }
+                                otherPlayer={ otherPlayer }
+                                thisPlayer={ thisPlayer }/>
+                        </div>
 								
-                            <div className='player-street'>
-                                <PlayerStreet onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onDragDrop={this.onDragDrop} className='our-side'
-                                     handleMenuChange={ this.handleMenuChange } onMenuItemClick={this.onMenuItemClick} owner={thisPlayer} otherPlayer={otherPlayer} thisPlayer={thisPlayer}/>
-                            </div>								
-
+                        <div className='player-street'>
+                            <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop } className='our-side'
+                                handleMenuChange={ this.handleMenuChange } onMenuItemClick={ this.onMenuItemClick } owner={ thisPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
+                        </div>								
 
                     </div>
                     <div className='out-of-town-area'>
-                        <div className='out-of-town' onDragOver={this.onDragOver}>
-                            <OutOfTown onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onMenuItemClick={this.onMenuItemClick}
-                                handleMenuChange={this.handleMenuChange} className={'other-side'} owner={otherPlayer} otherPlayer={otherPlayer} thisPlayer={thisPlayer}/>
+                        <div className='out-of-town' onDragOver={ this.onDragOver }>
+                            <OutOfTown onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onMenuItemClick={ this.onMenuItemClick }
+                                handleMenuChange={ this.handleMenuChange } className={ 'other-side' } owner={ otherPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
                         </div>
 
-                        <div className='out-of-town' onDragOver={this.onDragOver}>
-                            <OutOfTown onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onClick={this.onCardClick} onMenuItemClick={this.onMenuItemClick}
-                                handleMenuChange={this.handleMenuChange} owner={thisPlayer} otherPlayer={otherPlayer} thisPlayer={thisPlayer}/>
+                        <div className='out-of-town' onDragOver={ this.onDragOver }>
+                            <OutOfTown onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onMenuItemClick={ this.onMenuItemClick }
+                                handleMenuChange={ this.handleMenuChange } owner={ thisPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
                         </div>
                     </div>
                 </div>
@@ -398,6 +398,7 @@ export class GameBoard extends React.Component {
                         onDragDrop={ this.onDragDrop }
                         discardPile={ thisPlayer.cardPiles.discardPile }
                         deadPile={ thisPlayer.cardPiles.deadPile }
+                        beingPlayed={ thisPlayer.cardPiles.beingPlayed }
                         revealTopCard={ thisPlayer.revealTopCard }
                         showDeck={ thisPlayer.showDeck }
                         spectating={ this.state.spectating }

@@ -6,14 +6,15 @@ import classNames from 'classnames';
 import { ItemTypes } from '../../constants';
 
 const validTargets = {
-    hand: [
+    'hand': [
         'play area',
         'discard pile',
         'draw deck',
         'dead pile',
         'out of game',
         'draw hand',
-        'townsquare'
+        'townsquare',
+        'being played'
     ],
     'play area': [
         'play area',
@@ -48,6 +49,12 @@ const validTargets = {
     ],
     'draw hand': [
         'hand',
+        'discard pile',
+        'dead pile'
+    ],
+    'being played': [
+        'hand',
+        'play area',
         'discard pile',
         'dead pile'
     ],
