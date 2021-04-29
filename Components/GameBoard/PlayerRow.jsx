@@ -102,6 +102,8 @@ class PlayerRow extends React.Component {
         let deadPile = (<CardPile className='dead' title='Boot Hill' source='dead pile' cards={ this.props.deadPile }
             orientation='booted'
             { ...cardPileProps } />);
+        let beingPlayed = (<CardPile className='beingPlayed' title='Played/ Pulled' source='being played' cards={ this.props.beingPlayed }
+            { ...cardPileProps } />);
         // <HandRank onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut} handrank={this.props.handrank} />
         return (
             <div className='player-home-row-container'>
@@ -111,8 +113,9 @@ class PlayerRow extends React.Component {
                 { this.renderDroppablePile('dead pile', deadPile) }
 
                 { this.getOutOfGamePile() }
-				
-                { this.renderDroppablePile('draw hand', drawHand) }				
+
+                { this.renderDroppablePile('being played', beingPlayed) }
+                { this.renderDroppablePile('draw hand', drawHand) }	
             </div>
         );
     }
@@ -120,6 +123,7 @@ class PlayerRow extends React.Component {
 
 PlayerRow.displayName = 'PlayerRow';
 PlayerRow.propTypes = {
+    beingPlayed: PropTypes.array,
     cardSize: PropTypes.string,
     deadPile: PropTypes.array,
     discardPile: PropTypes.array,
