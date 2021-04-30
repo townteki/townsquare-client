@@ -45,7 +45,8 @@ const validTargets = {
         'dead pile',
         'play area',
         'draw hand',
-        'out of game'
+        'out of game',
+        'being played'
     ],
     'draw hand': [
         'hand',

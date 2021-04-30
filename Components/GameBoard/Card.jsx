@@ -263,7 +263,8 @@ class InnerCard extends React.Component {
             'dragging': this.props.isDragging,
             'opponent': this.props.isOpponent,
             'play-area': this.props.source === 'play area', 
-            'hovered': this.state.isHovered
+            'hovered': this.state.isHovered,
+            'booted': this.props.orientation === 'booted' || this.props.card.booted || this.props.orientation === 'horizontal'
         });
         let imageClass = classNames('card-image', this.sizeClass, {
             'horizontal': this.props.orientation === 'horizontal',

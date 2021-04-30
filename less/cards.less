@@ -258,7 +258,7 @@
 .attachment {
   margin-top: @attachment-offset - @card-height;
 
-  &:hover {
+  &:hover:not(.booted) {
     margin-left: @attachment-offset-left;
   }
 
@@ -269,7 +269,7 @@
   &.large {
     margin-top: @attachment-offset-lg - @card-lg-height;
 
-    &:hover {
+    &:hover:not(.booted) {
       margin-left: @attachment-offset-lg-left;
     }
   }
@@ -277,7 +277,7 @@
   &.x-large {
     margin-top: @attachment-offset-xl - @card-xl-height;
 
-    &:hover {
+    &:hover:not(.booted) {
       margin-left: @attachment-offset-xl-left;
     }      
   }
