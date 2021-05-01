@@ -90,7 +90,7 @@ class HowToPlay extends React.Component {
                             <li>/discard x - Discards x cards randomly from your hand.</li>
                             <li>/draw x - Draws x cards from your deck to your hand.</li>
                             <li>/give-control - Gives control of a card to your opponent.  Use with caution.</li>
-                            <li>/inf x - Sets the influence of a dude to x.</li>
+                            <li>/inf x [t] - Sets the influence of a dude to x. Optional parameter "t" can be set to 'influence:deed' if you want to set only influence for controlling deeds.</li>
                             <li>/join-posse - Adds a dude to the respective posse in the current shootout.</li>
                             <li>/move - Move dude to another location.</li>
                             <li>/move-bottom - Moves a card to the bottom of your draw deck.</li>
