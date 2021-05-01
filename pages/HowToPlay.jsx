@@ -75,27 +75,38 @@ class HowToPlay extends React.Component {
                         <p>Every once in a while something happens during a game that shouldn’t have happened. This can occur due to a misclick, an unimplemented card or a bug in the software. To fix the game state in such situations a variety of manual commands are implemented. Typing these commands as a chatmessage during a game will have the following effect:</p>
                         <ul>
                             <li>/ace - aces a card (moves it to boot hill). You can do this also by draging and droping the card to boot hill.</li>
-                            <li>/add-card name | code - Adds a card to the draw deck. This card can be identified by name or code (can be found in dtdb)</li>
+                            <li>/add-card [name | code] - Adds a card to the draw deck. This card can be identified by name or code (can be found in dtdb)</li>
                             <li>/add-keyword k - adds keyword k to a card.</li>
+                            <li>/attach - attach card to another card.</li>
                             <li>/blank - Blanks a card.</li>
                             <li>/bullets x - Sets the bullets of a dude to x.</li>
-                            <li>/cancel-shootout - Cancels the current shootout. NOT WORKING YET. <strong>Note:</strong> both players will need to manually stand any knelt characters and undo any abilities used.</li>
+                            <li>/bounty x - Sets the bounty of a dude to x.</li>
+                            <li>/cancel-shootout - Cancels the current shootout.</li>
                             <li>/cancel-prompt - Clears the current prompt and resume the game flow.  Use with caution and only when the prompt is 'stuck' and you are unable to continue.</li>
                             <li>/clear-shooter - Clears the shooter type set by the chat command.</li>
+                            <li>/clear-suit - Clears the change suit and set it to printed.</li>
+                            <li>/clear-effects - Clears any effects on a card.</li>
                             <li>/control x - Sets the control of a card to x.</li>
                             <li>/discard x - Discards x cards randomly from your hand.</li>
                             <li>/draw x - Draws x cards from your deck to your hand.</li>
                             <li>/give-control - Gives control of a card to your opponent.  Use with caution.</li>
                             <li>/inf x - Sets the influence of a dude to x.</li>
                             <li>/join-posse - Adds a dude to the respective posse in the current shootout.</li>
+                            <li>/move - Move dude to another location.</li>
                             <li>/move-bottom - Moves a card to the bottom of your draw deck.</li>
+                            <li>/pull - Performs simple pull without success check.</li>
+                            <li>/pull [x | kf] - Performs pull using selected dude and does success check using difficulty x, or based on Kung Fu dude if parameter is "kf".</li>
                             <li>/rematch - Start over a new game with the current opponent.</li>
                             <li>/remove-from-game - Removes a card from the game.</li>
                             <li>/remove-from-posse - Removes a dude from the posse in the current shootout.</li>
+                            <li>/remove-keyword k - Removes keyword k from a card.</li>
+                            <li>/reset-abilities - Resets/Refreshes ability usage on a card.</li>
                             <li>/reveal-hand - Reveals your hand to the opponent.</li>
-                            <li>/shooter stud | draw - Sets shooter type of a dude to stud or draw.</li>
-                            <li>/token t x - Sets the token count of a card of type 't' to 'x'. Currently used token types are: 'bounty'.<br></br><strong>Note:</strong> For stud and draw use /shooter command, dor bullets, control and influence use their respective commands.</li>
+                            <li>/shooter [stud | draw] - Sets shooter type of a dude to stud or draw.</li>
+                            <li>/suit [hearts | clubs | diams | spades] - Sets the suit of a card.</li>
+                            <li>/token t x - Sets the token count of a card of type 't' to 'x'. Currently used token types are: 'bounty' and 'ghostrock'.<br /><strong>Note:</strong> For stud and draw use /shooter command, for bullets, control and influence use their respective commands.</li>
                             <li>/unblank - Unblanks a card.</li>
+                            <li>/value x - Sets the value of a dude to x</li>
                         </ul>
                     </div>
                     <div className='htp-topic'>

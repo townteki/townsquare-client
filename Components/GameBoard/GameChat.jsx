@@ -26,6 +26,8 @@ const commands = [
     '/inf ',
     '/join-posse ',
     '/move ',
+    '/pull ',
+    '/pull kf',
     '/rematch ',
     '/remove-from-game ',
     '/remove-from-posse ',
