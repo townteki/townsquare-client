@@ -90,8 +90,11 @@ class HowToPlay extends React.Component {
                             <li>/discard x - Discards x cards randomly from your hand.</li>
                             <li>/draw x - Draws x cards from your deck to your hand.</li>
                             <li>/give-control - Gives control of a card to your opponent.  Use with caution.</li>
+                            <li>/hand-rank x - Modifies hand rank of the current player by x.</li>
                             <li>/inf x [t] - Sets the influence of a dude to x. Optional parameter "t" can be set to 'influence:deed' if you want to set only influence for controlling deeds.</li>
-                            <li>/join-posse - Adds a dude to the respective posse in the current shootout.</li>
+                            <li>/join-posse - Moves a dude to the respective posse in the current shootout.</li>
+                            <li>/join-without-move - Adds a dude to the respective posse in the current shootout without moving.</li>
+                            <li>/kung-fu x - Modifies kung fu rating of a selected dude by x.</li>
                             <li>/move - Move dude to another location.</li>
                             <li>/move-bottom - Moves a card to the bottom of your draw deck.</li>
                             <li>/pull - Performs simple pull without success check.</li>
@@ -103,6 +106,7 @@ class HowToPlay extends React.Component {
                             <li>/reset-abilities - Resets/Refreshes ability usage on a card.</li>
                             <li>/reveal-hand - Reveals your hand to the opponent.</li>
                             <li>/shooter [stud | draw] - Sets shooter type of a dude to stud or draw.</li>
+                            <li>/skill-rating [blessed | shaman | huckster | mad] x - Modifies specified skill rating of selected dude by x.</li>
                             <li>/suit [hearts | clubs | diams | spades] - Sets the suit of a card.</li>
                             <li>/token t x - Sets the token count of a card of type 't' to 'x'. Currently used token types are: 'bounty' and 'ghostrock'.<br /><strong>Note:</strong> For stud and draw use /shooter command, for bullets, control and influence use their respective commands.</li>
                             <li>/unblank - Unblanks a card.</li>
