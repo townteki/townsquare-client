@@ -1,0 +1,108 @@
+.inset-pane {
+  display: flex;
+  flex-direction: column;
+  width: 210px;
+  max-height: 300px;
+  justify-content: space-between;
+  z-index: @layer-top;
+}
+  
+.inset-pane > div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.prompt-area {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  grid-column: 1;
+  grid-row-start: 1;
+  grid-row-end: 4;
+  
+  .panel {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+  
+.player-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.player-stats-row.other-side {
+  flex: 1;
+}
+
+.player-stats {
+  display: grid;
+  grid-template-columns: 110px 55px 55px;
+  grid-template-rows: 1fr 1fr 1fr;  
+  align-items: center;
+
+  &.panel {
+    margin: 0;
+    border-radius: 0;
+    padding: 5px;
+    position: initial;
+  }
+}
+
+.shootout-status {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  width: 210px;
+}
+
+.state {
+  height: 27px;
+  display: flex;
+  align-items: center;
+
+  span {
+    padding-right: 3px;
+    padding-left: 3px;
+  }
+
+  &.winner {
+    grid-row: 1;
+    justify-content: center;
+  }
+
+  &.ghostrock {
+    grid-row: 2;
+    border-right: solid 2px;
+  }
+
+  &.control {
+    grid-row: 2;
+    border-right: solid 2px;
+  }
+
+  &.influence {
+    grid-row: 2;
+  }
+
+  &.settings {
+    grid-row: 3;
+  }
+
+  .glyphicon {
+    color: @brand-primary;
+  }
+}
+
+.state {
+  &.first-player {
+    margin: 0px 5px;
+    padding: 5px;
+    text-align: center;
+    background: @brand-tertiary;
+    border-radius: 0.25rem;
+    border: 1px solid rgba(128, 128, 128, 0.53);
+  }
+}

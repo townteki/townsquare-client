@@ -143,60 +143,6 @@
   }
 }
 
-.prompt-area {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-
-  .panel {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-}
-
-.player-info {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.player-stats {
-  display: flex;
-
-  &.panel {
-    margin: 0;
-    border-radius: 0;
-    padding: 5px;
-    position: initial;
-  }
-
-  display: flex;
-  align-items: center;
-}
-
-
-.state {
-  height: 27px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-right: solid 2px;
-  display: flex;
-  align-items: center;
-
-  span {
-    padding-right: 3px;
-    padding-left: 3px;
-  }
-
-  &:last-of-type {
-    border-right: none;
-  }
-
-  .glyphicon {
-    color: @brand-primary;
-  }
-}
-
 .btn-stat {
   padding: 0;
   font-size: 12px;
@@ -228,17 +174,6 @@
   display: flex;
   flex-direction: row;
   height: 100px;
-}
-
-.state {
-  &.first-player {
-    margin: 0px 5px;
-    padding: 5px;
-    text-align: center;
-    background: @brand-tertiary;
-    border-radius: 0.25rem;
-    border: 1px solid rgba(128, 128, 128, 0.53);
-  }
 }
 
 .middle {
@@ -334,20 +269,6 @@
   }
 }
 
-.plot {
-  margin: 5px;
-
-  .popup {
-    min-height: 92px;
-    min-width: 168px;
-
-    .inner {
-      .calculate-tiled-card-prop(min-height, 1, width);
-      .calculate-tiled-card-prop(width, 4, height);
-    }
-  }
-}
-
 .discard {
   .popup {
     min-height: 146px;
@@ -390,19 +311,6 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-}
-
-.inset-pane {
-  display: flex;
-  flex-direction: column;
-  width: 210px;
-  justify-content: space-between;
-}
-
-.inset-pane > div {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .menu-pane-source {
@@ -512,6 +420,8 @@ span.down-arrow {
 
 .play-area {
   overflow-x: auto;
+  grid-column: 2;
+  grid-row: 2;
 }
 
 .play-area, .player-board {
@@ -557,6 +467,14 @@ span.down-arrow {
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
+  grid-row: 1;
+  grid-column-start: 2;
+  grid-column-end: 4;
+  justify-self: stretch;
+
+  &.our-side {
+    grid-row: 3;
+  }
 }
 
 .player-home-row-container {
@@ -634,21 +552,16 @@ span.down-arrow {
 
 .player-avatar {
   padding-right: 10px;
+  grid-row: 1;
+  grid-column-start: 1;
+  grid-column-end: 3;
 }
 
 .board-middle {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow-x: hidden;
-  width: 100%;
-}
-
-.board-inner {
-  flex: 1;
-  display: flex;
-  min-height: 0;
-  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  flex-grow: 1;
 }
 
 .close-button {

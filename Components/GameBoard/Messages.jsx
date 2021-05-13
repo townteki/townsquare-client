@@ -17,7 +17,17 @@ class Messages extends React.Component {
         this.tokens = {
             card: { className: 'icon-card', imageSrc: '/img/cards/cardback.jpg' },
             cards: { className: 'icon-card', imageSrc: '/img/cards/cardback.jpg' },
-            gold: { className: 'icon-gold', imageSrc: '/img/Gold.png' }
+            GR: { className: 'icon-token', imageSrc: '/img/icons/ghostrock.png' },
+            'ghost rock': { className: 'icon-token', imageSrc: '/img/icons/ghostrock.png' },
+            influence: { className: 'icon-token', imageSrc: '/img/icons/influence.png' },
+            'control point': { className: 'icon-token', imageSrc: '/img/icons/control.png' },
+            'control points': { className: 'icon-token', imageSrc: '/img/icons/control.png' },
+            bullet: { className: 'icon-bullet', imageSrc: '/img/icons/bullet_draw.png' },
+            bullets: { className: 'icon-bullet', imageSrc: '/img/icons/bullet_draw.png' },
+            Hearts: { className: 'icon-token', imageSrc: '/img/icons/heart.png' },
+            Diams: { className: 'icon-token', imageSrc: '/img/icons/diam.png' },
+            Clubs: { className: 'icon-token', imageSrc: '/img/icons/club.png' },
+            Spades: { className: 'icon-token', imageSrc: '/img/icons/spade.png' }
         };
 
         this.formatMessageText = this.formatMessageText.bind(this);

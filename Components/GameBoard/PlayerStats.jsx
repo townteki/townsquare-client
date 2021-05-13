@@ -24,15 +24,15 @@ export class PlayerStats extends React.Component {
 
     getButton(stat, name, showControls = true) {
         return (
-            <div className='state'>
-                <span><img src={ '/img/' + name + '.png' } title={ name } alt={ name } /></span>
+            <div className={ 'state ' + stat }>
+                <span><img src={ '/img/icons/' + name + '.png' } title={ name } alt={ name } /></span>
                 { showControls ? <button className='btn btn-stat' onClick={ this.sendUpdate.bind(this, stat, 'down') }>
-                    <img src='/img/Minus.png' title='-' alt='-' />
+                    <img src='/img/icons/minus.png' title='-' alt='-' />
                 </button> : null }
 
                 <span>{ this.getStatValueOrDefault(stat) }</span>
                 { showControls ? <button className='btn btn-stat' onClick={ this.sendUpdate.bind(this, stat, 'up') }>
-                    <img src='/img/Plus.png' title='+' alt='+' />
+                    <img src='/img/icons/plus.png' title='+' alt='+' />
                 </button> : null }
             </div>
         );
@@ -56,25 +56,20 @@ export class PlayerStats extends React.Component {
         return (
             <div className='panel player-stats'>
                 { playerAvatar }
+                { this.props.firstPlayer ? <div className='state winner'>
+                    <div className='first-player'>
+                        <img src='/img/icons/dice.png'/>
+                    </div>
+                </div> : null }
 
-                { this.getButton('ghostrock', 'Ghost Rock', this.props.showControls) }
-                { this.getButton('control', 'Control', false) }
-                { this.getButton('influence', 'Influence', false) }
+                { this.getButton('ghostrock', 'ghostrock', this.props.showControls) }
+                { this.getButton('control', 'control', false) }
+                { this.getButton('influence', 'influence', false) }
 
-                { this.props.firstPlayer ? <div className='state'><div className='first-player'>Lowball Winner</div></div> : null }
-
-                { this.props.showControls ? <div className='state'>
+                { this.props.showControls ? <div className='state settings'>
                     <button className='btn btn-transparent' onClick={ this.onSettingsClick.bind(this) }><span className='glyphicon glyphicon-cog' />Settings</button>
                 </div> : null }
 
-                { this.props.showMessages &&
-                    <div className='chat-status' onClick={ this.props.onMessagesClick }>
-                        <button className='btn btn-transparent'>
-                            <span className='glyphicon glyphicon-envelope' />
-                            <span className='chat-badge badge progress-bar-danger'>{ this.props.numMessages || null }</span>
-                        </button>
-                    </div>
-                }
             </div>
         );
     }
@@ -83,16 +78,10 @@ export class PlayerStats extends React.Component {
 PlayerStats.displayName = 'PlayerStats';
 PlayerStats.propTypes = {
     firstPlayer: PropTypes.bool,
-    numMessages: PropTypes.number,
-    onMessagesClick: PropTypes.func,
     onSettingsClick: PropTypes.func,
-    control: PropTypes.number,
-    ghostrock: PropTypes.number,
-    influence: PropTypes.number,
     playerName: PropTypes.string,
     sendGameMessage: PropTypes.func,
     showControls: PropTypes.bool,
-    showMessages: PropTypes.bool,
     stats: PropTypes.object,	
     user: PropTypes.object
 };
