@@ -4,6 +4,8 @@
   width: 210px;
   max-height: 300px;
   justify-content: space-between;
+  grid-column: 1;
+  grid-row: 3;
   z-index: @layer-top;
 }
   
@@ -17,8 +19,8 @@
   display: grid;
   grid-template-rows: auto 1fr auto auto;
   grid-column: 1;
-  grid-row-start: 1;
-  grid-row-end: 4;
+  grid-row: 2;
+  overflow-x: auto;
   
   .panel {
     padding-left: 5px;
@@ -32,22 +34,11 @@
   justify-content: space-between;
 }
 
-.player-stats-row.other-side {
-  flex: 1;
-}
-
 .player-stats {
   display: grid;
   grid-template-columns: 110px 55px 55px;
   grid-template-rows: 1fr 1fr 1fr;  
   align-items: center;
-
-  &.panel {
-    margin: 0;
-    border-radius: 0;
-    padding: 5px;
-    position: initial;
-  }
 }
 
 .shootout-status {
