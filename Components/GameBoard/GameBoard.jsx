@@ -357,8 +357,8 @@ export class GameBoard extends React.Component {
                         timerStartTime={ this.props.timerStartTime }
                         stopAbilityTimer={ this.props.stopAbilityTimer } />
                 </div>
-                <div className='play-area' onDragOver={ this.onDragOver }>
-                    <div className='player-street other-side'>
+                <div id='play-area' className='play-area' onDragOver={ this.onDragOver }>
+                    <div id='otherstreet' className='player-street other-side'>
                         <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop }
                             onMenuItemClick={ this.onMenuItemClick } className='other-side' owner={ otherPlayer } otherPlayer={ otherPlayer } 
                             handleMenuChange={ this.handleMenuChange } thisPlayer={ thisPlayer }/>
@@ -377,7 +377,7 @@ export class GameBoard extends React.Component {
                             thisPlayer={ thisPlayer }/>
                     </div>
 								
-                    <div className='player-street'>
+                    <div id='mystreet' className='player-street'>
                         <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop } className='our-side'
                             handleMenuChange={ this.handleMenuChange } onMenuItemClick={ this.onMenuItemClick } owner={ thisPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
                     </div>								
