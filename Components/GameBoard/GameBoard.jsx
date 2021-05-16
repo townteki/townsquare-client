@@ -299,55 +299,15 @@ export class GameBoard extends React.Component {
         return player;
     }
 
-    renderStatusArea(thisPlayer, otherPlayer) {
-        let boundActionCreators = bindActionCreators(actions, this.props.dispatch);
-        return [
-            <div className='prompt-area'>
-                <div className='player-stats-row other-side'>
-                    <PlayerStats stats={ otherPlayer.stats }
-                        user={ otherPlayer.user } firstPlayer={ otherPlayer.firstPlayer } />
-                </div>
-                <div className='shootout-status'>
-                    <div className='panel' style={ {
-                        height: '200px'
-                    } }>
-                        <div>Shootout/Lowball panel <br/> Not yet implemented</div>
-                    </div>
-                    <div className='panel' style={ {
-                        height: '200px'
-                    } }>
-                        <div>Shootout/Lowball panel <br/> Not yet implemented</div>
-                    </div>
-                </div>
-                <div className='inset-pane'>
-                    <ActivePlayerPrompt
-                        cards={ this.props.cards }
-                        buttons={ thisPlayer.buttons }
-                        controls={ thisPlayer.controls }
-                        promptText={ thisPlayer.menuTitle }
-                        promptTitle={ thisPlayer.promptTitle }
-                        onButtonClick={ this.onCommand }
-                        onMouseOver={ this.onMouseOver }
-                        onMouseOut={ this.onMouseOut }
-                        user={ this.props.user }
-                        phase={ thisPlayer.phase }
-                        timerLimit={ this.props.timerLimit }
-                        timerStartTime={ this.props.timerStartTime }
-                        stopAbilityTimer={ this.props.stopAbilityTimer } />
-                </div>
-                <div className='player-stats-row'>
-                    <PlayerStats { ...boundActionCreators } stats={ thisPlayer.stats } showControls={ !this.state.spectating } user={ thisPlayer.user }
-                        firstPlayer={ thisPlayer.firstPlayer } onSettingsClick={ this.onSettingsClick } showMessages
-                        onMessagesClick={ this.onMessagesClick } numMessages={ this.state.newMessages } />
-                </div>
-            </div>
-        ];
-    }
-
     renderBoard(thisPlayer, otherPlayer) {
+        let boundActionCreators = bindActionCreators(actions, this.props.dispatch);
         return [
             <div key='board-middle' className='board-middle'>
                 <div className='player-home-row'>
+                    <div className='player-stats-row other-side'>
+                        <PlayerStats stats={ otherPlayer.stats }
+                            user={ otherPlayer.user } firstPlayer={ otherPlayer.firstPlayer } />
+                    </div>
                     <PlayerRow
                         hand={ otherPlayer.cardPiles.hand } isMe={ false }
                         drawHand={ otherPlayer.cardPiles.drawHand } isMe={ false }						
@@ -367,9 +327,37 @@ export class GameBoard extends React.Component {
                         side='top'
                         cardSize={ this.props.user.settings.cardSize } />
                 </div>
-                { this.renderStatusArea(thisPlayer, otherPlayer) }
+                <div className='prompt-area'>
+                    <div className='shootout-status'>
+                        <div className='panel' style={ {
+                            height: '200px'
+                        } }>
+                            <div>Shootout/Lowball panel <br/> Not yet implemented</div>
+                        </div>
+                        <div className='panel' style={ {
+                            height: '200px'
+                        } }>
+                            <div>Shootout/Lowball panel <br/> Not yet implemented</div>
+                        </div>
+                    </div>
+                </div>
+                <div className='inset-pane'>
+                    <ActivePlayerPrompt
+                        cards={ this.props.cards }
+                        buttons={ thisPlayer.buttons }
+                        controls={ thisPlayer.controls }
+                        promptText={ thisPlayer.menuTitle }
+                        promptTitle={ thisPlayer.promptTitle }
+                        onButtonClick={ this.onCommand }
+                        onMouseOver={ this.onMouseOver }
+                        onMouseOut={ this.onMouseOut }
+                        user={ this.props.user }
+                        phase={ thisPlayer.phase }
+                        timerLimit={ this.props.timerLimit }
+                        timerStartTime={ this.props.timerStartTime }
+                        stopAbilityTimer={ this.props.stopAbilityTimer } />
+                </div>
                 <div className='play-area' onDragOver={ this.onDragOver }>
-					
                     <div className='player-street other-side'>
                         <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop }
                             onMenuItemClick={ this.onMenuItemClick } className='other-side' owner={ otherPlayer } otherPlayer={ otherPlayer } 
@@ -407,6 +395,11 @@ export class GameBoard extends React.Component {
                     </div>
                 </div>
                 <div className='player-home-row our-side'>
+                    <div className='player-stats-row'>
+                        <PlayerStats { ...boundActionCreators } stats={ thisPlayer.stats } showControls={ !this.state.spectating } user={ thisPlayer.user }
+                            firstPlayer={ thisPlayer.firstPlayer } onSettingsClick={ this.onSettingsClick } showMessages
+                            onMessagesClick={ this.onMessagesClick } numMessages={ this.state.newMessages } />
+                    </div>
                     <PlayerRow isMe={ !this.state.spectating }
                         hand={ thisPlayer.cardPiles.hand }
                         drawHand={ thisPlayer.cardPiles.drawHand }						

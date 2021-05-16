@@ -421,7 +421,8 @@ span.down-arrow {
 .play-area {
   overflow-x: auto;
   grid-column: 2;
-  grid-row: 2;
+  grid-row-start: 2;
+  grid-row-end: 4;
 }
 
 .play-area, .player-board {
@@ -468,12 +469,12 @@ span.down-arrow {
   overflow-x: auto;
   overflow-y: hidden;
   grid-row: 1;
-  grid-column-start: 2;
+  grid-column-start: 1;
   grid-column-end: 4;
   justify-self: stretch;
 
   &.our-side {
-    grid-row: 3;
+    grid-row: 4;
   }
 }
 
@@ -559,8 +560,8 @@ span.down-arrow {
 
 .board-middle {
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  grid-template-rows: auto 1fr auto;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr auto auto;
   flex-grow: 1;
 }
 
