@@ -17,6 +17,7 @@ import GameChat from './GameChat';
 import GameConfigurationModal from './GameConfigurationModal';
 import * as actions from '../../actions';
 import TimeLimitClock from './TimeLimitClock';
+import StatusPanel from './StatusPanel';
 
 const placeholderPlayer = {
     legend: null,
@@ -48,6 +49,7 @@ export class GameBoard extends React.Component {
         this.onCardClick = this.onCardClick.bind(this);
         this.handleDrawPopupChange = this.handleDrawPopupChange.bind(this);
         this.handleMenuChange = this.handleMenuChange.bind(this);
+        this.handleTownsquareWidth = this.handleTownsquareWidth.bind(this);
         this.onDragDrop = this.onDragDrop.bind(this);
         this.onCommand = this.onCommand.bind(this);
         this.onConcedeClick = this.onConcedeClick.bind(this);
@@ -60,6 +62,7 @@ export class GameBoard extends React.Component {
         this.onSettingsClick = this.onSettingsClick.bind(this);
         this.onMessagesClick = this.onMessagesClick.bind(this);
         this.onOutfitCardClick = this.onOutfitCardClick.bind(this);		
+        this.setTownsquareComponent = this.setTownsquareComponent.bind(this);	
 
         this.state = {
             cardToZoom: undefined,
@@ -136,6 +139,10 @@ export class GameBoard extends React.Component {
         }
     }
 
+    setTownsquareComponent(tsComponent) {
+        this.townsquare = tsComponent;
+    }
+
     onConcedeClick() {
         this.props.sendGameMessage('concede');
     }
@@ -210,6 +217,14 @@ export class GameBoard extends React.Component {
             this.componentWithMenu = component;
         } else {
             this.componentWithMenu = null;
+        }
+    }
+
+    handleTownsquareWidth() {
+        if(this.townsquare) {
+            const widthMy = document.getElementById('mystreet').clientWidth;
+            const widthOther = document.getElementById('otherstreet').clientWidth;
+            this.townsquare.setState({ width: Math.max(widthMy, widthOther) - 20 });
         }
     }
 
@@ -327,44 +342,15 @@ export class GameBoard extends React.Component {
                         side='top'
                         cardSize={ this.props.user.settings.cardSize } />
                 </div>
-                <div className='prompt-area'>
-                    <div className='shootout-status'>
-                        <div className='panel' style={ {
-                            height: '200px'
-                        } }>
-                            <div>Shootout/Lowball panel <br/> Not yet implemented</div>
-                        </div>
-                        <div className='panel' style={ {
-                            height: '200px'
-                        } }>
-                            <div>Shootout/Lowball panel <br/> Not yet implemented</div>
-                        </div>
-                    </div>
-                </div>
-                <div className='inset-pane'>
-                    <ActivePlayerPrompt
-                        cards={ this.props.cards }
-                        buttons={ thisPlayer.buttons }
-                        controls={ thisPlayer.controls }
-                        promptText={ thisPlayer.menuTitle }
-                        promptTitle={ thisPlayer.promptTitle }
-                        onButtonClick={ this.onCommand }
-                        onMouseOver={ this.onMouseOver }
-                        onMouseOut={ this.onMouseOut }
-                        user={ this.props.user }
-                        phase={ thisPlayer.phase }
-                        timerLimit={ this.props.timerLimit }
-                        timerStartTime={ this.props.timerStartTime }
-                        stopAbilityTimer={ this.props.stopAbilityTimer } />
-                </div>
+                <StatusPanel/>
                 <div id='play-area' className='play-area' onDragOver={ this.onDragOver }>
                     <div id='otherstreet' className='player-street other-side'>
                         <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop }
                             onMenuItemClick={ this.onMenuItemClick } className='other-side' owner={ otherPlayer } otherPlayer={ otherPlayer } 
-                            handleMenuChange={ this.handleMenuChange } thisPlayer={ thisPlayer }/>
+                            handleMenuChange={ this.handleMenuChange } handleTownsquareWidth={ this.handleTownsquareWidth } thisPlayer={ thisPlayer }/>
                     </div>					
 
-                    <div>
+                    <div className='townsquare-container'>
                         <GameLocation location={ {uuid:'townsquare', name:'Town Square'} }
                             cardLocation='townsquare' className='townsquare'
                             handleMenuChange={ this.handleMenuChange }
@@ -373,13 +359,15 @@ export class GameBoard extends React.Component {
                             onDragDrop={ this.onDragDrop }
                             onMenuItemClick={ this.onMenuItemClick }
                             onClick={ this.onCardClick }
+                            setTownsquareComponent = { this.setTownsquareComponent }
                             otherPlayer={ otherPlayer }
                             thisPlayer={ thisPlayer }/>
                     </div>
 								
                     <div id='mystreet' className='player-street'>
                         <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop } className='our-side'
-                            handleMenuChange={ this.handleMenuChange } onMenuItemClick={ this.onMenuItemClick } owner={ thisPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
+                            handleMenuChange={ this.handleMenuChange } onMenuItemClick={ this.onMenuItemClick } owner={ thisPlayer } otherPlayer={ otherPlayer } 
+                            handleTownsquareWidth={ this.handleTownsquareWidth } thisPlayer={ thisPlayer }/>
                     </div>								
 
                 </div>
@@ -475,9 +463,25 @@ export class GameBoard extends React.Component {
                     timerSettings={ thisPlayer.timerSettings } />
                 <div className='main-window'>
                     { this.renderBoard(thisPlayer, otherPlayer) }
+                    <div className='inset-pane'>
+                        <ActivePlayerPrompt
+                            cards={ this.props.cards }
+                            buttons={ thisPlayer.buttons }
+                            controls={ thisPlayer.controls }
+                            promptText={ thisPlayer.menuTitle }
+                            promptTitle={ thisPlayer.promptTitle }
+                            onButtonClick={ this.onCommand }
+                            onMouseOver={ this.onMouseOver }
+                            onMouseOut={ this.onMouseOut }
+                            user={ this.props.user }
+                            phase={ thisPlayer.phase }
+                            timerLimit={ this.props.timerLimit }
+                            timerStartTime={ this.props.timerStartTime }
+                            stopAbilityTimer={ this.props.stopAbilityTimer } />
+                    </div>
                     <CardZoom imageUrl={ this.props.cardToZoom ? '/img/cards/' + this.props.cardToZoom.code + '.jpg' : '' }
-                        orientation={ this.props.cardToZoom ? this.props.cardToZoom.type === 'plot' ? 'horizontal' : 'vertical' : 'vertical' }
-                        show={ !!this.props.cardToZoom } cardName={ this.props.cardToZoom ? this.props.cardToZoom.name : null }
+                        orientation='vertical'
+                        show={ !!this.props.cardToZoom } cardName={ this.props.cardToZoom ? this.props.cardToZoom.title : null }
                         card={ this.props.cardToZoom ? this.props.cards[this.props.cardToZoom.code] : null } />
                     { this.state.showMessages && <div className='right-side'>
                         <div className='gamechat'>

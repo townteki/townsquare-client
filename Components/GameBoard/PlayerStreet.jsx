@@ -3,9 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GameLocation from './GameLocation.jsx';
 import 'jquery-nearest';
-import Droppable from './Droppable.jsx';
 
 class PlayerStreet extends React.Component {
+    componentDidUpdate() {
+        this.props.handleTownsquareWidth();
+    }
+
     buildStreet(player) {
         let onStreet = [];
 
@@ -20,35 +23,35 @@ class PlayerStreet extends React.Component {
                 _.map(player.cardPiles.cardsInPlay, (card) => {
                     if(card.uuid === location.uuid) {
                         onStreet.push(
-                                    <GameLocation key={location.uuid}
-                                    location={card}
-                                    handleMenuChange={this.props.handleMenuChange}
-                                    onMenuItemClick={this.props.onMenuItemClick}
-                                    onMouseOver={this.props.onMouseOver}
-                                    onMouseOut={this.props.onMouseOut}
-                                    otherPlayer={this.props.otherPlayer}
-                                    thisPlayer={this.props.thisPlayer}/>
+                            <GameLocation key={ location.uuid }
+                                location={ card }
+                                handleMenuChange={ this.props.handleMenuChange }
+                                onMenuItemClick={ this.props.onMenuItemClick }
+                                onMouseOver={ this.props.onMouseOver }
+                                onMouseOut={ this.props.onMouseOut }
+                                otherPlayer={ this.props.otherPlayer }
+                                thisPlayer={ this.props.thisPlayer }/>
 
-                                );
+                        );
                     }
                 });
             });      
         }
 
         if(onStreet.length === 0) {
-            onStreet.push(<GameLocation key='empty' location={{facedown:true}}/>);
+            onStreet.push(<GameLocation key='empty' location={ {facedown:true} }/>);
         } else {
-            onStreet.unshift(<GameLocation source='street-left' key='empty' location={{facedown:true}}/>);
-            onStreet.push(<GameLocation source='street-right' key='empty' location={{facedown:true}}/>);
+            onStreet.unshift(<GameLocation source='street-left' key='empty' location={ {facedown:true} }/>);
+            onStreet.push(<GameLocation source='street-right' key='empty' location={ {facedown:true} }/>);
         }
 
-        return <div className={className}>{onStreet}</div>;
+        return <div className={ className }>{ onStreet }</div>;
     }
 
     render() {
         return (
-            <div style={this.props.style} >
-                {this.buildStreet(this.props.owner)}
+            <div style={ this.props.style } >
+                { this.buildStreet(this.props.owner) }
             </div>
         );
 
@@ -59,6 +62,7 @@ PlayerStreet.displayName = 'PlayerStreet';
 PlayerStreet.propTypes = {
     className: PropTypes.string,
     handleMenuChange: PropTypes.func,
+    handleTownsquareWidth: PropTypes.func,
     onClick: PropTypes.func,
     onDragDrop: PropTypes.func,
     onMenuItemClick: PropTypes.func,

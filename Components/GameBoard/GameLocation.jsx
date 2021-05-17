@@ -17,6 +17,16 @@ export class InnerGameLocation extends React.Component {
         this.onMouseOver = this.onMouseOver.bind(this);
         this.onCardClick = this.onCardClick.bind(this);
         this.onDragDrop = this.onDragDrop.bind(this);
+
+        this.state = {
+            width: '100%'
+        };
+    }
+
+    componentDidMount() {
+        if(this.props.className === 'townsquare') {
+            this.props.setTownsquareComponent(this);
+        }
     }
 
     onCardClick(card) {
@@ -117,10 +127,12 @@ export class InnerGameLocation extends React.Component {
         } else {
             className = 'location-wrapper';
         }
+        const style = this.props.style || {};
+        style.width = this.state.width;
 
         return (
             <Droppable onDragDrop={ this.onDragDrop } source='play area' location={ this.props.location }>
-                <div className={ className } style={ this.props.style }>
+                <div className={ className } style={ style }>
                     { this.cardsHereByPlayer(this.props.otherPlayer) }
                     { this.getLocation() }
                     { this.cardsHereByPlayer(this.props.thisPlayer) }
@@ -146,6 +158,7 @@ InnerGameLocation.propTypes = {
     order: PropTypes.number,
     otherPlayer: PropTypes.object,
     sendGameMessage: PropTypes.func,
+    setTownsquareComponent: PropTypes.func,
     source: PropTypes.string,
     style: PropTypes.object,
     thisPlayer: PropTypes.object,
