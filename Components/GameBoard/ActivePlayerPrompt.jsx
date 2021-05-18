@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Draggable from 'react-draggable';
 
 import AbilityTargeting from './AbilityTargeting';
 import AbilityTimer from './AbilityTimer';
@@ -53,12 +54,18 @@ class ActivePlayerPrompt extends React.Component {
                 continue;
             }
 
+            let className = 'btn btn-default prompt-button';
+
             let clickCallback = button.timerCancel ? event => this.onCancelTimerClick(event, button) :
                 event => this.onButtonClick(event, button);
 
+            if(button.menuIcon) {
+                className += ' glyphicon glyphicon-' + button.menuIcon;
+            }
+
             let option = (
                 <button key={ button.command + buttonIndex.toString() }
-                    className='btn btn-default prompt-button'
+                    className={ className }
                     onClick={ clickCallback }
                     onMouseOver={ event => this.onMouseOver(event, button.card) }
                     onMouseOut={ event => this.onMouseOut(event, button.card) }
@@ -125,20 +132,32 @@ class ActivePlayerPrompt extends React.Component {
                 <AbilityTimer startTime={ this.props.timerStartTime } limit={ this.props.timerLimit } />);
         }
 
-        return (<div>
-            { timer }
-            <div className={ 'phase-indicator ' + this.props.phase } onClick={ this.props.onTitleClick }>
-                { this.props.phase } phase
-            </div>
-            { promptTitle }
-            <div className='menu-pane'>
-                <div className='panel'>
-                    <h4>{ promptText }</h4>
-                    { this.getControls() }
-                    { this.getButtons() }
+        var activePromptBounds = {
+            top: -1 * Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0) + 290,
+            bottom: 100,
+            left: 0,
+            right: Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) - 210
+        };
+
+        return (<Draggable handle='grip'
+            bounds={ activePromptBounds }>
+            <div>
+                { timer }
+                <grip style={ { cursor: 'grab' } }>
+                    <div className={ 'phase-indicator ' + this.props.phase } onClick={ this.props.onTitleClick }>
+                        { this.props.phase } phase
+                    </div>
+                </grip>
+                { promptTitle }
+                <div className='menu-pane'>
+                    <div className='panel'>
+                        <h4>{ promptText }</h4>
+                        { this.getControls() }
+                        { this.getButtons() }
+                    </div>
                 </div>
             </div>
-        </div>);
+        </Draggable>);
     }
 }
 

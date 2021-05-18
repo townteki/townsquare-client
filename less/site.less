@@ -11,6 +11,7 @@
 @import "gameboard";
 @import "cards";
 @import "location";
+@import "status";
 
 @font-face {
   font-family: agot;
@@ -58,6 +59,21 @@ h3 {
 h4 {
   font-size: 14px;
 }
+
+*::-webkit-scrollbar {
+  width: @scrollbar-width;
+  height: @scrollbar-width;
+  background:lightgray;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background:@brand-primary;
+} 
 
 .bg {
   padding-top: @navbar-height + 10px;
@@ -152,6 +168,7 @@ a {
 
 .btn-transparent {
   background-color: transparent;
+  padding: 7px 4px;
 }
 
 .wrapper {

@@ -40,7 +40,12 @@ class PlayerRow extends React.Component {
     }
 
     renderDroppablePile(source, child) {
-        return this.props.isMe ? <Droppable onDragDrop={ this.props.onDragDrop } source={ source }>{ child }</Droppable> : child;
+        let otherPlayerChild = (<div style={ { 
+            display: 'inline-block',
+            position: 'relative' } }>
+            { child }
+        </div>);
+        return this.props.isMe ? <Droppable onDragDrop={ this.props.onDragDrop } source={ source }>{ child }</Droppable> : otherPlayerChild;
     }
 
     render() {

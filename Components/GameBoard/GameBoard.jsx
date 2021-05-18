@@ -17,6 +17,7 @@ import GameChat from './GameChat';
 import GameConfigurationModal from './GameConfigurationModal';
 import * as actions from '../../actions';
 import TimeLimitClock from './TimeLimitClock';
+import StatusPanel from './StatusPanel';
 
 const placeholderPlayer = {
     legend: null,
@@ -48,6 +49,7 @@ export class GameBoard extends React.Component {
         this.onCardClick = this.onCardClick.bind(this);
         this.handleDrawPopupChange = this.handleDrawPopupChange.bind(this);
         this.handleMenuChange = this.handleMenuChange.bind(this);
+        this.handleTownsquareWidth = this.handleTownsquareWidth.bind(this);
         this.onDragDrop = this.onDragDrop.bind(this);
         this.onCommand = this.onCommand.bind(this);
         this.onConcedeClick = this.onConcedeClick.bind(this);
@@ -60,6 +62,7 @@ export class GameBoard extends React.Component {
         this.onSettingsClick = this.onSettingsClick.bind(this);
         this.onMessagesClick = this.onMessagesClick.bind(this);
         this.onOutfitCardClick = this.onOutfitCardClick.bind(this);		
+        this.setTownsquareComponent = this.setTownsquareComponent.bind(this);	
 
         this.state = {
             cardToZoom: undefined,
@@ -136,6 +139,10 @@ export class GameBoard extends React.Component {
         }
     }
 
+    setTownsquareComponent(tsComponent) {
+        this.townsquare = tsComponent;
+    }
+
     onConcedeClick() {
         this.props.sendGameMessage('concede');
     }
@@ -210,6 +217,14 @@ export class GameBoard extends React.Component {
             this.componentWithMenu = component;
         } else {
             this.componentWithMenu = null;
+        }
+    }
+
+    handleTownsquareWidth() {
+        if(this.townsquare) {
+            const widthMy = document.getElementById('mystreet').clientWidth;
+            const widthOther = document.getElementById('otherstreet').clientWidth;
+            this.townsquare.setState({ width: Math.max(widthMy, widthOther) - 20 });
         }
     }
 
@@ -300,9 +315,14 @@ export class GameBoard extends React.Component {
     }
 
     renderBoard(thisPlayer, otherPlayer) {
+        let boundActionCreators = bindActionCreators(actions, this.props.dispatch);
         return [
             <div key='board-middle' className='board-middle'>
                 <div className='player-home-row'>
+                    <div className='player-stats-row other-side'>
+                        <PlayerStats stats={ otherPlayer.stats }
+                            user={ otherPlayer.user } firstPlayer={ otherPlayer.firstPlayer } />
+                    </div>
                     <PlayerRow
                         hand={ otherPlayer.cardPiles.hand } isMe={ false }
                         drawHand={ otherPlayer.cardPiles.drawHand } isMe={ false }						
@@ -322,66 +342,52 @@ export class GameBoard extends React.Component {
                         side='top'
                         cardSize={ this.props.user.settings.cardSize } />
                 </div>
-                <div className='board-inner'>
-                    <div className='prompt-area'>
+                <StatusPanel/>
+                <div id='play-area' className='play-area' onDragOver={ this.onDragOver }>
+                    <div id='otherstreet' className='player-street other-side'>
+                        <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop }
+                            onMenuItemClick={ this.onMenuItemClick } className='other-side' owner={ otherPlayer } otherPlayer={ otherPlayer } 
+                            handleMenuChange={ this.handleMenuChange } handleTownsquareWidth={ this.handleTownsquareWidth } thisPlayer={ thisPlayer }/>
+                    </div>					
 
-                        <div className='inset-pane'>
-                            <ActivePlayerPrompt
-                                cards={ this.props.cards }
-                                buttons={ thisPlayer.buttons }
-                                controls={ thisPlayer.controls }
-                                promptText={ thisPlayer.menuTitle }
-                                promptTitle={ thisPlayer.promptTitle }
-                                onButtonClick={ this.onCommand }
-                                onMouseOver={ this.onMouseOver }
-                                onMouseOut={ this.onMouseOut }
-                                user={ this.props.user }
-                                phase={ thisPlayer.phase }
-                                timerLimit={ this.props.timerLimit }
-                                timerStartTime={ this.props.timerStartTime }
-                                stopAbilityTimer={ this.props.stopAbilityTimer } />
-                        </div>
+                    <div className='townsquare-container'>
+                        <GameLocation location={ {uuid:'townsquare', name:'Town Square'} }
+                            cardLocation='townsquare' className='townsquare'
+                            handleMenuChange={ this.handleMenuChange }
+                            onMouseOver={ this.onMouseOver }
+                            onMouseOut={ this.onMouseOut }
+                            onDragDrop={ this.onDragDrop }
+                            onMenuItemClick={ this.onMenuItemClick }
+                            onClick={ this.onCardClick }
+                            setTownsquareComponent = { this.setTownsquareComponent }
+                            otherPlayer={ otherPlayer }
+                            thisPlayer={ thisPlayer }/>
                     </div>
-                    <div className='play-area' onDragOver={ this.onDragOver }>
-					
-                        <div className='player-street other-side'>
-                            <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop }
-                                onMenuItemClick={ this.onMenuItemClick } className='other-side' owner={ otherPlayer } otherPlayer={ otherPlayer } 
-                                handleMenuChange={ this.handleMenuChange } thisPlayer={ thisPlayer }/>
-                        </div>					
-
-                        <div>
-                            <GameLocation location={ {uuid:'townsquare', name:'Town Square'} }
-                                cardLocation='townsquare' className='townsquare'
-                                handleMenuChange={ this.handleMenuChange }
-                                onMouseOver={ this.onMouseOver }
-                                onMouseOut={ this.onMouseOut }
-                                onDragDrop={ this.onDragDrop }
-                                onMenuItemClick={ this.onMenuItemClick }
-                                onClick={ this.onCardClick }
-                                otherPlayer={ otherPlayer }
-                                thisPlayer={ thisPlayer }/>
-                        </div>
 								
-                        <div className='player-street'>
-                            <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop } className='our-side'
-                                handleMenuChange={ this.handleMenuChange } onMenuItemClick={ this.onMenuItemClick } owner={ thisPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
-                        </div>								
+                    <div id='mystreet' className='player-street'>
+                        <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop } className='our-side'
+                            handleMenuChange={ this.handleMenuChange } onMenuItemClick={ this.onMenuItemClick } owner={ thisPlayer } otherPlayer={ otherPlayer } 
+                            handleTownsquareWidth={ this.handleTownsquareWidth } thisPlayer={ thisPlayer }/>
+                    </div>								
 
+                </div>
+                <div className='out-of-town-area'>
+                    <div className='out-of-town' onDragOver={ this.onDragOver }>
+                        <OutOfTown onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onMenuItemClick={ this.onMenuItemClick }
+                            handleMenuChange={ this.handleMenuChange } className={ 'other-side' } owner={ otherPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
                     </div>
-                    <div className='out-of-town-area'>
-                        <div className='out-of-town' onDragOver={ this.onDragOver }>
-                            <OutOfTown onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onMenuItemClick={ this.onMenuItemClick }
-                                handleMenuChange={ this.handleMenuChange } className={ 'other-side' } owner={ otherPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
-                        </div>
 
-                        <div className='out-of-town' onDragOver={ this.onDragOver }>
-                            <OutOfTown onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onMenuItemClick={ this.onMenuItemClick }
-                                handleMenuChange={ this.handleMenuChange } owner={ thisPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
-                        </div>
+                    <div className='out-of-town' onDragOver={ this.onDragOver }>
+                        <OutOfTown onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onMenuItemClick={ this.onMenuItemClick }
+                            handleMenuChange={ this.handleMenuChange } owner={ thisPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
                     </div>
                 </div>
                 <div className='player-home-row our-side'>
+                    <div className='player-stats-row'>
+                        <PlayerStats { ...boundActionCreators } stats={ thisPlayer.stats } showControls={ !this.state.spectating } user={ thisPlayer.user }
+                            firstPlayer={ thisPlayer.firstPlayer } onSettingsClick={ this.onSettingsClick } showMessages
+                            onMessagesClick={ this.onMessagesClick } numMessages={ this.state.newMessages } />
+                    </div>
                     <PlayerRow isMe={ !this.state.spectating }
                         hand={ thisPlayer.cardPiles.hand }
                         drawHand={ thisPlayer.cardPiles.drawHand }						
@@ -439,8 +445,6 @@ export class GameBoard extends React.Component {
         thisPlayer = this.defaultPlayerInfo(thisPlayer);
         otherPlayer = this.defaultPlayerInfo(otherPlayer);
 
-        let boundActionCreators = bindActionCreators(actions, this.props.dispatch);
-
         let boardClass = classNames('game-board', {
             'select-cursor': thisPlayer && thisPlayer.selectCard
         });
@@ -457,15 +461,27 @@ export class GameBoard extends React.Component {
                     promptDupes={ thisPlayer.promptDupes }
                     promptedActionWindows={ thisPlayer.promptedActionWindows }
                     timerSettings={ thisPlayer.timerSettings } />
-                <div className='player-stats-row'>
-                    <PlayerStats stats={ otherPlayer.stats }
-                        user={ otherPlayer.user } firstPlayer={ otherPlayer.firstPlayer } />
-                </div>
                 <div className='main-window'>
                     { this.renderBoard(thisPlayer, otherPlayer) }
+                    <div className='inset-pane'>
+                        <ActivePlayerPrompt
+                            cards={ this.props.cards }
+                            buttons={ thisPlayer.buttons }
+                            controls={ thisPlayer.controls }
+                            promptText={ thisPlayer.menuTitle }
+                            promptTitle={ thisPlayer.promptTitle }
+                            onButtonClick={ this.onCommand }
+                            onMouseOver={ this.onMouseOver }
+                            onMouseOut={ this.onMouseOut }
+                            user={ this.props.user }
+                            phase={ thisPlayer.phase }
+                            timerLimit={ this.props.timerLimit }
+                            timerStartTime={ this.props.timerStartTime }
+                            stopAbilityTimer={ this.props.stopAbilityTimer } />
+                    </div>
                     <CardZoom imageUrl={ this.props.cardToZoom ? '/img/cards/' + this.props.cardToZoom.code + '.jpg' : '' }
-                        orientation={ this.props.cardToZoom ? this.props.cardToZoom.type === 'plot' ? 'horizontal' : 'vertical' : 'vertical' }
-                        show={ !!this.props.cardToZoom } cardName={ this.props.cardToZoom ? this.props.cardToZoom.name : null }
+                        orientation='vertical'
+                        show={ !!this.props.cardToZoom } cardName={ this.props.cardToZoom ? this.props.cardToZoom.title : null }
                         card={ this.props.cardToZoom ? this.props.cards[this.props.cardToZoom.code] : null } />
                     { this.state.showMessages && <div className='right-side'>
                         <div className='gamechat'>
@@ -473,15 +489,17 @@ export class GameBoard extends React.Component {
                                 messages={ this.props.currentGame.messages }
                                 onCardMouseOut={ this.onMouseOut }
                                 onCardMouseOver={ this.onMouseOver }
-                                onSendChat={ this.sendChatMessage } />
+                                onSendChat={ this.sendChatMessage } showMessages
+                                onMessagesClick={ this.onMessagesClick } numMessages={ this.state.newMessages } />
                         </div>
                     </div>
                     }
-                </div>
-                <div className='player-stats-row'>
-                    <PlayerStats { ...boundActionCreators } stats={ thisPlayer.stats } showControls={ !this.state.spectating } user={ thisPlayer.user }
-                        firstPlayer={ thisPlayer.firstPlayer } onSettingsClick={ this.onSettingsClick } showMessages
-                        onMessagesClick={ this.onMessagesClick } numMessages={ this.state.newMessages } />
+                    <div className='chat-status' onClick={ this.onMessagesClick }>
+                        <button className='btn btn-transparent'>
+                            <span className='glyphicon glyphicon-envelope' />
+                            <span className='chat-badge badge progress-bar-danger'>{ this.state.newMessages || null }</span>
+                        </button>
+                    </div>
                 </div>
             </div >);
     }
