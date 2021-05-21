@@ -37,9 +37,11 @@ const commands = [
     '/remove-from-posse ',
     '/remove-keyword ',
     '/reset-abilities ',
+    '/reset-stats ',
     '/reveal-hand ',
     '/shooter stud',
     '/shooter draw',
+    '/shuffle-discard ',
     '/skill blessed ',
     '/skill huckster ',
     '/skill shaman ',
@@ -47,6 +49,7 @@ const commands = [
     '/suit ',
     '/token ',
     '/unblank ',
+    '/use ',
     '/value '
 ];
 
