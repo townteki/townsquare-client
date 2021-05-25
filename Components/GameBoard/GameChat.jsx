@@ -29,6 +29,7 @@ const commands = [
     '/join-posse ',
     '/join-without-move ',
     '/kung-fu ',
+    '/look-deck ',
     '/move ',
     '/pass ',
     '/pull ',
