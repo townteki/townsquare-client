@@ -62,7 +62,7 @@ export class PlayerStats extends React.Component {
                     </div>
                 </div> : null }
 
-                { this.getButton('ghostrock', 'ghostrock', this.props.showControls) }
+                { this.getButton('ghostrock', 'ghostrock', !!this.props.showControls) }
                 { this.getButton('control', 'control', false) }
                 { this.getButton('influence', 'influence', false) }
 
