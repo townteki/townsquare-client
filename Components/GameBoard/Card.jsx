@@ -89,7 +89,9 @@ class InnerCard extends React.Component {
         if(this.isAllowedMenuSource() && this.props.card.menu && this.props.card.menu.length !== 0) {
             const currentShowMenu = !this.state.showMenu;
             this.setState({ showMenu: currentShowMenu });
-            this.props.handleMenuChange(this, currentShowMenu);
+            if(this.props.handleMenuChange) {
+                this.props.handleMenuChange(this, currentShowMenu);
+            }
             return;
         }
 
@@ -103,7 +105,9 @@ class InnerCard extends React.Component {
             this.props.onMenuItemClick(this.props.card, menuItem);
             const currentShowMenu = !this.state.showMenu;
             this.setState({ showMenu: currentShowMenu });
-            this.props.handleMenuChange(this, currentShowMenu);
+            if(this.props.handleMenuChange) {
+                this.props.handleMenuChange(this, currentShowMenu);
+            }
         }
     }
 
@@ -155,6 +159,7 @@ class InnerCard extends React.Component {
                     className={ classNames('attachment', `attachment-${index}`, { 'opponent': this.props.isOpponent, 'hovered': this.state.isHovered }) } 
                     wrapped={ false }
                     hideTokens
+                    handleMenuChange={ this.props.handleMenuChange }
                     attIndex={ index }
                     attPanelNumber={ this.state.isExpanded ? this.props.card.attachments.length : 0 }
                     handleExpand={ this.handleExpand.bind(this) }
