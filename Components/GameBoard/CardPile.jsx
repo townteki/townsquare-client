@@ -50,7 +50,9 @@ class CardPile extends React.Component {
         if(this.props.menu) {
             const currentShowMenu = !this.state.showMenu;
             this.setState({ showMenu: currentShowMenu });
-            this.props.handleMenuChange(this, currentShowMenu);
+            if(this.props.handleMenuChange) {
+                this.props.handleMenuChange(this, currentShowMenu);
+            }
             return;
         }
 
@@ -90,7 +92,9 @@ class CardPile extends React.Component {
         if(this.props.menu) {
             const currentShowMenu = !this.state.showMenu;
             this.setState({ showMenu: currentShowMenu });
-            this.props.handleMenuChange(this, currentShowMenu);
+            if(this.props.handleMenuChange) {
+                this.props.handleMenuChange(this, currentShowMenu);
+            }
             return;
         }
 
