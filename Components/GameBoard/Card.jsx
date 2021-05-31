@@ -46,7 +46,10 @@ class InnerCard extends React.Component {
         };
     }
 
-    handleExpand() {
+    handleExpand(event) {
+        if(event) {
+            event.stopPropagation();
+        }
         if(this.props.handleExpand) {
             this.props.handleExpand();
             return;
