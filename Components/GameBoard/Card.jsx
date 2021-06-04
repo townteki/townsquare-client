@@ -131,6 +131,9 @@ class InnerCard extends React.Component {
         if(card.influence !== null && card.influence !== (card.printedStats.influence || 0)) {
             counters.push({ name: 'card-influence', count: card.influence, fade: true, shortName: 'I' });        
         }
+        if(card.value !== null && card.value !== (card.printedStats.value || 0)) {
+            counters.push({ name: 'card-value', count: card.value, fade: true, shortName: 'V' });        
+        }
         if(card.upkeep !== null && card.upkeep !== (card.printedStats.upkeep || 0)) {
             counters.push({ name: 'card-upkeep', count: card.upkeep, fade: true, shortName: 'U' });        
         }
