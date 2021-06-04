@@ -76,7 +76,7 @@ class HowToPlay extends React.Component {
                         <div className='htp-subtopic'>
                             <h4 className='htp-subtitle'>Basic Card Stats Manipulation</h4>
                             <ul>
-                                <li>/bullets x - Sets the bullets of a dude to x.</li>
+                                <li>/bullets [x | +/-mod] - Sets the bullets of a dude to x.</li>
                                 <li>/clear-shooter - Clears the shooter type set by the chat command.</li>
                                 <li>/clear-suit - Clears the suit effects done by chat commands.</li>
                                 <li>/control x - Sets the control of a card to x.</li>
@@ -125,11 +125,15 @@ class HowToPlay extends React.Component {
                                 <li>/attach - attach card to another card.</li>
                                 <li>/cancel-shootout - Cancels the current shootout.</li>
                                 <li>/cancel-prompt - Clears the current prompt and resume the game flow.  Use with caution and only when the prompt is 'stuck' and you are unable to continue.</li>
+                                <li>/done - Changes active player to next player.</li>
                                 <li>/give-control - Gives control of a card to your opponent.  Use with caution.</li>
                                 <li>/hand-rank x - Modifies hand rank of the current player by x.</li>
+                                <li>/look-deck x - Looks at top x cards of your deck.</li>
+                                <li>/pass - Passes current play.</li>
                                 <li>/rematch - Start over a new game with the current opponent.</li>
                                 <li>/remove-from-game - Removes a card from the game.</li>
                                 <li>/reveal-hand - Reveals your hand to the opponent.</li>
+                                <li>/reveal-deck x - Reveals top x cards from your deck.</li>
                                 <li>/shuffle-discard - Shuffles discard pile to draw deck.</li>
                             </ul>
                         </div>
