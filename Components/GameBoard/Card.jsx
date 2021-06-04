@@ -256,6 +256,16 @@ class InnerCard extends React.Component {
             </div>);
     }
 
+    showUnscripted() {
+        if(this.props.card.scripted) {
+            return null;
+        }
+
+        return (<div className='card-unscripted'>
+            <img className='unscripted-image' src='/img/tokens/scripted_skull.png' />;
+        </div>);        
+    }
+
     getCard() {
         if(!this.props.card) {
             return <div />;
@@ -300,6 +310,7 @@ class InnerCard extends React.Component {
                         { image }
                     </div>
                     { this.showCounters() ? <CardCounters counters={ this.getCountersForCard(this.props.card) } /> : null }
+                    { this.showUnscripted() }
                 </div>
                 { this.showMenu() ? <CardMenu menu={ this.props.card.menu } onMenuItemClick={ this.onMenuItemClick } /> : null }
             </div>);
@@ -392,6 +403,7 @@ InnerCard.propTypes = {
         production: PropTypes.number,
         selectable: PropTypes.bool,
         selected: PropTypes.bool,
+        scripted: PropTypes.bool,
         tokens: PropTypes.object,
         type_code: PropTypes.string,
         unselectable: PropTypes.bool,
