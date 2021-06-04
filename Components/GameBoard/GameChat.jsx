@@ -86,9 +86,11 @@ class GameChat extends React.Component {
 
     renderMenuItemChildren(option, { text }) {
         return (<Fragment>
-            <Highlighter search={ text }>
-                { option.syntax || option.label }
-            </Highlighter>
+            <div className='chat-command-syntax'>
+                <Highlighter search={ text }>
+                    { option.syntax || option.label }
+                </Highlighter>
+            </div>
             <div>
                 <small>
                     { option.desc }
