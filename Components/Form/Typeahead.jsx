@@ -15,7 +15,7 @@ class Input extends React.Component {
                 <div className={ this.props.fieldClass }>
                     <Typeahead ref='typeahead' options={ this.props.options } labelKey={ this.props.labelKey } emptyLabel={ this.props.emptyLabel }
                         onChange={ this.props.onChange } placeholder={ this.props.placeholder } autoFocus={ this.props.autoFocus } dropup={ this.props.dropup }
-                        minLength={ this.props.minLength } onInputChange={ this.props.onInputChange }
+                        minLength={ this.props.minLength } onInputChange={ this.props.onInputChange } renderMenuItemChildren={ this.props.renderMenuItemChildren }
                         submitFormOnEnter={ this.props.submitFormOnEnter } onKeyDown={ this.props.onKeyDown } disabled={ this.props.disabled }/>
                     { this.props.validationMessage ? <span className='help-block'>{ this.props.validationMessage } </span> : null }
                 </div>
@@ -53,6 +53,7 @@ Input.propTypes = {
     onKeyDown: PropTypes.func,
     options: PropTypes.array,
     placeholder: PropTypes.string,
+    renderMenuItemChildren: PropTypes.func,
     submitFormOnEnter: PropTypes.bool,
     validationMessage: PropTypes.string,
     value: PropTypes.string

@@ -140,6 +140,14 @@
       height: @card-sm-width;
       width: @card-sm-height;
     }
+
+    &.booted {
+      height: @card-sm-height;
+      width: @card-sm-width;
+      left: 10px;
+      top: -10px;
+      transform: rotate(90deg);      
+    }
   }
 
   &.large {
@@ -154,8 +162,10 @@
     }
 
     &.booted {
-      left: 19px;
-      top: -20px;
+      height: @card-lg-height;
+      width: @card-lg-width;
+      left: 17px;
+      top: -19px;
       transform: rotate(90deg);
     }
   }
@@ -172,6 +182,8 @@
     }
 
     &.booted {
+      height: @card-xl-height;
+      width: @card-xl-width;
       left: 24px;
       top: -26px;
       transform: rotate(90deg);
@@ -189,6 +201,8 @@
   }
 
   &.booted {
+    height: @card-height;
+    width: @card-width;
     left: 12px;
     top: -12px;
     transform: rotate(90deg);

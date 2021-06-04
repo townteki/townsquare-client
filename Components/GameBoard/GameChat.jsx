@@ -1,59 +1,60 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 
 import Messages from './Messages';
 import Typeahead from '../Form/Typeahead';
+import { Highlighter } from 'react-bootstrap-typeahead';
 
-const commands = [ 
-    '/ace ',
-    '/add-keyword ',
-    '/add-card ',
-    '/attach ',
-    '/bullets ',
-    '/blank ',
-    '/bounty ',
-    '/cancel-prompt ',
-    '/cancel-shootout ',
-    '/clear-shooter ',
-    '/clear-suit ',
-    '/clear-effects ',
-    '/control ',
-    '/discard-deck ',
-    '/discard-random ',
-    '/disconnectme ',
-    '/draw ',
-    '/give-control ',
-    '/hand-rank ',
-    '/inf ',
-    '/join-posse ',
-    '/join-without-move ',
-    '/kung-fu ',
-    '/look-deck ',
-    '/move ',
-    '/pass ',
-    '/pull ',
-    '/pull kf',
-    '/rematch ',
-    '/remove-from-game ',
-    '/remove-from-posse ',
-    '/remove-keyword ',
-    '/reset-abilities ',
-    '/reset-stats ',
-    '/reveal-deck ',
-    '/reveal-hand ',
-    '/shooter stud',
-    '/shooter draw',
-    '/shuffle-discard ',
-    '/skill blessed ',
-    '/skill huckster ',
-    '/skill shaman ',
-    '/skill mad ',
-    '/suit ',
-    '/token ',
-    '/unblank ',
-    '/use ',
-    '/value '
+const commands = [
+    { label: '/ace ', desc: 'Ace a card' },
+    { label: '/add-keyword ', syntax: '/add-keyword k', desc: 'Add keyword k to a card' },
+    { label: '/add-card ', syntax: '/add-card [code | title]', desc: 'Add card to the top of the Draw deck' },
+    { label: '/attach ', desc: 'Attach card to another card' },
+    { label: '/bullets ', syntax: '/bullets [x | +/-mod]', desc: 'Sets bullets to x or modifies it by +/-mod' },
+    { label: '/blank ', desc: 'Blanks a card' },
+    { label: '/bounty ', syntax: '/bounty [x | +/-mod]', desc: 'Sets bounty to x or modifies it by +/-mod' },
+    { label: '/cancel-prompt ', desc: 'Clears the current prompt and resume' },
+    { label: '/cancel-shootout ', desc: 'Cancels the current shootout' },
+    { label: '/clear-shooter ', desc: 'Clears the shooter type set by the chat command' },
+    { label: '/clear-suit ', desc: 'Clears the suit effects' },
+    { label: '/clear-effects ', desc: 'Clears any effects on a card' },
+    { label: '/control ', syntax: '/control [x | +/-mod]', desc: 'Sets control to x or modifies it by +/-mod' },
+    { label: '/done', desc: 'Changes active player to next player' },
+    { label: '/discard-deck ', syntax: '/discard-deck x', desc: 'Discards top x cards from your deck' },
+    { label: '/discard-random ', syntax: '/discard-random x', desc: 'Discards random x cards from your hand' },
+    { label: '/draw ', syntax: '/draw x', desc: 'Draws x cards from your deck' },
+    { label: '/give-control ', desc: 'Gives control of a card to your opponent' },
+    { label: '/hand-rank ', syntax: '/hand-rank x', desc: 'Sets your hand rank to x' },
+    { label: '/inf ', syntax: '/inf [x | +/-mod]', desc: 'Sets influence to x or modifies it by +/-mod' },
+    { label: '/join-posse ', desc: 'Moves and joins dude to current shootout' },
+    { label: '/join-without-move ', desc: 'Joins dude to current shootout w/o moving' },
+    { label: '/kung-fu ', syntax: '/kung-fu [x | +/-mod]', desc: 'Sets Kung Fu to x or modifies it by +/-mod' },
+    { label: '/look-deck ', syntax: '/look-deck x', desc: 'Looks at top x cards of your deck' },
+    { label: '/move ', desc: 'Moves a dude' },
+    { label: '/pass ', desc: 'Passes current play' },
+    { label: '/pull ', syntax: '/pull [x]', desc: 'Pulls with optional difficulty x' },
+    { label: '/pull kf', desc: 'Pulls for technique' },
+    { label: '/rematch ', desc: 'Start a new game with current opponent' },
+    { label: '/remove-from-game ', desc: 'Removes a card from the game' },
+    { label: '/remove-from-posse ', desc: 'Removes a dude from the current shootout' },
+    { label: '/remove-keyword ', syntax: '/remove-keyword k', desc: 'Remove keyword k from a card' },
+    { label: '/reset-abilities ', desc: 'Reset abilities usage of a card' },
+    { label: '/reset-stats ', syntax: '/reset-stats [stat]', desc: 'Resets stat to printed (all if stat is omitted)' },
+    { label: '/reveal-deck ', syntax: '/reveal-deck x', desc: 'Reveals top x cards from your deck' },
+    { label: '/reveal-hand ', desc: 'Reveals your hand to the opponent' },
+    { label: '/shooter stud', desc: 'Sets shooter type of a dude to stud' },
+    { label: '/shooter draw', desc: 'Sets shooter type of a dude to draw' },
+    { label: '/shuffle-discard ', desc: 'Shuffles discard pile to draw deck' },
+    { label: '/skill blessed ', syntax: '/skill blessed [x | +/-mod]', desc: 'Sets skill to x or modifies it by +/-mod' },
+    { label: '/skill huckster ', syntax: '/skill huckster [x | +/-mod]', desc: 'Sets skill to x or modifies it by +/-mod' },
+    { label: '/skill shaman ', syntax: '/skill shaman [x | +/-mod]', desc: 'Sets skill to x or modifies it by +/-mod' },
+    { label: '/skill mad ', syntax: '/skill mad [x | +/-mod]', desc: 'Sets skill to x or modifies it by +/-mod' },
+    { label: '/suit ', syntax: '/suit [hearts | clubs | diams | spades]', desc: 'Sets the suit of a card' },
+    { label: '/token ', syntax: '/token t x', desc: 'Sets the count of a token type t to x' },
+    { label: '/unblank ', desc: 'Unblanks a card' },
+    { label: '/use ', desc: 'Announces use of unscripted card' },
+    { label: '/value ', syntax: '/value [x | +/-mod]', desc: 'Sets value to x or modifies it by +/-mod' }
 ];
 
 class GameChat extends React.Component {
@@ -63,6 +64,7 @@ class GameChat extends React.Component {
         this.onInputChange = this.onInputChange.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
         this.onScroll = this.onScroll.bind(this);
+        this.renderMenuItemChildren = this.renderMenuItemChildren.bind(this);
 
         this.state = {
             canScroll: true,
@@ -80,6 +82,21 @@ class GameChat extends React.Component {
         if(this.state.canScroll) {
             $(this.refs.messagePanel).scrollTop(999999);
         }
+    }
+
+    renderMenuItemChildren(option, { text }) {
+        return (<Fragment>
+            <div className='chat-command-syntax'>
+                <Highlighter search={ text }>
+                    { option.syntax || option.label }
+                </Highlighter>
+            </div>
+            <div>
+                <small>
+                    { option.desc }
+                </small>
+            </div>
+        </Fragment>);
     }
 
     onScroll() {
@@ -125,8 +142,8 @@ class GameChat extends React.Component {
                     <Messages messages={ this.props.messages } onCardMouseOver={ this.props.onCardMouseOver } onCardMouseOut={ this.props.onCardMouseOut } />
                 </div>
                 <form className='form chat-form'>
-                    <Typeahead ref='message' options={ commands } emptyLabel={ '' } minLength={ this.state.minLength } dropup
-                        placeholder='Chat...' onKeyDown={ this.onKeyPress } onInputChange={ this.onInputChange } />
+                    <Typeahead ref='message' options={ commands } labelKey={ option => option.label } emptyLabel={ '' } minLength={ this.state.minLength } dropup
+                        placeholder='Chat...' onKeyDown={ this.onKeyPress } onInputChange={ this.onInputChange } renderMenuItemChildren={ this.renderMenuItemChildren } />
                 </form>
             </div>);
     }

@@ -259,12 +259,29 @@ class InnerCard extends React.Component {
             </div>);
     }
 
+    showUnscripted(classOrientation) {
+        if(this.props.card.scripted || this.isFacedown()) {
+            return null;
+        }
+
+        let unscriptImageClass = classNames('unscripted-image', this.sizeClass, classOrientation);
+
+        return (<div className='card-unscripted'>
+            <img className={ unscriptImageClass } src='/img/tokens/scripted_skull.png' />;
+        </div>);        
+    }
+
     getCard() {
         if(!this.props.card) {
             return <div />;
         }
 
         var className = this.props.className ? this.props.className : '';
+        var classOrientation = {
+            'horizontal': this.props.orientation === 'horizontal',
+            'vertical': this.props.orientation !== 'horizontal' && this.props.orientation !== 'booted' && !this.props.card.booted,
+            'booted': this.props.orientation === 'booted' || this.props.card.booted || this.props.orientation === 'horizontal'
+        };
 
         let cardClass = classNames('card', `card-type-${this.props.card.type_code}`, className, this.sizeClass, this.statusClass, {
             'custom-card': this.props.card.code && this.props.card.code.startsWith('custom'),
@@ -277,11 +294,7 @@ class InnerCard extends React.Component {
             'hovered': this.state.isHovered,
             'booted': this.props.orientation === 'booted' || this.props.card.booted || this.props.orientation === 'horizontal'
         });
-        let imageClass = classNames('card-image', this.sizeClass, {
-            'horizontal': this.props.orientation === 'horizontal',
-            'vertical': this.props.orientation !== 'horizontal',
-            'booted': this.props.orientation === 'booted' || this.props.card.booted || this.props.orientation === 'horizontal'
-        });
+        let imageClass = classNames('card-image', this.sizeClass, classOrientation);
 
         let image = <img className={ imageClass } src={ this.imageUrl } />;
 
@@ -303,6 +316,7 @@ class InnerCard extends React.Component {
                         { image }
                     </div>
                     { this.showCounters() ? <CardCounters counters={ this.getCountersForCard(this.props.card) } /> : null }
+                    { this.showUnscripted(classOrientation) }
                 </div>
                 { this.showMenu() ? <CardMenu menu={ this.props.card.menu } onMenuItemClick={ this.onMenuItemClick } /> : null }
             </div>);
@@ -395,6 +409,7 @@ InnerCard.propTypes = {
         production: PropTypes.number,
         selectable: PropTypes.bool,
         selected: PropTypes.bool,
+        scripted: PropTypes.bool,
         tokens: PropTypes.object,
         type_code: PropTypes.string,
         unselectable: PropTypes.bool,

@@ -76,15 +76,15 @@ class HowToPlay extends React.Component {
                         <div className='htp-subtopic'>
                             <h4 className='htp-subtitle'>Basic Card Stats Manipulation</h4>
                             <ul>
-                                <li>/bullets x - Sets the bullets of a dude to x.</li>
+                                <li>/bullets [x | +/-mod] - Sets the bullets of a dude to x or modifies it by mod.</li>
                                 <li>/clear-shooter - Clears the shooter type set by the chat command.</li>
                                 <li>/clear-suit - Clears the suit effects done by chat commands.</li>
-                                <li>/control x - Sets the control of a card to x.</li>
-                                <li>/inf x [t] - Sets the influence of a dude to x. Optional parameter "t" can be set to 'influence:deed' if you want to set only influence for controlling deeds.</li>
+                                <li>/control [x | +/-mod] - Sets the control of a card to x or modifies it by mod.</li>
+                                <li>/inf [x | +/-mod] [t] - Sets the influence of a dude to x or modifies it by mod. Optional parameter "t" can be set to 'influence:deed' if you want to set only influence for controlling deeds.</li>
                                 <li>/reset-stats [suit | value | bullets | influence | control | upkeep | production] - Resets stat to printed (all if stat is omitted).</li>
                                 <li>/shooter [stud | draw] - Sets shooter type of a dude to stud or draw.</li>
                                 <li>/suit [hearts | clubs | diams | spades] - Sets the suit of a card.</li>
-                                <li>/value x - Sets the value of a dude to x</li>
+                                <li>/value [x | +/-mod] - Sets the value of a dude to x or modifies it by mod.</li>
                             </ul>
                         </div>
                         <div className='htp-subtopic'>
@@ -92,12 +92,12 @@ class HowToPlay extends React.Component {
                             <ul>
                                 <li>/add-keyword k - adds keyword k to a card.</li>
                                 <li>/blank - Blanks a card.</li>
-                                <li>/bounty x - Sets the bounty of a dude to x.</li>
+                                <li>/bounty [x | +/-mod] - Sets the bounty of a dude to x or modifies it by mod.</li>
                                 <li>/clear-effects - Clears any effects on a card.</li>
-                                <li>/kung-fu x - Modifies kung fu rating of a selected dude by x.</li>
+                                <li>/kung-fu [x | +/-mod] - Sets kung fu rating of a selected dude to x or modifies it by mod.</li>
                                 <li>/remove-keyword k - Removes keyword k from a card.</li>
                                 <li>/reset-abilities - Resets/Refreshes ability usage on a card.</li>
-                                <li>/skill-rating [blessed | shaman | huckster | mad] x - Modifies specified skill rating of selected dude by x.</li>
+                                <li>/skill-rating [blessed | shaman | huckster | mad] [x | +/-mod] - Sets specified skill rating of selected dude to x or modifies it by mod.</li>
                                 <li>/token t x - Sets the token count of a card of type 't' to 'x'. Currently used token types are: 'bounty' and 'ghostrock'.<br /><strong>Note:</strong> For stud and draw use /shooter command, for bullets, control and influence use their respective commands.</li>
                                 <li>/unblank - Unblanks a card.</li>
                             </ul>
@@ -125,11 +125,15 @@ class HowToPlay extends React.Component {
                                 <li>/attach - attach card to another card.</li>
                                 <li>/cancel-shootout - Cancels the current shootout.</li>
                                 <li>/cancel-prompt - Clears the current prompt and resume the game flow.  Use with caution and only when the prompt is 'stuck' and you are unable to continue.</li>
+                                <li>/done - Changes active player to next player.</li>
                                 <li>/give-control - Gives control of a card to your opponent.  Use with caution.</li>
                                 <li>/hand-rank x - Modifies hand rank of the current player by x.</li>
+                                <li>/look-deck x - Looks at top x cards of your deck.</li>
+                                <li>/pass - Passes current play.</li>
                                 <li>/rematch - Start over a new game with the current opponent.</li>
                                 <li>/remove-from-game - Removes a card from the game.</li>
                                 <li>/reveal-hand - Reveals your hand to the opponent.</li>
+                                <li>/reveal-deck x - Reveals top x cards from your deck.</li>
                                 <li>/shuffle-discard - Shuffles discard pile to draw deck.</li>
                             </ul>
                         </div>
