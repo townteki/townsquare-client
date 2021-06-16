@@ -7,10 +7,10 @@ class HowToPlay extends React.Component {
     render() {
         return (
             <div className='col-xs-12'>
-                <Panel title='How To Play on The Iron Throne'>
+                <Panel title='How To Play on Doomtown Online'>
                     <h3 className='htp-intro'>Introduction</h3>
-                    <a className='btn btn-danger btn-lg pull-right' target='_blank' href='https://github.com/cryogen/throneteki/issues'>Report Problems</a>
-                    <p>This guide is aimed at players familiar with the A Game of Thrones: The Card Game 2nd Edition who want to start playing online using The Iron Throne platform. If you are new to this cardgame in general, there is a <a href='https://www.youtube.com/watch?v=A1s54Wlgfyo' target='_blank'>helpful tutorial video</a>, a <a href='https://images-cdn.fantasyflightgames.com/filer_public/ba/2a/ba2a5ea6-a3cd-4772-a603-6f1906f63053/gt01_learn-to-play-web.pdf' target='_blank'>Learn To Play guide</a>, and a <a href='http://thronesdb.com/rulesreference' target='_blank'>Rules Reference Guide</a> to help you out.</p>
+                    <a className='btn btn-danger btn-lg pull-right' target='_blank' href='https://gitreports.com/issue/townteki/townsquare'>Report Problems</a>
+                    <p>This guide is aimed at players familiar with Doomtown who want to start playing online using the Doomtown Online platform. If you are new to this cardgame in general, there is a <a href='https://youtu.be/vlbXgbtuFw0' target='_blank'>helpful tutorial video</a>, <a href='http://pineboxentertainment.com/wp-content/uploads/2017/09/doomtown_introductory_rules.pdf' target='_blank'>Quickstart Rules</a>, and a <a href='http://pineboxentertainment.com/wp-content/uploads/2020/11/doomtown_rules_compendium_v1.9.2.pdf' target='_blank'>Rules Compendium</a> to help you out.</p>
                     <div className='htp-topic'>
                         <h3 className='htp-title'>Topics</h3>
                         <ul className='htp-main-list'>
@@ -32,8 +32,8 @@ class HowToPlay extends React.Component {
                     </div>
                     <div className='htp-topic'>
                         <h3 className='htp-title' id='decks'>Adding Decks</h3>
-                        <p>Start by making sure you have created an account and are logged in. You must be logged in to add decks and spectate or play games. The Iron Throne has a functional <Link href='/decks'>Deckbuilder</Link>, although most people use the more fully featured <a target='_blank' href='http://www.thronesdb.com'>ThronesDB</a> deckbuilder to build their decks. After building your deck on ThronesDB download it as a TXT file, then copy and paste it into the deckbuilder here. You are now ready to start playing. Head over to the <Link href='/play'>Play</Link> section to create, join or watch games.</p>
-                        <p>If you are new to Thrones 2.0, you can find an introductory Stark deck <a target='_blank' href='http://thronesdb.com/deck/view/358860'>here</a>, and an introductory Lannister/Tyrell deck <a target='_blank' href='http://thronesdb.com/deck/view/358861'>here</a>. Both decks only feature cards from the Core Set. If you are new and using any of these decks to play be sure to check the ‘Beginner’ category when creating your game, so you don’t necessarily get destroyed by an up to date power deck. If that happens anyway, just keep practicing and you’ll get the hang of it soon enough.</p>
+                        <p>Start by making sure you have created an account and are logged in. You must be logged in to add decks and spectate or play games. Doomtown Online has a functional <Link href='/decks'>Deckbuilder</Link>, although most people use the more fully featured <a target='_blank' href='http://dtdb.co'>DoomtownDB</a> deckbuilder to build their decks. After building your deck on DoomtownDB download it as a TXT file, then copy and paste it into the deckbuilder here. You are now ready to start playing. Head over to the <Link href='/play'>Play</Link> section to create, join or watch games.</p>
+                        <p>If you are new to Doomtown, you can find an introductory Law Dogs deck <a target='_blank' href='https://dtdb.co/en/decklist/3183/pbe-learn-to-play-law-dogs'>here</a>, and an introductory Sloane Gang deck <a target='_blank' href='https://dtdb.co/en/decklist/3184/pbe-learn-to-play-sloane-gang'>here</a>. Both decks only feature cards from the Core Set. If you are new and using any of these decks to play be sure to check the ‘Beginner’ category when creating your game, so you don’t necessarily get destroyed by an up to date power deck. If that happens anyway, just keep practicing and you’ll get the hang of it soon enough.</p>
                     </div>
                     <div className='htp-topic'>
                         <h3 className='htp-title' id='profile'>Profile Options</h3>
@@ -53,22 +53,11 @@ class HowToPlay extends React.Component {
                     </div>
                     <div className='htp-topic'>
                         <h3 className='htp-title' id='bugs'>Bugs and automation</h3>
-                        <p>While The Iron Throne is still a work in progress, the vast majority of cards are implemented and should be working correctly. We keep a list up to date with unimplemented and partially implemented cards <a target='_blank' href='https://github.com/cryogen/throneteki/projects'>here</a>. If you happen upon a card that you believe is not working as it should and it is not on that list, it would help immensely if you would submit an issue on <a target='_blank' href='https://github.com/cryogen/throneteki/issues'>GitHub</a>. Other comments and/or feedback can be left on GitHub as well.</p>
+                        <p>Doomtown Online is still a work in progress. While many cards are implemented and should be working correctly, there are quite a few still to be implemented. We keep a list up to date with unimplemented and partially implemented cards <a target='_blank' href='https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md'>here</a>. If you happen upon a card that you believe is not working as it should and it is marked complete that list, it would help immensely if you would submit an issue on <a target='_blank' href='https://gitreports.com/issue/townteki/townsquare'>GitHub</a>. Other comments and/or feedback can be left on GitHub as well.</p>
                     </div>
                     <div className='htp-topic'>
                         <h3 className='htp-title' id='interactions'>Specific Card Interactions</h3>
 
-                        <div className='htp-subtopic'>
-                            <h4 className='htp-subtitle' id='riddle'><a href='https://thronesdb.com/card/04020' target='_blank'>Varys' Riddle</a> vs <a href='https://thronesdb.com/card/04039' target='_blank'>Summer Harvest</a></h4>
-                            <p>CardGameDB rule threads on this interaction: <a href='http://www.cardgamedb.com/forums/index.php?/topic/32255-varys-riddle-vs-summer-harvest/' target='_blank'>1</a>, <a href='http://www.cardgamedb.com/forums/index.php?/topic/33283-timming-varys-riddle-summer-harvest/' target='_blank'>2</a>.</p>
-                            <p>These plots have a very specific interaction that's implemented a little differently from the official ruling. Officially, X will be defined by both plots and thus will be both 2 and 7. The first player will consequently decide what value X is whenever it gets referenced (a more thorough explanation is detailed in the above links). On The Iron Throne it is implemented a little differently. As the player who revealed Varys' Riddle, to make sure your opponent's value of X will be 2, you have to go first and trigger Summer Harvest first. As the player who revealed Summer Harvest, if the Varys' Riddle player has made you first player (or you won initiative somehow), you'd want to trigger Varys' Riddle first to make sure your X is 7.</p>
-                        </div>
-
-                        <div className='htp-subtopic'>
-                            <h4 className='htp-subtitle' id='mag'><a href='https://thronesdb.com/card/08018' target='_blank'>Mag the Mighty</a> vs saves</h4>
-                            <p>Mag the Mighty's forced reaction has the controller of Mag first choose a character they control to kill. Since the second part (opponent's kill) for Mag is worded as a 'then'-effect, this part of the effect will only resolve if the first part was resolved completely (<a href='https://thronesdb.com/rulesreference#The_word_Then' target='_blank'>source</a>). This means that if Mag's controller chose to save their kill, the other player would not have to kill a character as the pre-then effect did not resolve completely.</p>
-                            <p>This interaction is currently not implemented on The Iron Throne as the opponent is always prompted for the second kill. The solution here is to just click 'Done' on the second prompt without selecting a character if such a situation ever occurs.</p>
-                        </div>
                     </div>
                     <div className='htp-topic'>
                         <h3 className='htp-title' id='commands'>Manual Commands</h3>
@@ -140,7 +129,7 @@ class HowToPlay extends React.Component {
                     </div>
                     <div className='htp-topic'>
                         <h3 className='htp-title' id='conceding'>About Stats, Conceding, and Leaving Games</h3>
-                        <p>The Iron Throne does not rank and/or match players by skill level in any way. There are three categories (beginner, casual and competitive) to be chosen when creating a game which gives an indication of what to expect, but it doesn't enforce anything. Even though personal stats are not being tracked, most players still very much appreciate a formal concede by clicking the ‘Concede’ button and typing ‘gg’ before leaving a game. The reality of quick and anonymous online games dictates this won’t always happen though, as evidenced by regular complaining in the main lobby about people leaving without conceding. Our advice is to just move on to the next game since in the end, conceding or not doesn’t really impact anything. Happy gaming!</p>
+                        <p>Doomtown Online does not rank and/or match players by skill level in any way. There are three categories (beginner, casual and competitive) to be chosen when creating a game which gives an indication of what to expect, but it doesn't enforce anything. Even though personal stats are not being tracked, most players still very much appreciate a formal concede by clicking the ‘Concede’ button and typing ‘gg’ before leaving a game. The reality of quick and anonymous online games dictates this won’t always happen though, as evidenced by regular complaining in the main lobby about people leaving without conceding. Our advice is to just move on to the next game since in the end, conceding or not doesn’t really impact anything. Happy gaming!</p>
                     </div>
                 </Panel>
             </div>
