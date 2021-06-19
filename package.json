@@ -1,7 +1,7 @@
 {
   "name": "townsquare-client",
   "version": "1.0.0",
-  "description": "The client code for Throneteki, a browser based implementation of the A Game Of Thrones LCG",
+  "description": "The client code for Doomtown Online, a browser based implementation of the Doomtown card game",
   "main": "index.jsx",
   "scripts": {
     "lint": "eslint . --ext=js --ext=jsx",
@@ -16,21 +16,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mmeldo/townsquare-client.git"
+    "url": "git+https://github.com/townteki/townsquare-client.git"
   },
   "keywords": [
-    "throneteki",
-    "AGoT",
-    "AGoTLCG",
-    "IronThrone",
-    "LCG"
+    "townsquare",
+    "Doomtown",
+    "townteki"
   ],
-  "author": "Stuart Walsh <stu@ipng.org.uk>",
+  "author": "Milan Melisik <mmeldo@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mmeldo/townsquare-client/issues"
+    "url": "https://github.com/townteki/townsquare-client/issues"
   },
-  "homepage": "https://github.com/mmeldo/townsquare-client#readme",
+  "homepage": "https://github.com/townteki/townsquare-client#readme",
   "devDependencies": {
     "@octopusdeploy/octopackjs": "^0.2.4",
     "babel-eslint": "^8.2.3",
@@ -106,7 +104,7 @@
     "react-test-renderer": "^16.8.6",
     "redux-loop": "^4.5.2",
     "regenerator-runtime": "^0.13.3",
-    "townsquare-deck-helper": "^1.0.4",
+    "townsquare-deck-helper": "^1.0.5",
     "webpack-cli": "^3.3.6",
     "webpack-dev-middleware": "^3.7.0"
   }
