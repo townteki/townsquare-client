@@ -222,8 +222,8 @@ class DeckEditor extends React.Component {
         let cardTitle = match[2];
         let starting = 0;
         if(cardTitle.indexOf('*') > -1) {
-            starting = 1;
-            cardTitle = cardTitle.replace('*', '');
+            starting = cardTitle.split('*').length - 1;
+            cardTitle = cardTitle.replaceAll('*', '');
         }
         let card = lookupCardByName({ 
             cardTitle: cardTitle, 
