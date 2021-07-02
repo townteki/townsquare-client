@@ -6,13 +6,14 @@ import Panel from '../Site/Panel';
 import * as actions from '../../actions';
 import AlertPanel from '../Site/AlertPanel';
 
+import { cardSetLabel } from '../Decks/DeckHelper';
+
 const GameNameMaxLength = 64;
 
 class NewGame extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.handleRookeryClick = this.handleRookeryClick.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
         this.onSubmitClick = this.onSubmitClick.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
@@ -23,14 +24,16 @@ class NewGame extends React.Component {
         this.onUseGameTimeLimitClick = this.onUseGameTimeLimitClick.bind(this);
         this.onGameTimeLimitChange = this.onGameTimeLimitChange.bind(this);
 
+        const defaultRestrictedList = props.restrictedLists.filter(rl => rl.official)[0];
+
         this.state = {
+            selectedMode: `none:${defaultRestrictedList && defaultRestrictedList._id}`,
             eventId: 'none',
+            restrictedListId: defaultRestrictedList && defaultRestrictedList._id,
             spectators: true,
             showHand: false,
-            selectedGameFormat: 'joust',
             selectedGameType: 'casual',
             password: '',
-            useRookery: false,
             useGameTimeLimit: false,
             gameTimeLimit: 55
         };
@@ -39,10 +42,6 @@ class NewGame extends React.Component {
     componentWillMount() {
         this.props.loadEvents();
         this.setState({ gameName: this.props.defaultGameName });
-    }
-
-    handleRookeryClick(event) {
-        this.setState({ useRookery: event.target.checked });
     }
 
     onCancelClick(event) {
@@ -56,7 +55,11 @@ class NewGame extends React.Component {
     }
 
     onEventChange(event) {
-        this.setState({ eventId: event.target.value });
+        const selectedValues = event.target.value.split(':');
+        const eventId = selectedValues[0] || 'none';
+        const restrictedListId = selectedValues[1] || '';
+
+        this.setState({ eventId, restrictedListId, selectedMode: event.target.value });
     }
 
     onPasswordChange(event) {
@@ -77,12 +80,11 @@ class NewGame extends React.Component {
         this.props.socket.emit('newgame', {
             name: this.state.gameName,
             eventId: this.state.eventId,
+            restrictedListId: this.state.restrictedListId,
             spectators: this.state.spectators,
             showHand: this.state.showHand,
             gameType: this.state.selectedGameType,
-            isMelee: this.state.selectedGameFormat === 'melee',
             password: this.state.password,
-            useRookery: this.state.useRookery,
             quickJoin: this.props.quickJoin,
             useGameTimeLimit: this.state.useGameTimeLimit,
             gameTimeLimit: this.state.gameTimeLimit
@@ -91,10 +93,6 @@ class NewGame extends React.Component {
 
     onRadioChange(gameType) {
         this.setState({ selectedGameType: gameType });
-    }
-
-    onGameFormatChange(format) {
-        this.setState({ selectedGameFormat: format });
     }
 
     onUseGameTimeLimitClick(event) {
@@ -123,12 +121,6 @@ class NewGame extends React.Component {
                     Show hands to spectators
                 </label>
             </div>
-            <div className='checkbox col-sm-8'>
-                <label>
-                    <input type='checkbox' onChange={ this.handleRookeryClick } checked={ this.state.useRookery } />
-                    Rookery format
-                </label>
-            </div>
             <div className='checkbox col-sm-12'>
                 <label>
                     <input type='checkbox' onChange={ this.onUseGameTimeLimitClick } checked={ this.state.useGameTimeLimit } />
@@ -139,30 +131,6 @@ class NewGame extends React.Component {
                 <input className='form-control' type='number' onChange={ this.onGameTimeLimitChange } value={ this.state.gameTimeLimit } />
             </div> }
         </div>);
-    }
-
-    getMeleeOptions() {
-        if(!this.props.allowMelee) {
-            return;
-        }
-
-        return (
-            <div className='row'>
-                <div className='col-sm-12'>
-                    <b>Game Format</b>
-                </div>
-                <div className='col-sm-10'>
-                    <label className='radio-inline'>
-                        <input type='radio' onChange={ this.onGameFormatChange.bind(this, 'joust') } checked={ this.state.selectedGameFormat === 'joust' } />
-                        Joust
-                    </label>
-                    <label className='radio-inline'>
-                        <input type='radio' onChange={ this.onGameFormatChange.bind(this, 'melee') } checked={ this.state.selectedGameFormat === 'melee' } />
-                        Melee
-                    </label>
-                </div>
-            </div>
-        );
     }
 
     getGameTypeOptions() {
@@ -188,19 +156,23 @@ class NewGame extends React.Component {
             </div>);
     }
 
-    getEventSelection() {
-        const { events } = this.props;
-
-        if(events.length === 0) {
-            return null;
+    filterAvailableRlOptions(restrictedLists) {
+        let availRls = restrictedLists.filter(rl => rl.official);
+        if(!this.props.user.permissions.isContributor) {
+            availRls = restrictedLists.filter(rl => !rl.isPt);
         }
+        return availRls.map(rl => (<option value={ `none:${rl._id}` }>{ `${cardSetLabel(rl.cardSet)}` }</option>));
+    }
+
+    getEventSelection() {
+        const { events, restrictedLists } = this.props;
 
         return (
             <div className='row'>
                 <div className='col-sm-8'>
-                    <label htmlFor='gameName'>Event</label>
-                    <select className='form-control' value={ this.state.eventId } onChange={ this.onEventChange }>
-                        <option value='none'>None</option>
+                    <label htmlFor='gameName'>Mode</label>
+                    <select className='form-control' value={ this.state.selectedMode } onChange={ this.onEventChange }>
+                        { this.filterAvailableRlOptions(restrictedLists) }
                         { events.map(event => (<option value={ event._id }>{ event.name }</option>)) }
                     </select>
                 </div>
@@ -220,7 +192,6 @@ class NewGame extends React.Component {
             content =
                 (<div>
                     <AlertPanel type='info' message="Select the type of game you'd like to play and either you'll join the next one available, or one will be created for you with default options." />
-                    { this.getMeleeOptions() }
                     { this.getGameTypeOptions() }
                 </div>);
         } else {
@@ -232,9 +203,9 @@ class NewGame extends React.Component {
                         <input className='form-control' placeholder='Game Name' type='text' onChange={ this.onNameChange } value={ this.state.gameName } maxLength={ GameNameMaxLength } />
                     </div>
                 </div>
+                <p/>
                 { this.getEventSelection() }
                 { this.getOptions() }
-                { this.getMeleeOptions() }
                 { this.getGameTypeOptions() }
                 <div className='row game-password'>
                     <div className='col-sm-8'>
@@ -266,20 +237,22 @@ class NewGame extends React.Component {
 
 NewGame.displayName = 'NewGame';
 NewGame.propTypes = {
-    allowMelee: PropTypes.bool,
     cancelNewGame: PropTypes.func,
     defaultGameName: PropTypes.string,
     events: PropTypes.array,
     loadEvents: PropTypes.func,
     quickJoin: PropTypes.bool,
-    socket: PropTypes.object
+    restrictedLists: PropTypes.array,
+    socket: PropTypes.object,
+    user: PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
-        allowMelee: state.account.user ? state.account.user.permissions.allowMelee : false,
         events: state.events.events,
-        socket: state.lobby.socket
+        restrictedLists: state.cards.restrictedList,
+        socket: state.lobby.socket,
+        user: state.account.user
     };
 }
 

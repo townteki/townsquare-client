@@ -19,6 +19,7 @@ const mdHeader = /^\[(.*)\].*$/;
 class DeckEditor extends React.Component {
     constructor(props) {
         super(props);
+        this.isPtUser = this.props.user.permissions.isContributor;
 
         this.state = {
             cardList: '',
@@ -94,7 +95,7 @@ class DeckEditor extends React.Component {
             return card.count + ' Custom ' + typeName + ' - ' + card.card.title;
         }
 
-        return card.count + ' ' + card.card.title + (card.starting ? '*' : '');
+        return card.count + ' ' + card.card.title + (card.starting ? '*' : '') + ' (' + card.card.pack_code + ')';
     }
 
     onChange(field, event) {
@@ -176,7 +177,8 @@ class DeckEditor extends React.Component {
                     headerMatch = header[1].trim().match(mdHeader);
                 }
                 let newOutfit = Object.values(this.props.outfits).find(outfit => outfit.title === headerMatch[1].trim());
-                if(newOutfit && headerMatch[1]) {
+                let outfitPack = this.props.packs.find(pack => pack.code === newOutfit.pack_code);
+                if(newOutfit && headerMatch[1] && (!outfitPack.isPt || this.isPtUser)) {
                     outfit = newOutfit;
                 }
             }
@@ -190,14 +192,22 @@ class DeckEditor extends React.Component {
                 parsingLegend = true;
                 continue;
             }
-            let { card, count, starting } = this.parseCardLine(line, options);
+            let { card, count, starting, pack } = this.parseCardLine(line, options);
             if(card) {
-                if(parsingLegend) {
-                    legend = Object.values(this.props.legends).find(legend => legend.title === card.title);
+                if(pack.isPt && !this.isPtUser) {
                     parsingLegend = false;
-                    continue;
+                } else {
+                    if(parsingLegend) {
+                        let newLegend = Object.values(this.props.legends).find(legend => legend.title === card.title);
+                        let legendPack = this.props.packs.find(pack => pack.code === newLegend.pack_code);
+                        if(newLegend && (!legendPack.isPt || this.isPtUser)) {
+                            legend = newLegend;
+                        }
+                        parsingLegend = false;
+                        continue;
+                    }
+                    this.addCard(drawCards, card, count, starting);
                 }
-                this.addCard(drawCards, card, count, starting);
             }
         }
 
@@ -225,14 +235,14 @@ class DeckEditor extends React.Component {
             starting = cardTitle.split('*').length - 1;
             cardTitle = cardTitle.replaceAll('*', '');
         }
-        let card = lookupCardByName({ 
+        let { card, pack } = lookupCardByName({ 
             cardTitle: cardTitle, 
             cards: Object.values(this.props.cards), 
             packs: this.props.packs,
             options
         });
 
-        return { count: count, starting: starting, card: card };
+        return { count, starting, card, pack };
     }
 
     addCard(list, card, number, starting) {
@@ -278,7 +288,8 @@ class DeckEditor extends React.Component {
                         currentRestrictedList={ this.props.currentRestrictedList }
                         onChange={ (restrictedList) => this.triggerDeckUpdated(restrictedList) }
                         restrictedLists={ this.props.restrictedList }
-                        setCurrentRestrictedList={ this.props.setCurrentRestrictedList } />
+                        setCurrentRestrictedList={ this.props.setCurrentRestrictedList }
+                        user={ this.props.user } />
                 </div>
 
                 <h4>Either type the cards manually into the box below, add the cards one by one using the card box and autocomplete or for best results, copy and paste a decklist from <a href='http://dtdb.co' target='_blank'>DTDB</a> into the box below.</h4>
@@ -331,7 +342,8 @@ DeckEditor.propTypes = {
     packs: PropTypes.array,
     restrictedList: PropTypes.array,
     setCurrentRestrictedList: PropTypes.func,
-    updateDeck: PropTypes.func
+    updateDeck: PropTypes.func,
+    user: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -344,7 +356,8 @@ function mapStateToProps(state) {
         loading: state.api.loading,
         outfits: state.cards.outfits,
         packs: state.cards.packs,
-        restrictedList: state.cards.restrictedList
+        restrictedList: state.cards.restrictedList,
+        user: state.account.user
     };
 }
 
