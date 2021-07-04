@@ -11,6 +11,7 @@ import ApiStatus from '../Site/ApiStatus';
 import RestrictedListDropdown from './RestrictedListDropdown';
 import * as actions from '../../actions';
 import { lookupCardByName } from './DeckParser';
+import RestrictedList from 'townsquare-deck-helper/lib/RestrictedList';
 
 const plainHeader = /^([^()]+)(\(.+\))??$/;
 const bbHeader = /^\[.*?\](.*?)\[.*\]/;
@@ -20,6 +21,7 @@ class DeckEditor extends React.Component {
     constructor(props) {
         super(props);
         this.isPtUser = this.props.user.permissions.isContributor;
+        this.onOnlyUnrestrictedClick = this.onOnlyUnrestrictedClick.bind(this);
 
         this.state = {
             cardList: '',
@@ -58,6 +60,10 @@ class DeckEditor extends React.Component {
         if(props.outfits && !this.state.outfit) {
             this.setState({ outfit: props.outfits['law dogs'] }, this.triggerDeckUpdated);
         }
+    }
+
+    onOnlyUnrestrictedClick(event) {
+        this.setState({ onlyUnrestricted: event.target.checked });
     }
 
     getDeckFromState(restrictedList) {
@@ -253,6 +259,18 @@ class DeckEditor extends React.Component {
         }
     }
 
+    cardOptionLabel(option) {
+        const cardPack = this.props.packs.find(pack => pack.code === option.pack_code);
+        return `${option.title} (${cardPack.name})`;
+    }
+
+    getCardOptions() {
+        const restrList = new RestrictedList(this.props.currentRestrictedList);
+        return Object.values(this.props.cards).filter(card => {
+            return !this.state.onlyUnrestricted || !restrList.isCardRestricted(card);
+        });
+    }
+
     onSaveClick(event) {
         event.preventDefault();
 
@@ -303,17 +321,25 @@ class DeckEditor extends React.Component {
                         onChange={ this.onLegendChange.bind(this) } value={ this.state.legend ? this.state.legend.code : undefined }
                         valueKey='code' nameKey='title' blankOption={ { title: '- Select -', code: '' } } />
 
-                    <Typeahead label='Card' labelClass={ 'col-sm-3 col-xs-2' } fieldClass='col-sm-4 col-xs-5' labelKey={ 'title' } options={ Object.values(this.props.cards) }
-                        onChange={ this.addCardChange.bind(this) }>
-                        <Input name='numcards' type='text' label='Num' labelClass='col-xs-1 no-x-padding' fieldClass='col-xs-2'
-                            value={ this.state.numberToAdd.toString() } onChange={ this.onNumberToAddChange.bind(this) } noGroup>
-                            <div className='col-xs-1 no-x-padding'>
-                                <div className='btn-group'>
-                                    <button className='btn btn-default' onClick={ this.onAddCard.bind(this) }>Add</button>
-                                </div>
+                    <Typeahead label='Card' labelClass={ 'col-sm-3' } fieldClass='col-sm-9' labelKey={ option => this.cardOptionLabel(option) } 
+                        options={ this.getCardOptions() } onChange={ this.addCardChange.bind(this) }/>
+                    <Input name='numcards' type='text' label='Num' labelClass='col-sm-offset-3 col-sm-1' fieldClass='col-sm-2'
+                        value={ this.state.numberToAdd.toString() } onChange={ this.onNumberToAddChange.bind(this) } >
+                        <div className='col-sm-1 no-x-padding'>
+                            <div className='btn-group'>
+                                <button className='btn btn-default' onClick={ this.onAddCard.bind(this) }>
+                                    <span className='glyphicon glyphicon-menu-down'/>
+                                </button>
                             </div>
-                        </Input>
-                    </Typeahead>
+                        </div>
+                        <div className='checkbox col-sm-4'>
+                            <label>
+                                <input type='checkbox' onChange={ this.onOnlyUnrestrictedClick } checked={ this.state.onlyUnrestricted } />
+                                Only Unrestricted
+                            </label>
+                        </div>
+                    </Input>
+
                     <TextArea label='Cards' labelClass='col-sm-3' fieldClass='col-sm-9' rows='10' value={ this.state.cardList }
                         onChange={ this.onCardListChange.bind(this) } />
 
