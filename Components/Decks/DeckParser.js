@@ -1,6 +1,6 @@
-const plainPattern = /^(([^()]+)?(\(.*?\)?)?)\s?(\((.+)\))?$/;
-const bbPattern = /^\[.*?\](.*?)\[.*\]$/;
-const mdPattern = /^\[(.*)\].*$/;
+const plainPattern = /^(.+)\s?\(((?:.(?!.*\())+)$/;
+const bbPattern = /^\[.*?\](.*)\[.+(?:\[i\]\()(.+)\[\/i\]$/;
+const mdPattern = /^\[(.*)\].+_\((.+)_$/;
 
 export function lookupCardByName({ cardTitle, cards, packs, options }) {
     let pattern = plainPattern;
@@ -15,8 +15,10 @@ export function lookupCardByName({ cardTitle, cards, packs, options }) {
         return;
     }
 
-    const shortName = match[options.imported && !options.bbCode && !options.markdown ? 2 : 1].trim().toLowerCase();
-    let packName = match[3] && match[3].trim().toLowerCase();
+    const shortName = match[1].trim().toLowerCase();
+    let packName = match[2] && match[2].trim().toLowerCase();
+    // remove last ")"
+    packName = packName.slice(0, -1);
     let pack = packName && packs.find(pack => pack.code.toLowerCase() === packName || pack.name.toLowerCase() === packName);
 
     let matchingCards = cards.filter(card => {
@@ -29,7 +31,7 @@ export function lookupCardByName({ cardTitle, cards, packs, options }) {
 
     matchingCards.sort((a, b) => compareCardByAvailableDate(a, b, packs));
 
-    return matchingCards[0];
+    return { card: matchingCards[0], pack };
 }
 
 function compareCardByAvailableDate(a, b, packs) {

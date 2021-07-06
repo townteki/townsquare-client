@@ -8,7 +8,7 @@ class RestrictedListDropdown extends React.Component {
         this.state = { value: props.currentRestrictedList && props.currentRestrictedList.name };
         //if the currentRestrictedList is not set, update the restrictedList with the first RL in the list to set the initial state
         //this solves the problem, that the display of the dropdown (showing a selected entry) doesn´t correspond to the state 
-        if(!props.currentRestrictedList) {
+        if(!props.currentRestrictedList && props.restrictedLists) {
             this.updateRestrictedList(props.restrictedLists[0].name);
         }
     }
@@ -33,11 +33,23 @@ class RestrictedListDropdown extends React.Component {
         }
     }
 
+    filterAvailableRlOptions(restrictedLists) {
+        if(!this.props.user.permissions.isContributor) {
+            return restrictedLists.filter(rl => !rl.isPt);
+        }
+        return restrictedLists;
+    }
+
     render() {
+        const restrLists = this.props.restrictedLists || [];
+        const availRlLists = this.filterAvailableRlOptions(restrLists);
+        if(availRlLists && !availRlLists.includes(this.props.currentRestrictedList)) {
+            this.updateRestrictedList(availRlLists[0].name);
+        }
         return (<React.Fragment>
             <label htmlFor='current-restricted-list'>Restricted List:</label>
             <select id='current-restricted-list' className='form-control' value={ this.state.value } onChange={ this.handleChange.bind(this) }>
-                { this.props.restrictedLists.map(rl => <option value={ rl.name }>{ rl.name }</option>) }
+                { availRlLists.map(rl => <option value={ rl.name }>{ rl.name }</option>) }
             </select>
         </React.Fragment>);
     }
@@ -48,7 +60,8 @@ RestrictedListDropdown.propTypes = {
     currentRestrictedList: PropTypes.object,
     onChange: PropTypes.func,
     restrictedLists: PropTypes.array,
-    setCurrentRestrictedList: PropTypes.func
+    setCurrentRestrictedList: PropTypes.func,
+    user: PropTypes.object
 };
 
 export default RestrictedListDropdown;
