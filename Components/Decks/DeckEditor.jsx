@@ -267,6 +267,10 @@ class DeckEditor extends React.Component {
     getCardOptions() {
         const restrList = new RestrictedList(this.props.currentRestrictedList);
         return Object.values(this.props.cards).filter(card => {
+            let cardPack = this.props.packs.find(pack => pack.code === card.pack_code);
+            if(cardPack.isPt && !this.isPtUser) {
+                return false;
+            }
             return !this.state.onlyUnrestricted || !restrList.isCardRestricted(card);
         });
     }

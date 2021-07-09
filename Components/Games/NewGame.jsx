@@ -24,7 +24,7 @@ class NewGame extends React.Component {
         this.onUseGameTimeLimitClick = this.onUseGameTimeLimitClick.bind(this);
         this.onGameTimeLimitChange = this.onGameTimeLimitChange.bind(this);
 
-        const defaultRestrictedList = props.restrictedLists.filter(rl => rl.official)[0];
+        const defaultRestrictedList = this.filterAvailableRls(props.restrictedLists)[0];
 
         this.state = {
             selectedMode: `none:${defaultRestrictedList && defaultRestrictedList._id}`,
@@ -156,12 +156,12 @@ class NewGame extends React.Component {
             </div>);
     }
 
-    filterAvailableRlOptions(restrictedLists) {
+    filterAvailableRls(restrictedLists) {
         let availRls = restrictedLists.filter(rl => rl.official);
         if(!this.props.user.permissions.isContributor) {
             availRls = restrictedLists.filter(rl => !rl.isPt);
         }
-        return availRls.map(rl => (<option value={ `none:${rl._id}` }>{ `${cardSetLabel(rl.cardSet)}` }</option>));
+        return availRls;
     }
 
     getEventSelection() {
@@ -172,7 +172,8 @@ class NewGame extends React.Component {
                 <div className='col-sm-8'>
                     <label htmlFor='gameName'>Mode</label>
                     <select className='form-control' value={ this.state.selectedMode } onChange={ this.onEventChange }>
-                        { this.filterAvailableRlOptions(restrictedLists) }
+                        { this.filterAvailableRls(restrictedLists).map(rl => 
+                            (<option value={ `none:${rl._id}` }>{ `${cardSetLabel(rl.cardSet)}` }</option>)) }
                         { events.map(event => (<option value={ event._id }>{ event.name }</option>)) }
                     </select>
                 </div>
