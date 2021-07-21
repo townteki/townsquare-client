@@ -36,7 +36,7 @@ class About extends React.Component {
                     <p>Patreon subscriptions help offset the cost of running the Doomtown Online server, domain registrations, etc and help support PBE so that they can continue making exciting games for everyone to enjoy!</p>
 
                     <h2>Special Thanks</h2>
-                    <p>Special thanks go out to Shane Hensley and all the fine folks at PInnacle Entertainment Group for creating the wonderful world of Deadlands, and allowing us to play in their sandbox.
+                    <p>Special thanks go out to Shane Hensley and all the fine folks at Pinnacle Entertainment Group for creating the wonderful world of Deadlands, and allowing us to play in their sandbox.
                     </p>
                     <p>Also, a very special thank you to David Lapp and the rest of the Pinebox Entertainment crew for revitalizing this game and allowing us to bring Doomtown online for all to enjoy.</p>
 
