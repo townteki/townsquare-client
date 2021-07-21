@@ -6,7 +6,7 @@ class DeckStatusSummary extends React.Component {
         let { basicRules, noUnreleasedCards, restrictedLists } = this.props.status;
         const restrictedListItems = (restrictedLists || []).map(rl => [
             // Not sure if we really need restricted rules. Keeping here for future
-            //{ title: `${rl.name} restricted list`, value: rl.restrictedRules },
+            { title: `${rl.name} restricted list`, value: rl.restrictedRules },
             { title: `${rl.name} banned list`, value: rl.noBannedCards }
         ]).reduce((items, rlItems) => items.concat(rlItems), []);
         const items = [

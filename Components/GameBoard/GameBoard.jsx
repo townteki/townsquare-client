@@ -342,7 +342,7 @@ export class GameBoard extends React.Component {
                         side='top'
                         cardSize={ this.props.user.settings.cardSize } />
                 </div>
-                <StatusPanel/>
+                <StatusPanel otherPlayer={ otherPlayer } thisPlayer={ thisPlayer } shootout={ this.props.currentGame.shootout } />
                 <div id='play-area' className='play-area' onDragOver={ this.onDragOver }>
                     <div id='otherstreet' className='player-street other-side'>
                         <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop }

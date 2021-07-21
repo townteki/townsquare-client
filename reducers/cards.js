@@ -60,6 +60,7 @@ export default function(state = { decks: [] }, action) {
             });
             // In case the card list is received after the decks, updated the decks now
             newState.decks = processDecks(newState.decks, newState);
+            newState.standaloneDecks = processDecks(newState.standaloneDecks, newState);
 
             return newState;
         case 'RECEIVE_PACKS':
@@ -73,6 +74,7 @@ export default function(state = { decks: [] }, action) {
 
             // In case the restricted list is received after the decks, updated the decks now
             newState.decks = processDecks(newState.decks, newState);
+            newState.standaloneDecks = processDecks(newState.standaloneDecks, newState);
 
             return newState;
         case 'SET_CURRENT_RESTRICTED_LIST':
@@ -82,6 +84,7 @@ export default function(state = { decks: [] }, action) {
 
             // Force an update to the validation results
             newState.decks = processDecks(newState.decks, newState);
+            newState.standaloneDecks = processDecks(newState.standaloneDecks, newState);
 
             return newState;
         case 'RECEIVE_STANDALONE_DECKS':

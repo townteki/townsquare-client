@@ -5,7 +5,7 @@ export function deckStatusLabel(status) {
     if(!status.noBannedCards) {
         return 'Banned';
     }
-    if(!status.noUnreleasedCards) {
+    if(!status.restrictedRules || !status.noUnreleasedCards) {
         return 'Casual';
     }
 
@@ -14,6 +14,8 @@ export function deckStatusLabel(status) {
 
 export function cardSetLabel(cardSet) {
     switch(cardSet) {
+        case 'new':
+            return 'New Cards';
         case 'original':
             return 'Original Cards';
     }

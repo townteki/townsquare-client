@@ -8,6 +8,7 @@ import Link from '../Components/Site/Link';
 import DeckList from '../Components/Decks/DeckList';
 import ViewDeck from '../Components/Decks/ViewDeck';
 import * as actions from '../actions';
+import RestrictedListDropdown from '../Components/Decks/RestrictedListDropdown';
 
 class Decks extends React.Component {
     constructor() {
@@ -57,6 +58,14 @@ class Decks extends React.Component {
                     <div className='col-sm-5 full-height'>
                         <Panel title='Your decks'>
                             <Link className='btn btn-primary' href='/decks/add'>New Deck</Link>
+                            <p/>
+                            <div>
+                                <RestrictedListDropdown 
+                                    currentRestrictedList={ this.props.currentRestrictedList } 
+                                    restrictedLists={ this.props.restrictedLists } 
+                                    setCurrentRestrictedList={ this.props.setCurrentRestrictedList } 
+                                    user={ this.props.user } />
+                            </div>
                             <DeckList className='deck-list' activeDeck={ this.props.selectedDeck } decks={ this.props.decks } onSelectDeck={ this.props.selectDeck } />
                         </Panel>
                         <Panel title='Standalone decks'>
@@ -80,6 +89,7 @@ Decks.propTypes = {
     apiSuccess: PropTypes.bool,
     cards: PropTypes.object,
     clearDeckStatus: PropTypes.func,
+    currentRestrictedList: PropTypes.object,
     deckDeleted: PropTypes.bool,
     decks: PropTypes.array,
     deleteDeck: PropTypes.func,
@@ -87,9 +97,12 @@ Decks.propTypes = {
     loadStandaloneDecks: PropTypes.func,
     loading: PropTypes.bool,
     navigate: PropTypes.func,
+    restrictedLists: PropTypes.array,
     selectDeck: PropTypes.func,
     selectedDeck: PropTypes.object,
-    standaloneDecks: PropTypes.array
+    setCurrentRestrictedList: PropTypes.func,
+    standaloneDecks: PropTypes.array,
+    user: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -98,11 +111,14 @@ function mapStateToProps(state) {
         apiMessage: state.api.REQUEST_DECKS ? state.api.REQUEST_DECKS.message : undefined,
         apiSuccess: state.api.REQUEST_DECKS ? state.api.REQUEST_DECKS.success : undefined,
         cards: state.cards.cards,
+        currentRestrictedList: state.cards.currentRestrictedList,
         deckDeleted: state.cards.deckDeleted,
         decks: state.cards.decks,
         loading: state.api.loading,
+        restrictedLists: state.cards.restrictedList,
         selectedDeck: state.cards.selectedDeck,
-        standaloneDecks: state.cards.standaloneDecks
+        standaloneDecks: state.cards.standaloneDecks,
+        user: state.account.user
     };
 }
 
