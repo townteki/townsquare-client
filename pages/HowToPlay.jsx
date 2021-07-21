@@ -16,15 +16,11 @@ class HowToPlay extends React.Component {
                         <ul className='htp-main-list'>
                             <li><a href='#decks'>Adding Decks</a></li>
                             <li><a href='#profile'>Profile Options</a></li>
-                            <ul className='htp-sub-list'>
-                                <li><a href='#action'>Action Windows</a></li>
-                                <li><a href='#timed'>Timed Interrupt Window</a></li>
-                            </ul>
                             <li><a href='#bugs'>Bugs and Automation</a></li>
                             <li><a href='#interactions'>Specific Card Interactions</a></li>
                             <ul className='htp-sub-list'>
-                                <li><a href='#riddle'>Varys' Riddle vs Summer Harvest</a></li>
-                                <li><a href='#mag'>Mag the Mighty vs. saves</a></li>
+                                <li><a href='#marges'>Old Marge's Manor</a></li>
+                                <li><a href='#johnnybrocklehurst'>Johnny Brocklehurst</a></li>
                             </ul>
                             <li><a href='#commands'>Manual Commands</a></li>
                             <li><a href='#conceding'>About Stats, Conceding and Leaving Games</a></li>
@@ -38,26 +34,21 @@ class HowToPlay extends React.Component {
                     <div className='htp-topic'>
                         <h3 className='htp-title' id='profile'>Profile Options</h3>
                         <p>Clicking your <Link href='/profile'>Profile</Link> at the top right of the page allows you to tailor certain aspects of gameplay to your wishes.</p>
-
-                        <div className='htp-subtopic'>
-                            <h4 className='htp-subtitle' id='action'>Action Windows</h4>
-                            <p>Thrones 2nd Edition has quite a large number of phases and their associated action windows, a number of which are not used regularly by all decks. Always prompting these action windows leads to a lot of tediously clicking ‘Pass’, while never prompting these action windows leads to certain cards not being able to be used to their fullest extent. To solve this issue you can check/uncheck any action windows in your profile to determine when you’ll be prompted or not.</p>
-                            <p>For example: if you play cards like <a target='_blank' href='https://thronesdb.com/card/01088'>The Tickler</a>, <a target='_blank' href='https://thronesdb.com/card/06031'>Wex Pyke</a>, <a target='_blank' href='https://thronesdb.com/card/01130'>Messenger Raven</a> or <a target='_blank' href='https://thronesdb.com/card/01139'>Take the Black</a> in your deck, be sure to check Dominance Actions in your profile. Your action window settings can also be changed during a game by clicking the settings button on the bottom of your screen.</p>
-                        </div>
-
-                        <div className='htp-subtopic'>
-                            <h4 className='htp-subtitle' id='timed'>Timed Interrupt Window</h4>
-                            <p>The combination of automated gameplay and the ability to play reactions or interrupts from hand has the potential to “leak” information about what your opponent might hold in his hand. For example: if after playing an event there is a pause before it resolves, you might guess correctly that was due to your opponent being prompted to use The Hand’s Judgment. The three most notable cards that would be leaked this way are <a target='_blank' href='https://thronesdb.com/card/01045'>The Hand's Judgment</a>, <a target='_blank' href='https://thronesdb.com/card/01102'>Treachery</a> and <a target='_blank' href='https://thronesdb.com/card/02096'>Vengeance for Elia</a>. To solve this issue, the Timed Interrupt Window was created. Depending on which options you have checked, you get a timed prompt during certain triggers asking for interrupts whether you are able to interrupt these triggers or not. Now your opponent experiences the same pause any time and won’t be able to correctly guess whether you’re holding certain cards anymore.</p>
-                            <p>There are a couple of options: you can decide whether you want to always be prompted for triggered card abilities (useful if you’re playing Treachery), events (useful if you’re playing The Hand’s Judgment, The Pack Survives, etc.) or both. Claim (useful if you’re playing Vengeance for Elia) is currently combined with the event option. The timer duration can be modified too. Obviously, if you don’t care about leaking cards from your hand (or you don’t play these cards anyway) and just want a quick game, deselecting both options will allow for that. You will still get prompted to use the aforementioned cards, but only when you actually have them.</p>
-                        </div>
                     </div>
                     <div className='htp-topic'>
                         <h3 className='htp-title' id='bugs'>Bugs and automation</h3>
-                        <p>Doomtown Online is still a work in progress. While many cards are implemented and should be working correctly, there are quite a few still to be implemented. We keep a list up to date with unimplemented and partially implemented cards <a target='_blank' href='https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md'>here</a>. If you happen upon a card that you believe is not working as it should and it is marked complete that list, it would help immensely if you would submit an issue on <a target='_blank' href='https://gitreports.com/issue/townteki/townsquare'>GitHub</a>. Other comments and/or feedback can be left on GitHub as well.</p>
+                        <p>Doomtown Online is still a work in progress. While many cards are implemented and should be working correctly, there are quite a few still to be implemented. We keep a list up to date with unimplemented and partially implemented cards <a target='_blank' href='https://github.com/townteki/townsquare/blob/master/docs/cardpool-status.md'>here</a>. If you happen upon a card that you believe is not working as it should and it is marked complete on that list, it would help immensely if you would submit an issue on <a target='_blank' href='https://gitreports.com/issue/townteki/townsquare'>GitHub</a>. Other comments and/or feedback can be left on GitHub as well.</p>
                     </div>
                     <div className='htp-topic'>
                         <h3 className='htp-title' id='interactions'>Specific Card Interactions</h3>
-
+                        <div className='htp-subtopic'>
+                            <h4 className='htp-subtitle' id='marges'>Old Marge's Manor</h4>
+                            <p><a href='https://dtdb.co/en/card/12012' target='blank'>Old Marge's Manor's</a> React ability must be triggered as a normal Noon action instead of a React. When you want to use it, click the card and choose "Use Ability" on the card menu</p>
+                        </div>
+                        <div className='htp-subtopic'>
+                            <h4 className='htp-subtitle' id='johnnybrocklehurst'>Johnny Brocklehurst</h4>
+                            <p><a href='https://dtdb.co/en/card/19017' target='blank'>Johnny Brocklehurst</a>'s React ability must be triggered as a normal Noon action instead of a React. When you want to use it, click the card and choose "Use Ability" on the card menu</p>
+                        </div>
                     </div>
                     <div className='htp-topic'>
                         <h3 className='htp-title' id='commands'>Manual Commands</h3>
