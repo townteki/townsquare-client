@@ -51,7 +51,8 @@ const validTargets = {
     'draw hand': [
         'hand',
         'discard pile',
-        'dead pile'
+        'dead pile',
+        'draw deck'
     ],
     'being played': [
         'hand',
@@ -97,37 +98,37 @@ function collect(connect, monitor) {
 class Droppable extends React.Component {
     isValidLocation() {
         // if there is no location, it is a pile (hand, draw deck and so on)
-        if (!this.props.location || !this.props.source === 'play area') {
+        if(!this.props.location || !this.props.source === 'play area') {
             return true;
         }
         let emptyLocation = this.props.location && !this.props.location.uuid;
-        if (this.props.item && this.props.item.card) {
-            if (this.props.item.card.type_code === 'dude') {
+        if(this.props.item && this.props.item.card) {
+            if(this.props.item.card.type_code === 'dude') {
                 let sameLocation = this.props.location && this.props.item.card.gamelocation === this.props.location.uuid;
-                if (emptyLocation) {
+                if(emptyLocation) {
                     return false;
                 }
-                if (sameLocation) {
-                    return false;
-                }
-                return true;
-            }
-            if (this.props.item.card.type_code === 'deed') {
-                if (!emptyLocation) {
+                if(sameLocation) {
                     return false;
                 }
                 return true;
             }
-            if (this.props.item.card.type_code === 'goods') {
+            if(this.props.item.card.type_code === 'deed') {
+                if(!emptyLocation) {
+                    return false;
+                }
+                return true;
+            }
+            if(this.props.item.card.type_code === 'goods') {
                 // TODO M2 can add more retrictions
-                if (emptyLocation) {
+                if(emptyLocation) {
                     return false;
                 }
                 return true;
             }
-            if (this.props.item.card.type_code === 'spell') {
+            if(this.props.item.card.type_code === 'spell') {
                 // TODO can add more restrictions
-                if (emptyLocation) {
+                if(emptyLocation) {
                     return false;
                 }
                 return true;
@@ -139,7 +140,7 @@ class Droppable extends React.Component {
 
     render() {
         let className = 'overlay';
-        if (this.isValidLocation()) {
+        if(this.isValidLocation()) {
             className = classNames('overlay', {
                 'drop-ok': this.props.isOver && this.props.canDrop,
                 'no-drop': this.props.isOver && !this.props.canDrop && this.props.item && this.props.source !== this.props.item.source,
@@ -161,9 +162,9 @@ Droppable.propTypes = {
     connectDropTarget: PropTypes.func,
     isOver: PropTypes.bool,
     item: PropTypes.object,
+    location: PropTypes.object,
     onDragDrop: PropTypes.func,
-    source: PropTypes.string.isRequired,
-    location: PropTypes.object
+    source: PropTypes.string.isRequired
 };
 
 export default DropTarget(ItemTypes.CARD, dropTarget, collect)(Droppable);
