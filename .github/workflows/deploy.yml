@@ -83,6 +83,14 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_PROD_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_PROD_USER }}
           TARGET: ${{ secrets.REMOTE_PROD_TARGET }}/public
+    - name: Update from PT
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_PROD_HOST }}
+        username: ${{ secrets.REMOTE_PROD_USER }}
+        key: ${{ secrets.PROD_SERVER_SSH_KEY }}
+        script: |
+          echo "bla"
     - name: Restart pm2 processes
       uses: appleboy/ssh-action@master
       with:
@@ -92,73 +100,3 @@ jobs:
         script: |
           pm2 restart 0
           pm2 restart 1
-  deploy_dev:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - uses: actions/checkout@v2
-    - name: Stop services
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_TEST_HOST }}
-        username: ${{ secrets.REMOTE_TEST_USER }}
-        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
-        script: |
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl stop townsquare.service
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl stop gamenode.service
-    - name: Git update
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_TEST_HOST }}
-        username: ${{ secrets.REMOTE_TEST_USER }}
-        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
-        script: |
-          cd ${{ secrets.REMOTE_TEST_TARGET }}
-          git fetch
-          git reset --hard origin/master
-          git clean -fd
-          git submodule update --remote
-    - name: Cleanup
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_TEST_HOST }}
-        username: ${{ secrets.REMOTE_TEST_USER }}
-        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
-        script: |
-          rm -f ${{ secrets.REMOTE_TEST_TARGET }}/public/* || true
-          rm -f ${{ secrets.REMOTE_TEST_TARGET }}/public/img/* || true
-          rm -r ${{ secrets.REMOTE_TEST_TARGET }}/public/fonts || true    
-          rm -r ${{ secrets.REMOTE_TEST_TARGET }}/public/sound || true 
-    - name: Get built dist
-      uses: actions/download-artifact@v2
-      with:
-        name: dist
-        path: dist
-    - name: Deploy dist to Server
-      uses: easingthemes/ssh-deploy@v2.1.5
-      env:
-          SSH_PRIVATE_KEY: ${{ secrets.TEST_SERVER_SSH_KEY }}
-          ARGS: "-rltgoDzvO"
-          SOURCE: "dist/"
-          REMOTE_HOST: ${{ secrets.REMOTE_TEST_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_TEST_USER }}
-          TARGET: ${{ secrets.REMOTE_TEST_TARGET }}/public
-          EXCLUDE: "/images/cards/, /node_modules/"
-    - name: Deploy assets to Server
-      uses: easingthemes/ssh-deploy@v2.1.5
-      env:
-          SSH_PRIVATE_KEY: ${{ secrets.TEST_SERVER_SSH_KEY }}
-          ARGS: "-rltgoDzvO"
-          SOURCE: "assets/"
-          REMOTE_HOST: ${{ secrets.REMOTE_TEST_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_TEST_USER }}
-          TARGET: ${{ secrets.REMOTE_TEST_TARGET }}/public
-    - name: Start services
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_TEST_HOST }}
-        username: ${{ secrets.REMOTE_TEST_USER }}
-        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
-        script: |
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl start townsquare.service
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl start gamenode.service
