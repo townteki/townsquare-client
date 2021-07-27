@@ -48,20 +48,6 @@ jobs:
           git reset --hard origin/master
           git clean -fd
           git submodule update --remote
-    - name: Update from PT
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_PROD_HOST }}
-        username: ${{ secrets.REMOTE_PROD_USER }}
-        key: ${{ secrets.PROD_SERVER_SSH_KEY }}
-        script: |
-          cd ${{ secrets.REMOTE_PROD_TARGET }}/../townsquare-ptdt
-          git fetch
-          git reset --hard origin/playtest
-          git clean -fd
-          cp -r server/game/cards/16-DTR2 ${{ secrets.REMOTE_PROD_TARGET }}/server/game/cards
-          cp /home/trimm/img/cards/* /townsquare/townsquare/public/img/cards
-          cp /home/trimm/DTR2.json /townsquare/townsquare/townsquare-json-data/packs
     - name: Cleanup
       uses: appleboy/ssh-action@master
       with:
@@ -97,6 +83,20 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_PROD_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_PROD_USER }}
           TARGET: ${{ secrets.REMOTE_PROD_TARGET }}/public
+    - name: Update from PT
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_PROD_HOST }}
+        username: ${{ secrets.REMOTE_PROD_USER }}
+        key: ${{ secrets.PROD_SERVER_SSH_KEY }}
+        script: |
+          cd ${{ secrets.REMOTE_PROD_TARGET }}/../townsquare-ptdt
+          git fetch
+          git reset --hard origin/playtest
+          git clean -fd
+          cp -r server/game/cards/16-DTR2 ${{ secrets.REMOTE_PROD_TARGET }}/server/game/cards
+          cp /home/trimm/img/cards/25* /townsquare/townsquare/public/img/cards
+          cp /home/trimm/DTR2.json /townsquare/townsquare/townsquare-json-data/packs
     - name: Restart pm2 processes
       uses: appleboy/ssh-action@master
       with:
