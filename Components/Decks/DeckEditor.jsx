@@ -264,9 +264,9 @@ class DeckEditor extends React.Component {
         return `${option.title} (${cardPack.name})`;
     }
 
-    getCardOptions() {
+    getCardOptions(cardList) {
         const restrList = new RestrictedList(this.props.currentRestrictedList);
-        return Object.values(this.props.cards).filter(card => {
+        return Object.values(cardList).filter(card => {
             let cardPack = this.props.packs.find(pack => pack.code === card.pack_code);
             if(cardPack.isPt && !this.isPtUser) {
                 return false;
@@ -318,15 +318,15 @@ class DeckEditor extends React.Component {
                 <form className='form form-horizontal'>
                     <Input name='deckName' label='Deck Name' labelClass='col-sm-3' fieldClass='col-sm-9' placeholder='Deck Name'
                         type='text' onChange={ this.onChange.bind(this, 'deckName') } value={ this.state.deckName } />
-                    <Select name='outfit' label='Outfit' labelClass='col-sm-3' fieldClass='col-sm-9' options={ Object.values(this.props.outfits) }
+                    <Select name='outfit' label='Outfit' labelClass='col-sm-3' fieldClass='col-sm-9' options={ this.getCardOptions(this.props.outfits) }
                         onChange={ this.onOutfitChange.bind(this) } value={ this.state.outfit ? this.state.outfit.code : undefined }
                         valueKey='code' nameKey='title' blankOption={ { title: '- Select -', code: '' } } />
-                    <Select name='legend' label='Legend' labelClass='col-sm-3' fieldClass='col-sm-9' options={ Object.values(this.props.legends) }
+                    <Select name='legend' label='Legend' labelClass='col-sm-3' fieldClass='col-sm-9' options={ this.getCardOptions(this.props.legends) }
                         onChange={ this.onLegendChange.bind(this) } value={ this.state.legend ? this.state.legend.code : undefined }
                         valueKey='code' nameKey='title' blankOption={ { title: '- Select -', code: '' } } />
 
                     <Typeahead label='Card' labelClass={ 'col-sm-3' } fieldClass='col-sm-9' labelKey={ option => this.cardOptionLabel(option) } 
-                        options={ this.getCardOptions() } onChange={ this.addCardChange.bind(this) }/>
+                        options={ this.getCardOptions(this.props.cards) } onChange={ this.addCardChange.bind(this) }/>
                     <Input name='numcards' type='text' label='Num' labelClass='col-sm-offset-3 col-sm-1' fieldClass='col-sm-2'
                         value={ this.state.numberToAdd.toString() } onChange={ this.onNumberToAddChange.bind(this) } >
                         <div className='col-sm-1 no-x-padding'>
