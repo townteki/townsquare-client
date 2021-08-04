@@ -19,8 +19,7 @@ class HowToPlay extends React.Component {
                             <li><a href='#bugs'>Bugs and Automation</a></li>
                             <li><a href='#interactions'>Specific Card Interactions</a></li>
                             <ul className='htp-sub-list'>
-                                <li><a href='#marges'>Old Marge's Manor</a></li>
-                                <li><a href='#johnnybrocklehurst'>Johnny Brocklehurst</a></li>
+                                <li><a href='#margesandjohnny'>Old Marge's Manor and Johnny Brocklehurst</a></li>
                             </ul>
                             <li><a href='#commands'>Manual Commands</a></li>
                             <li><a href='#conceding'>About Stats, Conceding and Leaving Games</a></li>
