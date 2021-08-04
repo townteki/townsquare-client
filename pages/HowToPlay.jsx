@@ -41,12 +41,8 @@ class HowToPlay extends React.Component {
                     <div className='htp-topic'>
                         <h3 className='htp-title' id='interactions'>Specific Card Interactions</h3>
                         <div className='htp-subtopic'>
-                            <h4 className='htp-subtitle' id='marges'>Old Marge's Manor</h4>
-                            <p><a href='https://dtdb.co/en/card/12012' target='blank'>Old Marge's Manor's</a> React ability must be triggered as a normal Noon action instead of a React. When you want to use it, click the card and choose "Use Ability" on the card menu</p>
-                        </div>
-                        <div className='htp-subtopic'>
-                            <h4 className='htp-subtitle' id='johnnybrocklehurst'>Johnny Brocklehurst</h4>
-                            <p><a href='https://dtdb.co/en/card/19017' target='blank'>Johnny Brocklehurst</a>'s React ability must be triggered as a normal Noon action instead of a React. When you want to use it, click the card and choose "Use Ability" on the card menu</p>
+                            <h4 className='htp-subtitle' id='margesandjohnny'>Old Marge's Manor and Johnny Brocklehurst</h4>
+                            <p><a href='https://dtdb.co/en/card/12012' target='blank'>Old Marge's Manor</a>'s and <a href='https://dtdb.co/en/card/19017' target='blank'>Johnny Brocklehurst</a>'s React ability must be triggered as a normal Noon action instead of a React. When you want to use it, click the card and choose "Use Ability" on the card menu</p>
                         </div>
                     </div>
                     <div className='htp-topic'>
