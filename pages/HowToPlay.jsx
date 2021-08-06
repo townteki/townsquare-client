@@ -46,6 +46,16 @@ class HowToPlay extends React.Component {
                         </div>
                     </div>
                     <div className='htp-topic'>
+                        <h3 className='htp-title' id='interactions'>Usage of Unscripted Cards</h3>
+                        <p>There is still a great number of cards that are not scripted and therefore these has to be resolved using <a href='#commands'>Manual Commands</a>. The unscripted card can be identified by the peeking skull on the bottom of the card: <img style={ { width: '20px', height: '22px', 'padding-bottom': '5px' } } src='/img/tokens/scripted_skull.png' /></p>
+                        <p>To use unscripted card, follow these steps:</p>
+                        <ul>
+                            <li>type '/use' command and select card, or drag action card into the 'being played' pile</li>
+                            <li>use <a href='#commands'>manual commands</a> or other ways (e.g. drag and drop cards) to perform card ability</li>
+                            <li>if done, click on the 'Done' button in the prompt which will move the order to next player</li>
+                        </ul>
+                    </div>
+                    <div className='htp-topic'>
                         <h3 className='htp-title' id='commands'>Manual Commands</h3>
                         <p>Every once in a while something happens during a game that shouldn’t have happened. This can occur due to a misclick, an unimplemented card or a bug in the software. To fix the game state in such situations a variety of manual commands are implemented. Typing these commands as a chatmessage during a game will have the following effect:</p>
                         <div className='htp-subtopic'>
