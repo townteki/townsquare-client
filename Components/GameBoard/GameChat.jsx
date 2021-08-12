@@ -33,6 +33,7 @@ const commands = [
     { label: '/look-deck ', syntax: '/look-deck x', desc: 'Looks at top x cards of your deck' },
     { label: '/move ', desc: 'Moves a dude' },
     { label: '/pass ', desc: 'Passes current play' },
+    { label: '/prod ', syntax: '/prod [x | +/-mod]', desc: 'Sets prod to x or modifies it by +/-mod' },
     { label: '/pull ', syntax: '/pull [x]', desc: 'Pulls with optional difficulty x' },
     { label: '/pull kf', desc: 'Pulls for technique' },
     { label: '/rematch ', desc: 'Start a new game with current opponent' },

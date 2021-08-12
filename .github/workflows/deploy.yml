@@ -48,7 +48,7 @@ jobs:
           git reset --hard origin/master
           git clean -fd
           git submodule update --remote
-    - name: Cleanup
+    - name: Cleanup and update from PT
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.REMOTE_PROD_HOST }}
@@ -59,6 +59,13 @@ jobs:
           rm -f ${{ secrets.REMOTE_PROD_TARGET }}/public/img/* || true
           rm -r ${{ secrets.REMOTE_PROD_TARGET }}/public/fonts || true    
           rm -r ${{ secrets.REMOTE_PROD_TARGET }}/public/sound || true 
+          cd ${{ secrets.REMOTE_PROD_TARGET }}/../townsquare-ptdt
+          git fetch
+          git reset --hard origin/playtest
+          git clean -fd
+          cp -r server/game/cards/16-DTR2 ${{ secrets.REMOTE_PROD_TARGET }}/server/game/cards
+          cp /home/trimm/img/cards/25* /townsquare/townsquare/public/img/cards
+          cp /home/trimm/DTR2.json /townsquare/townsquare/townsquare-json-data/packs
     - name: Get built dist
       uses: actions/download-artifact@v2
       with:

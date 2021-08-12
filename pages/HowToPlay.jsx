@@ -66,6 +66,7 @@ class HowToPlay extends React.Component {
                                 <li>/clear-suit - Clears the suit effects done by chat commands.</li>
                                 <li>/control [x | +/-mod] - Sets the control of a card to x or modifies it by mod.</li>
                                 <li>/inf [x | +/-mod] [t] - Sets the influence of a dude to x or modifies it by mod. Optional parameter "t" can be set to 'influence:deed' if you want to set only influence for controlling deeds.</li>
+                                <li>/prod [x | +/-mod] - Sets the production of a card to x or modifies it by mod.</li>
                                 <li>/reset-stats [suit | value | bullets | influence | control | upkeep | production] - Resets stat to printed (all if stat is omitted).</li>
                                 <li>/shooter [stud | draw] - Sets shooter type of a dude to stud or draw.</li>
                                 <li>/suit [hearts | clubs | diams | spades] - Sets the suit of a card.</li>
