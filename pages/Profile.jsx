@@ -45,16 +45,8 @@ class Profile extends React.Component {
             { name: 'x-large', label: 'Extra-Large' }
         ];
 
-        this.windows = [
-            { name: 'plot', label: 'Plots revealed', style: 'col-sm-4' },
-            { name: 'draw', label: 'Draw phase', style: 'col-sm-4' },
-            { name: 'challengeBegin', label: 'Before challenge', style: 'col-sm-4' },
-            { name: 'attackersDeclared', label: 'Attackers declared', style: 'col-sm-4' },
-            { name: 'defendersDeclared', label: 'Defenders declared', style: 'col-sm-4' },
-            { name: 'dominance', label: 'Dominance phase', style: 'col-sm-4' },
-            { name: 'standing', label: 'Standing phase', style: 'col-sm-4' },
-            { name: 'taxation', label: 'Taxation phase', style: 'col-sm-4' }
-        ];
+        // TODO M2 will be removed
+        this.windows = [];
 
         if(!this.props.user) {
             return;
@@ -214,17 +206,6 @@ class Profile extends React.Component {
             return <AlertPanel type='error' message='You must be logged in to update your profile' />;
         }
 
-        let windows = this.windows.map(window => {
-            return (<Checkbox key={ window.name }
-                noGroup
-                name={ 'promptedActionWindows.' + window.name }
-                label={ window.label }
-                fieldClass={ window.style }
-                type='checkbox'
-                onChange={ (this.onWindowToggle.bind(this, window.name)) }
-                checked={ this.state.promptedActionWindows[window.name] } />);
-        });
-
         if(this.props.profileSaved) {
             setTimeout(() => {
                 this.props.clearProfileStatus();
@@ -245,17 +226,10 @@ class Profile extends React.Component {
                         <div className='col-sm-3 text-center'>Current profile picture</div>
                         <button type='button' className='btn btn-default col-sm-offset-1 col-sm-3' onClick={ this.onUpdateAvatarClick }>Update avatar</button>
                         <div className='col-sm-12 profile-inner'>
-                            <Panel title='Action window defaults'>
-                                <p className='help-block small'>If an option is selected here, you will always be prompted if you want to take an action in that window.  If an option is not selected, you will receive no prompts for that window.  For some windows (e.g. dominance) this could mean the whole window is skipped.</p>
+                            <Panel title='Timed Reaction Window'>
+                                <p className='help-block small'>NOT YET IMPLEMENTED.</p>
                                 <div className='form-group'>
-                                    { windows }
-                                </div>
-                            </Panel>
-                            <Panel title='Timed Interrupt Window'>
-                                <p className='help-block small'>Every time a game event occurs that you could possibly interrupt to cancel it, a timer will count down.  At the end of that timer, the window will automatically pass.
-                                This option controls the duration of the timer.  The timer can be configure to show when events are played (useful if you play cards like The Hand's Judgement) and to show when card abilities are triggered (useful if you play a lot of Treachery).</p>
-                                <div className='form-group'>
-                                    <label className='col-xs-3 control-label'>Window timeout</label>
+                                    <label className='col-xs-3 control-label'>Reaction timeout</label>
                                     <div className='col-xs-5 control-label'>
                                         <Slider value={ this.state.windowTimer }
                                             slideStop={ this.onSlideStop.bind(this) }
@@ -273,16 +247,6 @@ class Profile extends React.Component {
                                         onChange={ this.onTimerSettingToggle.bind(this, 'events') } checked={ this.state.timerSettings.events } />
                                     <Checkbox name='timerSettings.abilities' noGroup label={ 'Show timer for card abilities' } fieldClass='col-sm-6'
                                         onChange={ this.onTimerSettingToggle.bind(this, 'abilities') } checked={ this.state.timerSettings.abilities } />
-                                </div>
-                            </Panel>
-                            <Panel title='Game Settings'>
-                                <div className='form-group'>
-                                    <Checkbox name='keywordSettings.chooseOrder' noGroup label={ 'Choose order of keywords' } fieldClass='col-sm-6'
-                                        onChange={ this.onKeywordSettingToggle.bind(this, 'chooseOrder') } checked={ this.state.keywordSettings.chooseOrder } />
-                                    <Checkbox name='keywordSettings.chooseCards' noGroup label={ 'Make keywords optional' } fieldClass='col-sm-6'
-                                        onChange={ this.onKeywordSettingToggle.bind(this, 'chooseCards') } checked={ this.state.keywordSettings.chooseCards } />
-                                    <Checkbox name='promptDupes' noGroup label={ 'Prompt before using dupes to save' } fieldClass='col-sm-6'
-                                        onChange={ this.onToggle.bind(this, 'promptDupes') } checked={ this.state.promptDupes } />
                                 </div>
                             </Panel>
                         </div>
