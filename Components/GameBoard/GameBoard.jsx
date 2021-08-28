@@ -34,6 +34,7 @@ const placeholderPlayer = {
     locations: [],
     totalControl: 0,    
     outfit: null,
+    inCheck: false,
     firstPlayer: false,
     numDrawCards: 0,
     stats: null,
@@ -320,8 +321,8 @@ export class GameBoard extends React.Component {
             <div key='board-middle' className='board-middle'>
                 <div className='player-home-row'>
                     <div className='player-stats-row other-side'>
-                        <PlayerStats stats={ otherPlayer.stats }
-                            user={ otherPlayer.user } firstPlayer={ otherPlayer.firstPlayer } />
+                        <PlayerStats stats={ otherPlayer.stats } user={ otherPlayer.user } 
+                            firstPlayer={ otherPlayer.firstPlayer } inCheck={ otherPlayer.inCheck } />
                     </div>
                     <PlayerRow
                         hand={ otherPlayer.cardPiles.hand } isMe={ false }
@@ -385,7 +386,7 @@ export class GameBoard extends React.Component {
                 <div className='player-home-row our-side'>
                     <div className='player-stats-row'>
                         <PlayerStats { ...boundActionCreators } stats={ thisPlayer.stats } showControls={ !this.state.spectating } user={ thisPlayer.user }
-                            firstPlayer={ thisPlayer.firstPlayer } onSettingsClick={ this.onSettingsClick } showMessages
+                            firstPlayer={ thisPlayer.firstPlayer } inCheck={ thisPlayer.inCheck } onSettingsClick={ this.onSettingsClick } showMessages
                             onMessagesClick={ this.onMessagesClick } numMessages={ this.state.newMessages } />
                     </div>
                     <PlayerRow isMe={ !this.state.spectating }
