@@ -56,11 +56,14 @@ export class PlayerStats extends React.Component {
         return (
             <div className='panel player-stats'>
                 { playerAvatar }
-                { this.props.firstPlayer ? <div className='state winner'>
-                    <div className='first-player'>
+                { this.props.firstPlayer || this.props.inCheck ? <div className='state badges'>
+                    { this.props.firstPlayer ? <div className='single-badge'>
                         <img src='/img/icons/dice.png'/>
-                    </div>
-                </div> : null }
+                    </div> : null }
+                    { this.props.inCheck ? <div className='single-badge'>
+                        <img src='/img/icons/noose.png'/>
+                    </div> : null }
+                </div> : null }           
 
                 { this.getButton('ghostrock', 'ghostrock', !!this.props.showControls) }
                 { this.getButton('control', 'control', false) }
@@ -78,6 +81,7 @@ export class PlayerStats extends React.Component {
 PlayerStats.displayName = 'PlayerStats';
 PlayerStats.propTypes = {
     firstPlayer: PropTypes.bool,
+    inCheck: PropTypes.bool,
     onSettingsClick: PropTypes.func,
     playerName: PropTypes.string,
     sendGameMessage: PropTypes.func,
