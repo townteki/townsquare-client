@@ -20,7 +20,6 @@ const mdHeader = /^\[(.*)\].*$/;
 class DeckEditor extends React.Component {
     constructor(props) {
         super(props);
-        this.isPtUser = this.props.user.permissions.isContributor;
         this.onOnlyUnrestrictedClick = this.onOnlyUnrestrictedClick.bind(this);
 
         this.state = {
@@ -57,6 +56,9 @@ class DeckEditor extends React.Component {
     }
 
     componentWillReceiveProps(props) {
+        if(props.user) {
+            this.isPtUser = props.user.permissions.isContributor;
+        }
         if(props.outfits && !this.state.outfit) {
             this.setState({ outfit: props.outfits['law dogs'] }, this.triggerDeckUpdated);
         }
