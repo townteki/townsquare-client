@@ -19,7 +19,7 @@ If you encounter any issues on the site or while playing games, please raise an 
 These instructions are only needed if you are actively working on the client.
 
 ```
-git clone https://github.com/townsquare/townsquare-client.git
+git clone https://github.com/townteki/townsquare-client.git
 cd townsquare-client
 npm install
 npm run start
