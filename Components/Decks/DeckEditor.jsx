@@ -13,9 +13,11 @@ import * as actions from '../../actions';
 import { lookupCardByName } from './DeckParser';
 import RestrictedList from 'townsquare-deck-helper/lib/RestrictedList';
 
-const plainHeader = /^([^()]+)(\(.+\))??$/;
+const plainHeader = /^([^()]+)\((.+)??\)$/;
 const bbHeader = /^\[.*?\](.*?)\[.*\]/;
 const mdHeader = /^\[(.*)\].*$/;
+
+const lawdogsCode = '01002';
 
 class DeckEditor extends React.Component {
     constructor(props) {
@@ -27,7 +29,7 @@ class DeckEditor extends React.Component {
             deckName: 'New Deck',
             drawCards: [],
             legends: [],
-            outfit: props.outfits && props.outfits['lawdogs'],
+            outfit: props.outfits && props.outfits[lawdogsCode],
             numberToAdd: 1,
             validation: {
                 deckname: '',
@@ -60,7 +62,7 @@ class DeckEditor extends React.Component {
             this.isPtUser = props.user.permissions.isContributor;
         }
         if(props.outfits && !this.state.outfit) {
-            this.setState({ outfit: props.outfits['law dogs'] }, this.triggerDeckUpdated);
+            this.setState({ outfit: props.outfits[lawdogsCode] }, this.triggerDeckUpdated);
         }
     }
 
@@ -184,8 +186,11 @@ class DeckEditor extends React.Component {
                 if(options.markdown) {
                     headerMatch = header[1].trim().match(mdHeader);
                 }
-                let newOutfit = Object.values(this.props.outfits).find(outfit => outfit.title === headerMatch[1].trim());
-                let outfitPack = this.props.packs.find(pack => pack.code === newOutfit.pack_code);
+                let outfitPack;
+                let newOutfit = Object.values(this.props.outfits).find(outfit => {
+                    outfitPack = this.props.packs.find(pack => pack.code === outfit.pack_code);
+                    return outfit.title === headerMatch[1].trim() && outfitPack.name === headerMatch[2].trim();
+                });
                 if(newOutfit && headerMatch[1] && (!outfitPack.isPt || this.isPtUser)) {
                     outfit = newOutfit;
                 }

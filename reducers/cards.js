@@ -49,7 +49,7 @@ export default function(state = { decks: [] }, action) {
                     legends[card.code] = card;
                 }
                 if(card.type_code === 'outfit') {
-                    outfits[card.title.trim().toLowerCase()] = card;
+                    outfits[card.code] = card;
                 }
             }
 
