@@ -34,7 +34,7 @@ class RestrictedListDropdown extends React.Component {
     }
 
     filterAvailableRlOptions(restrictedLists) {
-        if(!this.props.user.permissions.isContributor) {
+        if(this.props.user && !this.props.user.permissions.isContributor) {
             return restrictedLists.filter(rl => !rl.isPt);
         }
         return restrictedLists;
