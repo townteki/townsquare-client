@@ -96,7 +96,7 @@ export class InnerGameLocation extends React.Component {
         var frameClass = 'location-frame';
 
         var cardRegEx = /\d{5}/;
-        var isCard = cardRegEx.test(this.props.location.code);
+        var isCard = cardRegEx.test(this.props.location.code) || this.props.location.facedown;
 
         if(!this.props.location || this.isStreetSide()) {
             return <div />;
