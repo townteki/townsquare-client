@@ -154,7 +154,7 @@ class InnerCard extends React.Component {
     }
 
     getAttachments() {
-        if(this.props.source !== 'play area') {
+        if(this.props.source !== 'play area' || !this.props.card.attachments) {
             return null;
         }
 
