@@ -1,6 +1,6 @@
 # This is a deploy workflow to test server
 
-name: CI Deploy
+name: CI Deploy Dev
 
 # Controls when the action will run. 
 on:
