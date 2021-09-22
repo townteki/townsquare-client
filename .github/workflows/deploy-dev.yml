@@ -52,7 +52,7 @@ jobs:
         script: |
           cd ${{ secrets.REMOTE_TEST_TARGET }}
           git fetch
-          git reset --hard origin/master
+          git reset --hard origin/development
           git clean -fd
           git submodule update --remote
     - name: Cleanup
