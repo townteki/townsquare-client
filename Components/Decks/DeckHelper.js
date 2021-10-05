@@ -17,7 +17,7 @@ export function cardSetLabel(cardSet) {
         case 'new':
             return 'Weird West';
         case 'original':
-            return 'Old Timer';
+            return 'Old Timer (Legacy)';
     }
 
     return 'Unknown';
