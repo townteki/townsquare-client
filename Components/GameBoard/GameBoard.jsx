@@ -413,6 +413,7 @@ export class GameBoard extends React.Component {
                         handleMenuChange={ this.handleMenuChange }
                         onMenuItemClick={ this.onMenuItemClick }
                         cardSize={ this.props.user.settings.cardSize }
+                        popupStayOpen={ thisPlayer.popupStayOpen }
                         side='bottom' />
                 </div>
             </div>

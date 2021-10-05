@@ -52,6 +52,7 @@ class PlayerRow extends React.Component {
         let popupProps = {
             onDragDrop: this.props.onDragDrop,
             popupLocation: this.props.side,
+            popupStayOpen: this.props.popupStayOpen,
             size: this.props.cardSize
         };
         let cardPileProps = Object.assign(popupProps, {
@@ -82,15 +83,13 @@ class PlayerRow extends React.Component {
             isMe={ this.props.isMe }
             username={ this.props.username }
             maxCards={ 5 }
-            onCardClick={ this.props.onCardClick }
             onDiscardSelectedClick={ this.props.onDiscardSelectedClick }
             onMenuItemClick={ this.props.onMenuItemClick }
-            onMouseOut={ this.props.onMouseOut }
-            onMouseOver={ this.props.onMouseOver }
             onPopupClose={ this.props.onDrawPopupClose }
             source='draw hand'
             title='Draw Hand'
-            cardSize={ this.props.cardSize } />);			
+            cardSize={ this.props.cardSize }
+            { ...cardPileProps } />);		
         let drawDeck = (<DrawDeck
             cardCount={ this.props.numDrawCards }
             cards={ this.props.drawDeck }
@@ -116,11 +115,10 @@ class PlayerRow extends React.Component {
                 { this.renderDroppablePile('draw deck', drawDeck) }
                 { this.renderDroppablePile('discard pile', discardPile) }
                 { this.renderDroppablePile('dead pile', deadPile) }
+                { this.renderDroppablePile('being played', beingPlayed) }
+                { this.renderDroppablePile('draw hand', drawHand) }	                
 
                 { this.getOutOfGamePile() }
-
-                { this.renderDroppablePile('being played', beingPlayed) }
-                { this.renderDroppablePile('draw hand', drawHand) }	
             </div>
         );
     }
@@ -148,6 +146,7 @@ PlayerRow.propTypes = {
     onMouseOver: PropTypes.func,
     onShuffleClick: PropTypes.func,
     outOfGamePile: PropTypes.array,
+    popupStayOpen: PropTypes.bool, 
     showDeck: PropTypes.bool,
     side: PropTypes.oneOf(['top', 'bottom']),
     spectating: PropTypes.bool,
