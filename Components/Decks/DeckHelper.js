@@ -15,9 +15,9 @@ export function deckStatusLabel(status) {
 export function cardSetLabel(cardSet) {
     switch(cardSet) {
         case 'new':
-            return 'New Cards';
+            return 'Weird West';
         case 'original':
-            return 'Original Cards';
+            return 'Old Timer';
     }
 
     return 'Unknown';
