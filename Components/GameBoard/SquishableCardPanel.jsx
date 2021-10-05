@@ -27,7 +27,7 @@ class SquishableCardPanel extends React.Component {
 
         if(!didHaveSelectableCard && hasNewSelectableCard) {
             this.updatePopupVisibility(true);
-        } else if(didHaveSelectableCard && !hasNewSelectableCard) {
+        } else if(!props.popupStayOpen && didHaveSelectableCard && !hasNewSelectableCard) {
             this.updatePopupVisibility(false);
         }
     }
@@ -269,6 +269,7 @@ SquishableCardPanel.propTypes = {
     popupCardSize: PropTypes.string,
     popupLocation: PropTypes.string,
     popupMenu: PropTypes.array,
+    popupStayOpen: PropTypes.bool,    
     source: PropTypes.string,
     title: PropTypes.string,
     username: PropTypes.string
