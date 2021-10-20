@@ -223,8 +223,8 @@ class PendingGame extends React.Component {
         return (
             <div>
                 <audio ref={ ref => this.notification = ref }>
-                    <source src='/sound/charge.mp3' type='audio/mpeg' />
-                    <source src='/sound/charge.ogg' type='audio/ogg' />
+                    <source src='/sound/gun_cock.mp3' type='audio/mpeg' />
+                    <source src='/sound/gun_cock.ogg' type='audio/ogg' />
                 </audio>
                 <Panel title={ title }>
                     <div className='btn-group'>
