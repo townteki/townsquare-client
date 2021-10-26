@@ -274,20 +274,8 @@ export class GameBoard extends React.Component {
         this.props.sendGameMessage('menuItemClick', card.uuid, menuItem);
     }
 
-    onPromptDupesToggle(value) {
-        this.props.sendGameMessage('toggleDupes', value);
-    }
-
-    onPromptedActionWindowToggle(option, value) {
-        this.props.sendGameMessage('togglePromptedActionWindow', option, value);
-    }
-
     onTimerSettingToggle(option, value) {
         this.props.sendGameMessage('toggleTimerSetting', option, value);
-    }
-
-    onKeywordSettingToggle(option, value) {
-        this.props.sendGameMessage('toggleKeywordSetting', option, value);
     }
 
     onSettingsClick() {
@@ -455,13 +443,7 @@ export class GameBoard extends React.Component {
             <div className={ boardClass }>
                 <GameConfigurationModal
                     id='settings-modal'
-                    keywordSettings={ thisPlayer.keywordSettings }
-                    onKeywordSettingToggle={ this.onKeywordSettingToggle.bind(this) }
-                    onPromptDupesToggle={ this.onPromptDupesToggle.bind(this) }
-                    onPromptedActionWindowToggle={ this.onPromptedActionWindowToggle.bind(this) }
                     onTimerSettingToggle={ this.onTimerSettingToggle.bind(this) }
-                    promptDupes={ thisPlayer.promptDupes }
-                    promptedActionWindows={ thisPlayer.promptedActionWindows }
                     timerSettings={ thisPlayer.timerSettings } />
                 <div className='main-window'>
                     { this.renderBoard(thisPlayer, otherPlayer) }

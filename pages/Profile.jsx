@@ -27,9 +27,7 @@ class Profile extends React.Component {
             newPassword: '',
             newPasswordAgain: '',
             successMessage: '',
-            promptDupes: false,
-            timerSettings: {},
-            keywordSettings: {}
+            timerSettings: {}
         };
 
         this.backgrounds = [
@@ -44,9 +42,6 @@ class Profile extends React.Component {
             { name: 'large', label: 'Large' },
             { name: 'x-large', label: 'Extra-Large' }
         ];
-
-        // TODO M2 will be removed
-        this.windows = [];
 
         if(!this.props.user) {
             return;
@@ -63,7 +58,7 @@ class Profile extends React.Component {
         }
 
         // If we haven't previously got any user details, then the api probably just returned now, so set the initial user details
-        if(!this.state.promptedActionWindows) {
+        if(!this.state.timerSettings) {
             this.updateProfile(props);
         }
 
@@ -88,11 +83,8 @@ class Profile extends React.Component {
         this.setState({
             email: props.user.email,
             enableGravatar: props.user.enableGravatar,
-            promptedActionWindows: props.user.promptedActionWindows,
-            promptDupes: props.user.settings.promptDupes,
             windowTimer: props.user.settings.windowTimer,
             timerSettings: props.user.settings.timerSettings,
-            keywordSettings: props.user.settings.keywordSettings,
             selectedBackground: props.user.settings.background,
             selectedCardSize: props.user.settings.cardSize
         });
@@ -112,27 +104,11 @@ class Profile extends React.Component {
         this.setState(newState);
     }
 
-    onWindowToggle(field, event) {
-        var newState = {};
-        newState.promptedActionWindows = this.state.promptedActionWindows;
-
-        newState.promptedActionWindows[field] = event.target.checked;
-        this.setState(newState);
-    }
-
     onTimerSettingToggle(field, event) {
         var newState = {};
         newState.timerSettings = this.state.timerSettings;
 
         newState.timerSettings[field] = event.target.checked;
-        this.setState(newState);
-    }
-
-    onKeywordSettingToggle(field, event) {
-        var newState = {};
-        newState.keywordSettings = this.state.keywordSettings;
-
-        newState.keywordSettings[field] = event.target.checked;
         this.setState(newState);
     }
 
@@ -148,12 +124,9 @@ class Profile extends React.Component {
         this.props.saveProfile(this.props.user.username, {
             email: state.email,
             password: state.newPassword,
-            promptedActionWindows: this.state.promptedActionWindows,
             enableGravatar: this.state.enableGravatar,
             settings: {
-                promptDupes: this.state.promptDupes,
                 windowTimer: this.state.windowTimer,
-                keywordSettings: this.state.keywordSettings,
                 timerSettings: this.state.timerSettings,
                 background: this.state.selectedBackground,
                 cardSize: this.state.selectedCardSize
@@ -202,7 +175,7 @@ class Profile extends React.Component {
     }
 
     render() {
-        if(!this.props.user || !this.state.promptedActionWindows) {
+        if(!this.props.user) {
             return <AlertPanel type='error' message='You must be logged in to update your profile' />;
         }
 
@@ -227,7 +200,8 @@ class Profile extends React.Component {
                         <button type='button' className='btn btn-default col-sm-offset-1 col-sm-3' onClick={ this.onUpdateAvatarClick }>Update avatar</button>
                         <div className='col-sm-12 profile-inner'>
                             <Panel title='Timed Reaction Window'>
-                                <p className='help-block small'>NOT YET IMPLEMENTED.</p>
+                                <p className='help-block small'>Every time a game event occurs that you could react to, a timer will count down.  At the end of that timer, the window will automatically pass.
+                                This option controls the duration of the timer.  The timer can be configure to show when actions can be played (useful if you play cards like A Slight Modification) and to show when card React abilities can be played.</p>
                                 <div className='form-group'>
                                     <label className='col-xs-3 control-label'>Reaction timeout</label>
                                     <div className='col-xs-5 control-label'>
@@ -243,8 +217,8 @@ class Profile extends React.Component {
                                     <label className='col-xs-2 control-label text-left no-padding'>seconds</label>
                                 </div>
                                 <div className='form-group'>
-                                    <Checkbox name='timerSettings.events' noGroup label={ 'Show timer for events' } fieldClass='col-sm-6'
-                                        onChange={ this.onTimerSettingToggle.bind(this, 'events') } checked={ this.state.timerSettings.events } />
+                                    <Checkbox name='timerSettings.actions' noGroup label={ 'Show timer for actions' } fieldClass='col-sm-6'
+                                        onChange={ this.onTimerSettingToggle.bind(this, 'actions') } checked={ this.state.timerSettings.actions } />
                                     <Checkbox name='timerSettings.abilities' noGroup label={ 'Show timer for card abilities' } fieldClass='col-sm-6'
                                         onChange={ this.onTimerSettingToggle.bind(this, 'abilities') } checked={ this.state.timerSettings.abilities } />
                                 </div>
