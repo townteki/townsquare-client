@@ -11,6 +11,7 @@ export class GameConfigurationModal extends React.Component {
                 <GameConfiguration
                     timerSettings={ this.props.timerSettings }
                     onTimerSettingToggle={ this.props.onTimerSettingToggle }
+                    user={ this.props.user }
                 />
             </Modal>);
     }
@@ -20,7 +21,8 @@ GameConfigurationModal.displayName = 'GameConfigurationModal';
 GameConfigurationModal.propTypes = {
     id: PropTypes.string,
     onTimerSettingToggle: PropTypes.func,
-    timerSettings: PropTypes.object
+    timerSettings: PropTypes.object,
+    user: PropTypes.object
 };
 
 export default GameConfigurationModal;

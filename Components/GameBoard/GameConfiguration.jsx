@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 
 import Checkbox from '../Form/Checkbox';
 import Panel from '../Site/Panel';
+import Slider from 'react-bootstrap-slider';
 
 class GameConfiguration extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            windowTimer: this.props.timerSettings.windowTimer
-        };
+        this.onLoadFromProfile = this.onLoadFromProfile.bind(this);
     }
 
     onSlideStop(event) {
@@ -27,8 +26,9 @@ class GameConfiguration extends React.Component {
         if(value > 10) {
             value = 10;
         }
-
-        this.setState({ windowTimer: value });
+        if(this.props.onTimerSettingToggle) {
+            this.props.onTimerSettingToggle('windowTimer', value);
+        }
     }
 
     onTimerSettingToggle(option, event) {
@@ -37,18 +37,41 @@ class GameConfiguration extends React.Component {
         }
     }
 
+    onLoadFromProfile(event) {
+        event.preventDefault();
+        this.props.onTimerSettingToggle('windowTimer', this.props.user.settings.windowTimer);
+        this.props.onTimerSettingToggle('actions', this.props.user.settings.timerSettings.actions);
+        this.props.onTimerSettingToggle('actionsInHand', this.props.user.settings.timerSettings.actionsInHand);
+    }
+
     render() {
         return (
             <div>
                 <form className='form form-horizontal'>
-                    <Panel title='Timed Interrupt Window'>
+                    <Panel title='Timed Reaction Window'>
                         <div className='form-group'>
-                            <Checkbox name='timerSettings.actions' noGroup label={ 'Show timer for actions' } fieldClass='col-sm-6'
+                            <label className='col-xs-3 control-label'>Reaction timeout</label>
+                            <div className='col-xs-5 control-label'>
+                                <Slider value={ this.props.timerSettings.windowTimer }
+                                    slideStop={ this.onSlideStop.bind(this) }
+                                    step={ 1 }
+                                    max={ 10 }
+                                    min={ 0 } />
+                            </div>
+                            <div className='col-xs-2'>
+                                <input className='form-control text-center' name='timer' value={ this.props.timerSettings.windowTimer } onChange={ this.onSlideStop.bind(this) } />
+                            </div>
+                            <label className='col-xs-2 control-label text-left no-padding'>seconds</label>
+                        </div>
+                        <div className='form-group'>
+                            <Checkbox name='timerSettings.actions' noGroup label={ 'Show timer if actions with React in deck' } fieldClass='col-sm-6'
                                 onChange={ this.onTimerSettingToggle.bind(this, 'actions') } checked={ this.props.timerSettings.actions } />
-                            <Checkbox name='timerSettings.abilities' noGroup label={ 'Show timer for card abilities' } fieldClass='col-sm-6'
-                                onChange={ this.onTimerSettingToggle.bind(this, 'abilities') } checked={ this.props.timerSettings.abilities } />
+                            <Checkbox name='timerSettings.actionsInHand' noGroup label={ 'Show timer only for actions in hand' } fieldClass='col-sm-6'
+                                onChange={ this.onTimerSettingToggle.bind(this, 'actionsInHand') } checked={ this.props.timerSettings.actionsInHand } 
+                                disabled={ !this.props.timerSettings.actions } />
                         </div>
                     </Panel>
+                    <button type='button' className='btn btn-default col-sm-offset-4' onClick={ this.onLoadFromProfile }>Load from Profile</button>
                 </form>
             </div>
         );
@@ -58,7 +81,8 @@ class GameConfiguration extends React.Component {
 GameConfiguration.displayName = 'GameConfiguration';
 GameConfiguration.propTypes = {
     onTimerSettingToggle: PropTypes.func,
-    timerSettings: PropTypes.object
+    timerSettings: PropTypes.object,
+    user: PropTypes.object
 };
 
 export default GameConfiguration;

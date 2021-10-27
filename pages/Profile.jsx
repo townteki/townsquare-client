@@ -27,7 +27,11 @@ class Profile extends React.Component {
             newPassword: '',
             newPasswordAgain: '',
             successMessage: '',
-            timerSettings: {}
+            windowTimer: 10,
+            timerSettings: {
+                actions: false,
+                actionsInHand: false
+            }
         };
 
         this.backgrounds = [
@@ -97,18 +101,14 @@ class Profile extends React.Component {
         this.setState(newState);
     }
 
-    onToggle(field, event) {
-        var newState = {};
-
-        newState[field] = event.target.checked;
-        this.setState(newState);
-    }
-
     onTimerSettingToggle(field, event) {
         var newState = {};
         newState.timerSettings = this.state.timerSettings;
 
         newState.timerSettings[field] = event.target.checked;
+        if(!field === 'actions' && event.target.checked) {
+            newState.timerSettings.actionsInHand = false;
+        }
         this.setState(newState);
     }
 
@@ -200,8 +200,9 @@ class Profile extends React.Component {
                         <button type='button' className='btn btn-default col-sm-offset-1 col-sm-3' onClick={ this.onUpdateAvatarClick }>Update avatar</button>
                         <div className='col-sm-12 profile-inner'>
                             <Panel title='Timed Reaction Window'>
-                                <p className='help-block small'>Every time a game event occurs that you could react to, a timer will count down.  At the end of that timer, the window will automatically pass.
-                                This option controls the duration of the timer.  The timer can be configure to show when actions can be played (useful if you play cards like A Slight Modification) and to show when card React abilities can be played.</p>
+                                <p className='help-block small'>Every time a game event occurs that you could react to with a action card, a timer will count down.  At the end of that timer, the window will automatically pass.
+                                This option controls the duration of the timer.</p>
+                                <p className='help-block small'>The timer can be configured to show when you have any actions with React in your deck (useful if you play cards like A Slight Modification), or to show only if you have an action card with React in your hand.</p>
                                 <div className='form-group'>
                                     <label className='col-xs-3 control-label'>Reaction timeout</label>
                                     <div className='col-xs-5 control-label'>
@@ -217,10 +218,11 @@ class Profile extends React.Component {
                                     <label className='col-xs-2 control-label text-left no-padding'>seconds</label>
                                 </div>
                                 <div className='form-group'>
-                                    <Checkbox name='timerSettings.actions' noGroup label={ 'Show timer for actions' } fieldClass='col-sm-6'
+                                    <Checkbox name='timerSettings.actions' noGroup label={ 'Show timer if actions with React in deck' } fieldClass='col-sm-6'
                                         onChange={ this.onTimerSettingToggle.bind(this, 'actions') } checked={ this.state.timerSettings.actions } />
-                                    <Checkbox name='timerSettings.abilities' noGroup label={ 'Show timer for card abilities' } fieldClass='col-sm-6'
-                                        onChange={ this.onTimerSettingToggle.bind(this, 'abilities') } checked={ this.state.timerSettings.abilities } />
+                                    <Checkbox name='timerSettings.actionsInHand' noGroup label={ 'Show timer only for actions in hand' } fieldClass='col-sm-6'
+                                        onChange={ this.onTimerSettingToggle.bind(this, 'actionsInHand') } checked={ this.state.timerSettings.actionsInHand } 
+                                        disabled={ !this.state.timerSettings.actions } />
                                 </div>
                             </Panel>
                         </div>

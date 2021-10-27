@@ -444,7 +444,9 @@ export class GameBoard extends React.Component {
                 <GameConfigurationModal
                     id='settings-modal'
                     onTimerSettingToggle={ this.onTimerSettingToggle.bind(this) }
-                    timerSettings={ thisPlayer.timerSettings } />
+                    timerSettings={ thisPlayer.timerSettings } 
+                    user={ this.props.user }
+                />
                 <div className='main-window'>
                     { this.renderBoard(thisPlayer, otherPlayer) }
                     <div className='inset-pane'>
