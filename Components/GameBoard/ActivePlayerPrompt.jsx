@@ -42,11 +42,14 @@ class ActivePlayerPrompt extends React.Component {
     }
 
     getInfoArea() {
+        if(!this.props.promptInfo) {
+            return;
+        }
         switch(this.props.promptInfo.type) {
             case 'info':
                 return (<div className='menu-pane-source'>
                     <div className='alert alert-info'>
-                        <span className='glyphicon glyphicon-ok-sign' />&nbsp;
+                        <span className='glyphicon glyphicon-info-sign' />&nbsp;
                         { processKeywords(this.props.promptInfo.message) }
                     </div>
                 </div>);
