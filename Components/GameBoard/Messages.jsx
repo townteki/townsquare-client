@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Avatar from '../Site/Avatar';
 import { ThronesIcons } from '../../constants';
 import * as actions from '../../actions';
+import { processKeywords } from './MessagesTokens';
 
 class Messages extends React.Component {
     constructor() {
@@ -12,20 +13,6 @@ class Messages extends React.Component {
 
         this.state = {
             message: ''
-        };
-
-        this.tokens = {
-            card: { className: 'icon-card', imageSrc: '/img/cards/cardback.jpg', title: 'Card' },
-            cards: { className: 'icon-card', imageSrc: '/img/cards/cardback.jpg', title: 'Cards' },
-            GR: { className: 'icon-token', imageSrc: '/img/icons/ghostrock.png', title: 'Ghost Rock' },
-            influence: { className: 'icon-token', imageSrc: '/img/icons/influence.png', title: 'Influence' },
-            CP: { className: 'icon-token', imageSrc: '/img/icons/control.png', title: 'Control Point' },
-            bullet: { className: 'icon-bullet', imageSrc: '/img/icons/bullet_draw.png', title: 'Bullet' },
-            bullets: { className: 'icon-bullet', imageSrc: '/img/icons/bullet_draw.png', title: 'Bullets' },
-            Hearts: { className: 'icon-token', imageSrc: '/img/icons/heart.png', title: 'Hearts' },
-            Diams: { className: 'icon-token', imageSrc: '/img/icons/diam.png', title: 'Diams' },
-            Clubs: { className: 'icon-token', imageSrc: '/img/icons/club.png', title: 'Clubs' },
-            Spades: { className: 'icon-token', imageSrc: '/img/icons/spade.png', title: 'Spades' }
         };
 
         this.formatMessageText = this.formatMessageText.bind(this);
@@ -36,28 +23,6 @@ class Messages extends React.Component {
         let messages = this.props.messages.map(message => {
             return <div key={ 'message' + index++ } className='message'>{ this.formatMessageText(message.message) }</div>;
         });
-
-        return messages;
-    }
-
-    processKeywords(message) {
-        let messages = [];
-        let i = 0;
-
-        for(let token of message.split(' ')) {
-            if(this.tokens[token]) {
-                let tokenEntry = this.tokens[token];
-                messages.push(<img 
-                    key={ `${token}-${i++}` } 
-                    className={ tokenEntry.className } 
-                    src={ tokenEntry.imageSrc } 
-                    title={ tokenEntry.title }
-                />);
-                messages.push(' ');
-            } else {
-                messages.push(token + ' ');
-            }
-        }
 
         return messages;
     }
@@ -148,7 +113,7 @@ class Messages extends React.Component {
                     <span key={ index++ } className={ `thronesicon thronesicon-${fragment}` } />
                 );
             } else {
-                let messageFragment = this.processKeywords(fragment.toString());
+                let messageFragment = processKeywords(fragment.toString());
                 messages.push(messageFragment);
             }
         }
