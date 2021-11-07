@@ -30,7 +30,7 @@ class Profile extends React.Component {
             windowTimer: 10,
             timerSettings: {
                 actions: false,
-                actionsInHand: false
+                shootoutAbilities: false
             }
         };
 
@@ -107,7 +107,7 @@ class Profile extends React.Component {
 
         newState.timerSettings[field] = event.target.checked;
         if(!field === 'actions' && event.target.checked) {
-            newState.timerSettings.actionsInHand = false;
+            newState.timerSettings.shootoutAbilities = false;
         }
         this.setState(newState);
     }
@@ -202,7 +202,7 @@ class Profile extends React.Component {
                             <Panel title='Timed Reaction Window'>
                                 <p className='help-block small'>Every time a game event occurs that you could react to with a action card, a timer will count down.  At the end of that timer, the window will automatically pass.
                                 This option controls the duration of the timer.</p>
-                                <p className='help-block small'>The timer can be configured to show when you have any actions with React in your deck (useful if you play cards like A Slight Modification), or to show only if you have an action card with React in your hand.</p>
+                                <p className='help-block small'>The timer can be configured to show when you have any actions with React in your deck, or to show every time shootout or resolution abilities are played by opponent (useful if you play cards like A Slight Modification).</p>
                                 <div className='form-group'>
                                     <label className='col-xs-3 control-label'>Reaction timeout</label>
                                     <div className='col-xs-5 control-label'>
@@ -220,9 +220,8 @@ class Profile extends React.Component {
                                 <div className='form-group'>
                                     <Checkbox name='timerSettings.actions' noGroup label={ 'Show timer if actions with React in deck' } fieldClass='col-sm-6'
                                         onChange={ this.onTimerSettingToggle.bind(this, 'actions') } checked={ this.state.timerSettings.actions } />
-                                    <Checkbox name='timerSettings.actionsInHand' noGroup label={ 'Show timer only for actions in hand' } fieldClass='col-sm-6'
-                                        onChange={ this.onTimerSettingToggle.bind(this, 'actionsInHand') } checked={ this.state.timerSettings.actionsInHand } 
-                                        disabled={ !this.state.timerSettings.actions } />
+                                    <Checkbox name='timerSettings.shootoutAbilities' noGroup label={ 'Show timer for shootout and resolution abilitites' } fieldClass='col-sm-6'
+                                        onChange={ this.onTimerSettingToggle.bind(this, 'shootoutAbilities') } checked={ this.state.timerSettings.shootoutAbilities } />
                                 </div>
                             </Panel>
                         </div>

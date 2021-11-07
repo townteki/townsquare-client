@@ -9,7 +9,7 @@ class GameConfiguration extends React.Component {
     constructor(props) {
         super(props);
 
-        this.onLoadFromProfile = this.onLoadFromProfile.bind(this);
+        this.onLoadFromProfile = this.onResetFromProfile.bind(this);
     }
 
     onSlideStop(event) {
@@ -37,11 +37,11 @@ class GameConfiguration extends React.Component {
         }
     }
 
-    onLoadFromProfile(event) {
+    onResetFromProfile(event) {
         event.preventDefault();
         this.props.onTimerSettingToggle('windowTimer', this.props.user.settings.windowTimer);
         this.props.onTimerSettingToggle('actions', this.props.user.settings.timerSettings.actions);
-        this.props.onTimerSettingToggle('actionsInHand', this.props.user.settings.timerSettings.actionsInHand);
+        this.props.onTimerSettingToggle('shootoutAbilities', this.props.user.settings.timerSettings.shootoutAbilities);
     }
 
     render() {
@@ -66,12 +66,12 @@ class GameConfiguration extends React.Component {
                         <div className='form-group'>
                             <Checkbox name='timerSettings.actions' noGroup label={ 'Show timer if actions with React in deck' } fieldClass='col-sm-6'
                                 onChange={ this.onTimerSettingToggle.bind(this, 'actions') } checked={ this.props.timerSettings.actions } />
-                            <Checkbox name='timerSettings.actionsInHand' noGroup label={ 'Show timer only for actions in hand' } fieldClass='col-sm-6'
-                                onChange={ this.onTimerSettingToggle.bind(this, 'actionsInHand') } checked={ this.props.timerSettings.actionsInHand } 
+                            <Checkbox name='timerSettings.shootoutAbilities' noGroup label={ 'Show timer for shootout and resolution abilitites' } fieldClass='col-sm-6'
+                                onChange={ this.onTimerSettingToggle.bind(this, 'shootoutAbilities') } checked={ this.props.timerSettings.shootoutAbilities } 
                                 disabled={ !this.props.timerSettings.actions } />
                         </div>
                     </Panel>
-                    <button type='button' className='btn btn-default col-sm-offset-4' onClick={ this.onLoadFromProfile }>Load from Profile</button>
+                    <button type='button' className='btn btn-default col-sm-offset-4' onClick={ this.onResetFromProfile }>Reset from Profile</button>
                 </form>
             </div>
         );
