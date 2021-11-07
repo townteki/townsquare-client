@@ -456,6 +456,7 @@ export class GameBoard extends React.Component {
                             controls={ thisPlayer.controls }
                             promptText={ thisPlayer.menuTitle }
                             promptTitle={ thisPlayer.promptTitle }
+                            promptInfo={ thisPlayer.promptInfo }
                             onButtonClick={ this.onCommand }
                             onMouseOver={ this.onMouseOver }
                             onMouseOut={ this.onMouseOut }

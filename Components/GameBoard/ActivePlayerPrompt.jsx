@@ -6,6 +6,7 @@ import AbilityTargeting from './AbilityTargeting';
 import AbilityTimer from './AbilityTimer';
 import CardNameLookup from './CardNameLookup';
 import TraitNameLookup from './TraitNameLookup';
+import { processKeywords } from './MessagesTokens';
 
 class ActivePlayerPrompt extends React.Component {
     onButtonClick(event, button) {
@@ -38,6 +39,37 @@ class ActivePlayerPrompt extends React.Component {
         if(card && this.props.onMouseOut) {
             this.props.onMouseOut(card);
         }
+    }
+
+    getInfoArea() {
+        if(!this.props.promptInfo) {
+            return;
+        }
+        switch(this.props.promptInfo.type) {
+            case 'info':
+                return (<div className='menu-pane-source'>
+                    <div className='alert alert-info'>
+                        <span className='glyphicon glyphicon-info-sign' />&nbsp;
+                        { processKeywords(this.props.promptInfo.message) }
+                    </div>
+                </div>);
+            case 'danger':
+                return (<div className='menu-pane-source'>
+                    <div className='alert alert-danger'>
+                        <span className='glyphicon glyphicon-exclamation-sign' />&nbsp;
+                        { processKeywords(this.props.promptInfo.message) }
+                    </div>
+                </div>);                
+            case 'warning':
+                return (<div className='menu-pane-source'>
+                    <div className='alert alert-warning'>
+                        <span className='glyphicon glyphicon-warning-sign' />&nbsp;
+                        { processKeywords(this.props.promptInfo.message) }
+                    </div>
+                </div>);                 
+            default:
+                break;
+        }      
     }
 
     getButtons() {
@@ -149,6 +181,7 @@ class ActivePlayerPrompt extends React.Component {
                     </div>
                 </grip>
                 { promptTitle }
+                { this.getInfoArea() }
                 <div className='menu-pane'>
                     <div className='panel'>
                         <h4>{ promptText }</h4>
@@ -171,6 +204,7 @@ ActivePlayerPrompt.propTypes = {
     onMouseOver: PropTypes.func,
     onTitleClick: PropTypes.func,
     phase: PropTypes.string,
+    promptInfo: PropTypes.object,    
     promptText: PropTypes.string,
     promptTitle: PropTypes.string,
     socket: PropTypes.object,
