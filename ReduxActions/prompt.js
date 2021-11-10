@@ -1,5 +1,3 @@
-import { formatDeckAsFullCards } from 'townsquare-deck-helper';
-
 import { sendGameMessage } from './socket';
 
 export function startAbilityTimer(timeLimit, timerProps) {
@@ -28,30 +26,6 @@ export function stopAbilityTimer() {
 export function expireAbilityTimer(timerProps) {
     return dispatch => {
         dispatch(stopAbilityTimer());
-        dispatch(sendGameMessage('menuButton', timerProps.arg, timerProps.method));
-    };
-}
-
-export function openRookeryPrompt(rookery) {
-    return (dispatch, getState) => {
-        let state = getState();
-        let formattedDeck = formatDeckAsFullCards(rookery.deck, state.cards);
-        dispatch({
-            type: 'OPEN_ROOKERY_PROMPT',
-            deck: formattedDeck,
-            promptId: rookery.promptId
-        });
-    };
-}
-
-export function submitRookeryPrompt(deck, promptId) {
-    return dispatch => {
-        dispatch(sendGameMessage('menuButton', deck, null, promptId));
-    };
-}
-
-export function closeRookeryPrompt() {
-    return {
-        type: 'CLOSE_ROOKERY_PROMPT'
+        dispatch(sendGameMessage('menuButton', timerProps.arg, timerProps.method, timerProps.promptId));
     };
 }

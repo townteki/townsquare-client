@@ -3,35 +3,13 @@ import PropTypes from 'prop-types';
 
 import Checkbox from '../Form/Checkbox';
 import Panel from '../Site/Panel';
+import Slider from 'react-bootstrap-slider';
 
 class GameConfiguration extends React.Component {
     constructor(props) {
         super(props);
 
-        this.windows = [
-            { name: 'plot', label: 'Plots revealed', style: 'col-sm-4' },
-            { name: 'draw', label: 'Draw phase', style: 'col-sm-4' },
-            { name: 'challengeBegin', label: 'Before challenge', style: 'col-sm-4' },
-            { name: 'attackersDeclared', label: 'Attackers declared', style: 'col-sm-4' },
-            { name: 'defendersDeclared', label: 'Defenders declared', style: 'col-sm-4' },
-            { name: 'dominance', label: 'Dominance phase', style: 'col-sm-4' },
-            { name: 'standing', label: 'Standing phase', style: 'col-sm-4' },
-            { name: 'taxation', label: 'Taxation phase', style: 'col-sm-4' }
-        ];
-
-        this.state = {
-            windowTimer: this.props.timerSettings.windowTimer
-        };
-    }
-
-    onToggle(option, value) {
-        if(option === 'promptDupes') {
-            if(this.props.onPromptDupesToggle) {
-                this.props.onPromptDupesToggle(!value);
-            }
-        } else if(this.props.onActionWindowToggle) {
-            this.props.onActionWindowToggle(option, !value);
-        }
+        this.onLoadFromProfile = this.onResetFromProfile.bind(this);
     }
 
     onSlideStop(event) {
@@ -48,8 +26,9 @@ class GameConfiguration extends React.Component {
         if(value > 10) {
             value = 10;
         }
-
-        this.setState({ windowTimer: value });
+        if(this.props.onTimerSettingToggle) {
+            this.props.onTimerSettingToggle('windowTimer', value);
+        }
     }
 
     onTimerSettingToggle(option, event) {
@@ -58,50 +37,41 @@ class GameConfiguration extends React.Component {
         }
     }
 
-    onKeywordSettingToggle(option, event) {
-        if(this.props.onKeywordSettingToggle) {
-            this.props.onKeywordSettingToggle(option, event.target.checked);
-        }
+    onResetFromProfile(event) {
+        event.preventDefault();
+        this.props.onTimerSettingToggle('windowTimer', this.props.user.settings.windowTimer);
+        this.props.onTimerSettingToggle('actions', this.props.user.settings.timerSettings.actions);
+        this.props.onTimerSettingToggle('shootoutAbilities', this.props.user.settings.timerSettings.shootoutAbilities);
     }
 
     render() {
-        let windows = this.windows.map(window => {
-            return (<Checkbox key={ window.name }
-                noGroup
-                name={ 'promptedActionWindows.' + window.name }
-                label={ window.label }
-                fieldClass={ window.style }
-                type='checkbox'
-                onChange={ this.onToggle.bind(this, window.name, this.props.actionWindows[window.name]) }
-                checked={ this.props.actionWindows[window.name] } />);
-        });
-
         return (
             <div>
                 <form className='form form-horizontal'>
-                    <Panel title='Action window defaults'>
+                    <Panel title='Timed Reaction Window'>
                         <div className='form-group'>
-                            { windows }
+                            <label className='col-xs-3 control-label'>Reaction timeout</label>
+                            <div className='col-xs-5 control-label'>
+                                <Slider value={ this.props.timerSettings.windowTimer }
+                                    slideStop={ this.onSlideStop.bind(this) }
+                                    step={ 1 }
+                                    max={ 10 }
+                                    min={ 0 } />
+                            </div>
+                            <div className='col-xs-2'>
+                                <input className='form-control text-center' name='timer' value={ this.props.timerSettings.windowTimer } onChange={ this.onSlideStop.bind(this) } />
+                            </div>
+                            <label className='col-xs-2 control-label text-left no-padding'>seconds</label>
+                        </div>
+                        <div className='form-group'>
+                            <Checkbox name='timerSettings.actions' noGroup label={ 'Show timer if actions with React in deck' } fieldClass='col-sm-6'
+                                onChange={ this.onTimerSettingToggle.bind(this, 'actions') } checked={ this.props.timerSettings.actions } />
+                            <Checkbox name='timerSettings.shootoutAbilities' noGroup label={ 'Show timer for shootout and resolution abilitites' } fieldClass='col-sm-6'
+                                onChange={ this.onTimerSettingToggle.bind(this, 'shootoutAbilities') } checked={ this.props.timerSettings.shootoutAbilities } 
+                                disabled={ !this.props.timerSettings.actions } />
                         </div>
                     </Panel>
-                    <Panel title='Timed Interrupt Window'>
-                        <div className='form-group'>
-                            <Checkbox name='timerSettings.events' noGroup label={ 'Show timer for events' } fieldClass='col-sm-6'
-                                onChange={ this.onTimerSettingToggle.bind(this, 'events') } checked={ this.props.timerSettings.events } />
-                            <Checkbox name='timerSettings.abilities' noGroup label={ 'Show timer for card abilities' } fieldClass='col-sm-6'
-                                onChange={ this.onTimerSettingToggle.bind(this, 'abilities') } checked={ this.props.timerSettings.abilities } />
-                        </div>
-                    </Panel>
-                    <Panel title='Other Settings'>
-                        <div className='form-group'>
-                            <Checkbox name='keywordSettings.chooseOrder' noGroup label={ 'Choose order of keywords' } fieldClass='col-sm-6'
-                                onChange={ this.onKeywordSettingToggle.bind(this, 'chooseOrder') } checked={ this.props.keywordSettings.chooseOrder } />
-                            <Checkbox name='keywordSettings.chooseCards' noGroup label={ 'Make keywords optional' } fieldClass='col-sm-6'
-                                onChange={ this.onKeywordSettingToggle.bind(this, 'chooseCards') } checked={ this.props.keywordSettings.chooseCards } />
-                            <Checkbox name='promptDupes' noGroup label={ 'Prompt before using dupes to save' } fieldClass='col-sm-6'
-                                onChange={ this.onToggle.bind(this, 'promptDupes', this.props.promptDupes) } checked={ this.props.promptDupes } />
-                        </div>
-                    </Panel>
+                    <button type='button' className='btn btn-default col-sm-offset-4' onClick={ this.onResetFromProfile }>Reset from Profile</button>
                 </form>
             </div>
         );
@@ -110,14 +80,9 @@ class GameConfiguration extends React.Component {
 
 GameConfiguration.displayName = 'GameConfiguration';
 GameConfiguration.propTypes = {
-    actionWindows: PropTypes.object,
-    keywordSettings: PropTypes.object,
-    onActionWindowToggle: PropTypes.func,
-    onKeywordSettingToggle: PropTypes.func,
-    onPromptDupesToggle: PropTypes.func,
     onTimerSettingToggle: PropTypes.func,
-    promptDupes: PropTypes.bool,
-    timerSettings: PropTypes.object
+    timerSettings: PropTypes.object,
+    user: PropTypes.object
 };
 
 export default GameConfiguration;

@@ -43,7 +43,7 @@ class AbilityTimer extends React.Component {
     render() {
         let remainingPercent = ((this.state.remaining / this.props.limit) * 100).toFixed() + '%';
         return (
-            <div>
+            <div className='ability-timer'>
                 <span>Auto passing in { this.state.remaining.toFixed() }...</span>
                 <div className='progress'>
                     <div className='progress-bar progress-bar-success' role='progressbar' style={ { width: remainingPercent } } />

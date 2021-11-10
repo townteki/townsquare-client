@@ -30,19 +30,9 @@ export function receiveGameState(game, username) {
         if(user && previousGameState) {
             if(hasTimer(game, user.username) && !hasTimer(previousGameState, user.username) && user.settings.windowTimer !== 0) {
                 let timerProps = game.players[user.username].buttons.find(button => button.timer);
-                dispatch(actions.startAbilityTimer(user.settings.windowTimer, timerProps));
+                dispatch(actions.startAbilityTimer(game.players[username].timerSettings.windowTimer, timerProps));
             } else if(!hasTimer(game, user.username) && hasTimer(previousGameState, user.username)) {
                 dispatch(actions.stopAbilityTimer());
-            }
-        }
-
-        if(user) {
-            let previousRookery = getRookeryPrompt(previousGameState, user.username);
-            let currentRookery = getRookeryPrompt(game, user.username);
-            if(!previousRookery && currentRookery) {
-                dispatch(actions.openRookeryPrompt(currentRookery));
-            } else if(previousRookery && !currentRookery) {
-                dispatch(actions.closeRookeryPrompt());
             }
         }
 
@@ -58,12 +48,6 @@ function hasTimer(game, username) {
     let player = game.players[username];
     let buttons = player && player.buttons || [];
     return buttons.some(button => button.timer);
-}
-
-function getRookeryPrompt(game, username) {
-    let player = game && game.players[username] || {};
-    let controls = player && player.controls || [];
-    return controls.find(control => control.type === 'rookery');
 }
 
 export function clearGameState() {
