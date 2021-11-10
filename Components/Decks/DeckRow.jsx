@@ -18,12 +18,13 @@ class DeckRow extends React.Component {
 
     render() {
         const { deck } = this.props;
+        const numColumns = deck.legend ? 9 : 10;
 
         return (
             <div className={ this.props.active ? 'deck-row active' : 'deck-row' } key={ this.props.deck.name } onClick={ this.handleDeckClick }>
                 <div className='col-xs-1 deck-image'><img className='card-small' src={ '/img/cards/' + this.props.deck.outfit.code + '.jpg' } /></div>
                 { deck.legend && (<div className='col-xs-1 deck-image'><img className='card-small' src={ '/img/cards/' + this.props.deck.legend.code + '.jpg' } /></div>) }
-                <span className='col-xs-9 col-md-9 col-lg-10 deck-name'>
+                <span className='col-xs-{ numColumns } col-md-{ numColumns } col-lg-{ numColumns + 1 } deck-name'>
                     <span>{ this.props.deck.name }</span>
                     <DeckStatusLabel className='pull-right text-shadow' status={ this.props.deck.status } />
                 </span>
