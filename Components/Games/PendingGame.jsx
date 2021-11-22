@@ -28,8 +28,9 @@ class PendingGame extends React.Component {
             decks: [],
             playSound: true,
             message: '',
-            decksLoading: true,
-            waiting: false
+            soloDeck: {},
+            waiting: false,
+            selectSoloDeck: false
         };
 
         this.notification = undefined;
@@ -96,13 +97,16 @@ class PendingGame extends React.Component {
     }
 
     onSelectDeckClick() {
+        // TODO M2 solo - in final version, this will not be set to false  
+        this.setState({ selectSoloDeck: false });
         $('#decks-modal').modal('show');
     }
 
     selectDeck(deck) {
         $('#decks-modal').modal('hide');
 
-        this.props.socket.emit('selectdeck', this.props.currentGame.id, deck._id);
+        this.props.socket.emit('selectdeck', this.props.currentGame.id, deck._id, this.state.selectSoloDeck);
+
     }
 
     getNumberOfPlayers(props) {
@@ -116,16 +120,24 @@ class PendingGame extends React.Component {
         let selectLink = null;
         let status = null;
 
-        if(player && player.deck && player.deck.selected) {
-            if(playerIsMe) {
-                deck = <span className='deck-selection clickable' onClick={ this.onSelectDeckClick }>{ player.deck.name }</span>;
-            } else {
-                deck = <span className='deck-selection'>Deck Selected</span>;
+        if(player.isAutomaton) {
+            let soloPlayer = this.props.currentGame.soloPlayer;
+            if(soloPlayer && soloPlayer.deck && soloPlayer.deck.selected) {
+                deck = <span className='deck-selection'>{ soloPlayer.deck.name }</span>;
+                status = <DeckStatus status={ soloPlayer.deck.status } />;
             }
+        } else {
+            if(player && player.deck && player.deck.selected) {
+                if(playerIsMe) {
+                    deck = <span className='deck-selection clickable' onClick={ this.onSelectDeckClick }>{ player.deck.name }</span>;
+                } else {
+                    deck = <span className='deck-selection'>Deck Selected</span>;
+                }
 
-            status = <DeckStatus status={ player.deck.status } />;
-        } else if(player && playerIsMe) {
-            selectLink = <span className='card-link' onClick={ this.onSelectDeckClick }>Select deck...</span>;
+                status = <DeckStatus status={ player.deck.status } />;
+            } else if(player && playerIsMe) {
+                selectLink = <span className='card-link' onClick={ this.onSelectDeckClick }>Select deck...</span>;
+            }
         }
 
         return (
@@ -217,6 +229,16 @@ class PendingGame extends React.Component {
             return <div>You must be logged in to play, redirecting...</div>;
         }
 
+        // TODO M2 solo - select default deck for now, but let user select deck for Automaton in final version
+        if(this.props.currentGame.gameType === 'solo' && this.props.standaloneDecks &&
+            this.props.currentGame.soloPlayer && (!this.props.currentGame.soloPlayer.deck || 
+            !this.props.currentGame.soloPlayer.deck.selected)) {
+            let soloDeck = this.props.standaloneDecks.find(deck => deck.standaloneDeckId === 'LDLtP');
+            if(soloDeck) {
+                this.props.socket.emit('selectdeck', this.props.currentGame.id, soloDeck._id, true);
+            }
+        }           
+
         const { currentGame } = this.props;
         const title = currentGame.event.name ? `${currentGame.name} - ${currentGame.event.name}` : currentGame.name;
 
@@ -239,6 +261,7 @@ class PendingGame extends React.Component {
                             return this.getPlayerStatus(player, this.props.user.username);
                         })
                     }
+                    { this.props.currentGame.gameType === 'solo' ? this.getPlayerStatus(this.props.currentGame.soloPlayer) : null }
                 </Panel>
                 <Panel title={ `Spectators(${this.props.currentGame.spectators.length})` }>
                     { this.props.currentGame.spectators.map(spectator => {
