@@ -24,7 +24,6 @@ class PlayerRow extends React.Component {
             onMenuItemClick={ this.props.onMenuItemClick }
             onMouseOut={ this.props.onMouseOut }
             onMouseOver={ this.props.onMouseOver }
-            orientation='kneeled'
             popupLocation={ this.props.side }
             source='out of game'
             title='Out of Game'
@@ -40,48 +39,44 @@ class PlayerRow extends React.Component {
     }
 
     renderDroppablePile(source, child) {
-        let otherPlayerChild = (<div style={ { 
-            display: 'inline-block',
-            position: 'relative' } }>
-            { child }
-        </div>);
-        return this.props.isMe ? <Droppable onDragDrop={ this.props.onDragDrop } source={ source }>{ child }</Droppable> : otherPlayerChild;
+        if(this.props.isMe && !this.props.isSolo) {
+            return <div style={ { display: 'inline-block', position: 'relative' } }>{ child }</div>;
+        } 
+        return <Droppable onDragDrop={ this.props.onDragDrop } source={ source } playerName={ this.props.playerName }>{ child }</Droppable>;
     }
 
     render() {
+        let defaultProps = {
+            onCardClick: this.props.onCardClick,
+            onMouseOut: this.props.onMouseOut,
+            onMouseOver: this.props.onMouseOver,
+            playerName: this.props.playerName
+        };
         let popupProps = {
             onDragDrop: this.props.onDragDrop,
             popupLocation: this.props.side,
             popupStayOpen: this.props.popupStayOpen,
             size: this.props.cardSize
         };
-        let cardPileProps = Object.assign(popupProps, {
-            onCardClick: this.props.onCardClick,
-            onMouseOut: this.props.onMouseOut,
-            onMouseOver: this.props.onMouseOver
-        });
+        let cardPileProps = Object.assign(popupProps, defaultProps);
 
         let hand = (<SquishableCardPanel
             cards={ this.props.hand }
             className='panel hand'
             groupVisibleCards
-            username={ this.props.username }
             maxCards={ 5 }
             handleMenuChange={ this.props.handleMenuChange }
-            onCardClick={ this.props.onCardClick }
             onMenuItemClick={ this.props.onMenuItemClick }
-            onMouseOut={ this.props.onMouseOut }
-            onMouseOver={ this.props.onMouseOver }
             disablePopup
             source='hand'
             title='Hand'
-            cardSize={ this.props.cardSize } />);
+            cardSize={ this.props.cardSize } 
+            { ...defaultProps } />);
         let drawHand = (<DrawHandPanel
             cards={ this.props.drawHand }
             className='panel hand'
             groupVisibleCards
             isMe={ this.props.isMe }
-            username={ this.props.username }
             maxCards={ 5 }
             onDiscardSelectedClick={ this.props.onDiscardSelectedClick }
             onMenuItemClick={ this.props.onMenuItemClick }
@@ -135,6 +130,7 @@ PlayerRow.propTypes = {
     hand: PropTypes.array,	
     handleMenuChange: PropTypes.func,
     isMe: PropTypes.bool,
+    isSolo: PropTypes.bool,    
     numDrawCards: PropTypes.number,
     onCardClick: PropTypes.func,
     onDiscardSelectedClick: PropTypes.func,
@@ -146,12 +142,11 @@ PlayerRow.propTypes = {
     onMouseOver: PropTypes.func,
     onShuffleClick: PropTypes.func,
     outOfGamePile: PropTypes.array,
+    playerName: PropTypes.string,
     popupStayOpen: PropTypes.bool, 
     showDeck: PropTypes.bool,
     side: PropTypes.oneOf(['top', 'bottom']),
-    spectating: PropTypes.bool,
-    title: PropTypes.object,
-    username: PropTypes.string
+    spectating: PropTypes.bool
 };
 
 export default PlayerRow;

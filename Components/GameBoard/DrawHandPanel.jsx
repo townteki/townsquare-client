@@ -77,8 +77,8 @@ class DrawHandPanel extends React.Component {
                 cards={ this.getOrderedCards() }
                 className='panel hand'
                 groupVisibleCards
-                username={ this.props.username }
                 maxCards={ 5 }
+                playerName={ this.props.playerName }
                 onCardClick={ this.props.onCardClick }
                 onDragDrop={ this.props.onCardClick }
                 onMenuItemClick={ this.props.onMenuItemClick }
@@ -112,6 +112,7 @@ DrawHandPanel.propTypes = {
     onMouseOut: PropTypes.func,
     onMouseOver: PropTypes.func,
     onPopupClose: PropTypes.func,
+    playerName: PropTypes.string,
     popupLocation: PropTypes.oneOf(['top', 'bottom']),
     popupStayOpen: PropTypes.bool,
     size: PropTypes.number,
