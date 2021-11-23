@@ -39,7 +39,7 @@ class PlayerRow extends React.Component {
     }
 
     renderDroppablePile(source, child) {
-        if(this.props.isMe && !this.props.isSolo) {
+        if(!this.props.isMe && !this.props.isSolo) {
             return <div style={ { display: 'inline-block', position: 'relative' } }>{ child }</div>;
         } 
         return <Droppable onDragDrop={ this.props.onDragDrop } source={ source } playerName={ this.props.playerName }>{ child }</Droppable>;

@@ -32,7 +32,7 @@ class DrawDeck extends React.Component {
     }
 
     renderDroppablePile(source, child) {
-        return this.props.isMe ? <Droppable onDragDrop={ this.props.onDragDrop } source={ source }>{ child }</Droppable> : child;
+        return this.props.isMe ? <Droppable onDragDrop={ this.props.onDragDrop } source={ source } playerName={ this.props.playerName }>{ child }</Droppable> : child;
     }
 
     render() {
@@ -55,6 +55,7 @@ class DrawDeck extends React.Component {
             disablePopup={ !hasVisibleCards && (this.props.spectating || !this.props.isMe) }
             handleMenuChange={ this.props.handleMenuChange }
             hiddenTopCard={ !this.props.revealTopCard }
+            playerName={ this.props.playerName }
             onCardClick={ this.props.onCardClick }
             onDragDrop={ this.props.onDragDrop }
             onMouseOut={ this.props.onMouseOut }
@@ -83,6 +84,7 @@ DrawDeck.propTypes = {
     onMouseOver: PropTypes.func,
     onPopupChange: PropTypes.func,
     onShuffleClick: PropTypes.func,
+    playerName: PropTypes.string,
     popupLocation: PropTypes.oneOf(['top', 'bottom']),
     revealTopCard: PropTypes.bool,
     showDeck: PropTypes.bool,

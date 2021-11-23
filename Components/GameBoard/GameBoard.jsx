@@ -404,6 +404,7 @@ export class GameBoard extends React.Component {
                         onMenuItemClick={ this.onMenuItemClick }
                         cardSize={ this.props.user.settings.cardSize }
                         popupStayOpen={ thisPlayer.popupStayOpen }
+                        playerName={ thisPlayer.name }
                         isSolo={ this.props.currentGame.gameType === 'solo' }
                         side='bottom' />
                 </div>

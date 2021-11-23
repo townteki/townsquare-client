@@ -184,7 +184,7 @@ class CardPile extends React.Component {
 
         popup = (
             <MovablePanel title={ this.props.title } name={ this.props.source } onCloseClick={ this.onCloseClick } side={ this.props.popupLocation }>
-                <Droppable onDragDrop={ this.props.onDragDrop } source={ this.props.source }>
+                <Droppable onDragDrop={ this.props.onDragDrop } source={ this.props.source } playerName={ this.props.playerName }>
                     <div className={ popupClass } onClick={ event => event.stopPropagation() }>
                         { popupMenu }
                         <div className={ innerClass }>
@@ -262,6 +262,7 @@ CardPile.propTypes = {
     onPopupChange: PropTypes.func,
     onTouchMove: PropTypes.func,
     orientation: PropTypes.string,
+    playerName: PropTypes.string,
     popupLocation: PropTypes.string,
     popupMenu: PropTypes.array,
     size: PropTypes.string,
