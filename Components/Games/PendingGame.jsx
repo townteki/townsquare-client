@@ -233,7 +233,7 @@ class PendingGame extends React.Component {
         if(this.props.currentGame.gameType === 'solo' && this.props.standaloneDecks &&
             this.props.currentGame.soloPlayer && (!this.props.currentGame.soloPlayer.deck || 
             !this.props.currentGame.soloPlayer.deck.selected)) {
-            let soloDeck = this.props.standaloneDecks.find(deck => deck.standaloneDeckId === 'LDLtP');
+            let soloDeck = this.props.standaloneDecks.find(deck => deck.standaloneDeckId === 'LDSolo');
             if(soloDeck) {
                 this.props.socket.emit('selectdeck', this.props.currentGame.id, soloDeck._id, true);
             }
