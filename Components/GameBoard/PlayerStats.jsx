@@ -11,7 +11,7 @@ export class PlayerStats extends React.Component {
     }
 
     sendUpdate(type, direction) {
-        this.props.sendGameMessage('changeStat', type, direction === 'up' ? 1 : -1);
+        this.props.sendGameMessage('changeStat', type, direction === 'up' ? 1 : -1, this.props.user ? !!this.props.user.isAutomaton : undefined);
     }
 
     getStatValueOrDefault(stat) {
@@ -65,7 +65,7 @@ export class PlayerStats extends React.Component {
                     </div> : null }
                 </div> : null }           
 
-                { this.getButton('ghostrock', 'ghostrock', !!this.props.showControls) }
+                { this.getButton('ghostrock', 'ghostrock', !!this.props.showControls || (this.props.user && !!this.props.user.isAutomaton)) }
                 { this.getButton('control', 'control', false) }
                 { this.getButton('influence', 'influence', false) }
 

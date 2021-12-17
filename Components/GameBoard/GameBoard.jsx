@@ -309,7 +309,7 @@ export class GameBoard extends React.Component {
             <div key='board-middle' className='board-middle'>
                 <div className='player-home-row'>
                     <div className='player-stats-row other-side'>
-                        <PlayerStats stats={ otherPlayer.stats } user={ otherPlayer.user } 
+                        <PlayerStats stats={ otherPlayer.stats } user={ otherPlayer.user } sendGameMessage={ this.props.sendGameMessage }
                             firstPlayer={ otherPlayer.firstPlayer } inCheck={ otherPlayer.inCheck } />
                     </div>
                     <PlayerRow
