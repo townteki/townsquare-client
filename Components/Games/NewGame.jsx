@@ -24,7 +24,8 @@ class NewGame extends React.Component {
         this.onUseGameTimeLimitClick = this.onUseGameTimeLimitClick.bind(this);
         this.onGameTimeLimitChange = this.onGameTimeLimitChange.bind(this);
 
-        const defaultRestrictedList = this.filterAvailableRls(props.restrictedLists)[0];
+        const availableRestrictedLists = this.filterAvailableRls(props.restrictedLists);
+        const defaultRestrictedList = availableRestrictedLists.find(rl => rl.default) || availableRestrictedLists[0];
 
         this.state = {
             selectedMode: `none:${defaultRestrictedList && defaultRestrictedList._id}`,
