@@ -32,7 +32,7 @@ class CardPile extends React.Component {
             (!!this.props.showIfVisible && !didHaveVisibleCard && hasNewVisibleCard)) {
             this.updatePopupVisibility(true);
         } else if((didHaveSelectableCard && !hasNewSelectableCard) || 
-            (!this.props.showIfVisible || (didHaveVisibleCard && !hasNewVisibleCard))) {
+            (this.props.showIfVisible === false || (didHaveVisibleCard && !hasNewVisibleCard))) {
             this.updatePopupVisibility(false);
         }
     }
