@@ -100,6 +100,9 @@ class CardPile extends React.Component {
             if(this.props.handleMenuChange) {
                 this.props.handleMenuChange(this, currentShowMenu);
             }
+            if(currentShowMenu && this.props.cards && this.props.cards.some(card => !card.facedown)) {
+                this.updatePopupVisibility(true);
+            }
             return;
         }
 
