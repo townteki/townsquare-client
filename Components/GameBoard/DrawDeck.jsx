@@ -53,6 +53,7 @@ class DrawDeck extends React.Component {
             cardCount={ this.props.cardCount }
             cards={ this.props.cards }
             disablePopup={ !hasVisibleCards && (this.props.spectating || !this.props.isMe) }
+            showIfVisible
             handleMenuChange={ this.props.handleMenuChange }
             hiddenTopCard={ !this.props.revealTopCard }
             onCardClick={ this.props.onCardClick }
