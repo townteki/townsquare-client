@@ -12,7 +12,8 @@ class CardPile extends React.Component {
         super(props);
 
         this.state = {
-            showPopup: !!props.cards && props.cards.some(card => card.selectable),
+            showPopup: (!!props.cards && props.cards.some(card => card.selectable)) || 
+                (!!this.props.showIfVisible && !!props.cards && props.cards.some(card => !card.facedown)),
             showMenu: false
         };
 
@@ -24,10 +25,14 @@ class CardPile extends React.Component {
     componentWillReceiveProps(props) {
         let hasNewSelectableCard = props.cards && props.cards.some(card => card.selectable);
         let didHaveSelectableCard = this.props.cards && this.props.cards.some(card => card.selectable);
+        let hasNewVisibleCard = props.cards && props.cards.some(card => !card.facedown);
+        let didHaveVisibleCard = this.props.cards && this.props.cards.some(card => !card.facedown);
 
-        if(!didHaveSelectableCard && hasNewSelectableCard) {
+        if((!didHaveSelectableCard && hasNewSelectableCard) || 
+            (!!this.props.showIfVisible && !didHaveVisibleCard && hasNewVisibleCard)) {
             this.updatePopupVisibility(true);
-        } else if(didHaveSelectableCard && !hasNewSelectableCard) {
+        } else if((didHaveSelectableCard && !hasNewSelectableCard) || 
+            (!this.props.showIfVisible || (didHaveVisibleCard && !hasNewVisibleCard))) {
             this.updatePopupVisibility(false);
         }
     }
@@ -94,6 +99,9 @@ class CardPile extends React.Component {
             this.setState({ showMenu: currentShowMenu });
             if(this.props.handleMenuChange) {
                 this.props.handleMenuChange(this, currentShowMenu);
+            }
+            if(currentShowMenu && this.props.cards && this.props.cards.some(card => !card.facedown)) {
+                this.updatePopupVisibility(true);
             }
             return;
         }
@@ -264,6 +272,7 @@ CardPile.propTypes = {
     orientation: PropTypes.string,
     popupLocation: PropTypes.string,
     popupMenu: PropTypes.array,
+    showIfVisible: PropTypes.bool,
     size: PropTypes.string,
     source: PropTypes.oneOf(['hand', 'discard pile', 'play area', 'dead pile', 'draw deck', 'attachment', 'legend', 'outfit', 'additional']).isRequired,
     title: PropTypes.string,
