@@ -39,11 +39,10 @@ class StatusPanel extends React.Component {
     }
 
     getTimer() {
-        let isSpectating = this.props.currentGame.spectators.some(spec => this.props.thisPlayer.name === spec.name);
         return (<TimeLimitClock
             createdAt={ this.props.currentGame.createdAt }
             currentRound={ this.props.currentGame.round }
-            displayButton={ !isSpectating }
+            displayButton={ !this.props.spectating }
             onPauseClick={ this.props.onPauseClick }
             timeLimitStarted={ this.props.currentGame.gameTimeLimitStarted }
             timeLimitStartedAt={ this.props.currentGame.gameTimeLimitStartedAt }
@@ -109,6 +108,7 @@ StatusPanel.propTypes = {
     currentGame: PropTypes.object,
     onPauseClick: PropTypes.func,
     otherPlayer: PropTypes.object,
+    spectating: PropTypes.bool,
     thisPlayer: PropTypes.object
 };
 
