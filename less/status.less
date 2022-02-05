@@ -19,7 +19,6 @@
   grid-template-rows: auto 1fr auto auto;
   grid-column: 1;
   grid-row: 2;
-  overflow-x: auto;
   
   .panel {
     padding-left: 5px;
@@ -28,7 +27,6 @@
 
   &.hiddenStatus {
     width: 30px;
-    overflow: hidden;
   }
 }
   
@@ -50,6 +48,34 @@
     border-radius: 0 0 0 0;
     height: 100%;
     margin: 0; 
+  }
+}
+
+.time-clock {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  justify-self: stretch;
+  justify-content: space-around;
+  padding-top: 2px;
+
+  .glyphicon {
+    padding-right: 5px;
+
+    &.is-timer {
+      color: @influence-icon-color;
+    }
+  }
+
+  .btn {
+    padding: 0;
+    outline: none;
+  }
+
+  &.paused {
+      border-color: @influence-icon-color;
+      border-width: 5px;
+      margin: 1px;
   }
 }
 
@@ -101,6 +127,7 @@
     margin: auto;
     width: 20px;
     height: 33px;
+    outline: none;
   }
 }
 

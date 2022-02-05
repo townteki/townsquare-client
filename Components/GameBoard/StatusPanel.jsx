@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import TimeLimitClock from './TimeLimitClock';
 
 class StatusPanel extends React.Component {
     constructor() {
@@ -20,6 +21,10 @@ class StatusPanel extends React.Component {
         this.setState({ showShootoutStatus: showStatus });
     }
 
+    onPauseClick() {
+        this.props.onPauseClick();
+    }
+
     getShootoutStatus(player) {
         if(!player) {
             return (<div/>);
@@ -33,9 +38,20 @@ class StatusPanel extends React.Component {
         </div>);
     }
 
+    getTimer() {
+        return (<TimeLimitClock
+            createdAt={ this.props.currentGame.createdAt }
+            currentRound={ this.props.currentGame.round }
+            displayButton={ !this.props.spectating }
+            onPauseClick={ this.props.onPauseClick }
+            timeLimitStarted={ this.props.currentGame.gameTimeLimitStarted }
+            timeLimitStartedAt={ this.props.currentGame.gameTimeLimitStartedAt }
+            timeLimit={ this.props.currentGame.gameTimeLimitTime } />);
+    }
+
     render() {
         let showPanel = !!this.state.showShootoutStatus;
-        if(!this.props.shootout && this.state.showShootoutStatus === 1) {
+        if(!this.props.currentGame.shootout && this.state.showShootoutStatus === 1) {
             showPanel = false;
         }
 
@@ -48,8 +64,8 @@ class StatusPanel extends React.Component {
         }
         let thisPlayerStats = null;
         let otherPlayerStats = null;
-        if(this.props.shootout) {
-            this.props.shootout.playerStats.forEach(playerStat => {
+        if(this.props.currentGame.shootout) {
+            this.props.currentGame.shootout.playerStats.forEach(playerStat => {
                 if(playerStat.player === this.props.thisPlayer.name) {
                     thisPlayerStats = playerStat;
                 }
@@ -60,6 +76,7 @@ class StatusPanel extends React.Component {
         }
         return (
             <div className={ 'prompt-area' + (showPanel ? '' : ' hiddenStatus') }>
+                { this.getTimer() }
                 <div className='shootout-status'>
                     <div className={ 'shootout-player panel' + (showPanel ? '' : ' hiddenStatus') }>
                         <div className={ showPanel ? '' : ' hidden' }>
@@ -73,7 +90,7 @@ class StatusPanel extends React.Component {
                             </button>
                         </div>
                         <div className={ 'shootout-caption' + (showPanel ? '' : ' hiddenStatus') }>
-                            { 'SHOOTOUT' + (this.props.shootout ? ' round ' + this.props.shootout.round : '') }
+                            { 'SHOOTOUT' + (this.props.currentGame.shootout ? ' round ' + this.props.currentGame.shootout.round : '') }
                         </div>
                     </div>
                     <div className={ 'shootout-player panel' + (showPanel ? '' : ' hiddenStatus') }>
@@ -88,8 +105,10 @@ class StatusPanel extends React.Component {
 
 StatusPanel.displayName = 'StatusPanel';
 StatusPanel.propTypes = {
+    currentGame: PropTypes.object,
+    onPauseClick: PropTypes.func,
     otherPlayer: PropTypes.object,
-    shootout: PropTypes.object,
+    spectating: PropTypes.bool,
     thisPlayer: PropTypes.object
 };
 

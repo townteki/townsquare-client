@@ -16,7 +16,6 @@ import CardZoom from './CardZoom';
 import GameChat from './GameChat';
 import GameConfigurationModal from './GameConfigurationModal';
 import * as actions from '../../actions';
-import TimeLimitClock from './TimeLimitClock';
 import StatusPanel from './StatusPanel';
 
 const placeholderPlayer = {
@@ -62,7 +61,8 @@ export class GameBoard extends React.Component {
         this.sendChatMessage = this.sendChatMessage.bind(this);
         this.onSettingsClick = this.onSettingsClick.bind(this);
         this.onMessagesClick = this.onMessagesClick.bind(this);
-        this.onOutfitCardClick = this.onOutfitCardClick.bind(this);		
+        this.onOutfitCardClick = this.onOutfitCardClick.bind(this);	
+        this.onPauseClick = this.onPauseClick.bind(this);	
         this.setTownsquareComponent = this.setTownsquareComponent.bind(this);	
 
         this.state = {
@@ -253,18 +253,6 @@ export class GameBoard extends React.Component {
         this.props.sendGameMessage('drop', card.uuid, target, gameLocation, targetPlayerName);
     }
 
-    getTimer() {
-        let timeLimitClock = null;
-        if(this.props.currentGame.useGameTimeLimit && this.props.currentGame.gameTimeLimitStarted) {
-            timeLimitClock = (<TimeLimitClock
-                timeLimitStarted={ this.props.currentGame.gameTimeLimitStarted }
-                timeLimitStartedAt={ this.props.currentGame.gameTimeLimitStartedAt }
-                timeLimit={ this.props.currentGame.gameTimeLimitTime } />);
-        }
-
-        return timeLimitClock;
-    }
-
     onCommand(button) {
         this.props.sendGameMessage(button.command, button.arg, button.method, button.promptId);
     }
@@ -280,6 +268,10 @@ export class GameBoard extends React.Component {
 
     onSettingsClick() {
         $('#settings-modal').modal('show');
+    }
+
+    onPauseClick() {
+        this.props.sendGameMessage('togglePauseTimer');
     }
 
     onMessagesClick() {
@@ -333,7 +325,12 @@ export class GameBoard extends React.Component {
                         isSolo={ this.props.currentGame.gameType === 'solo' }
                         cardSize={ this.props.user.settings.cardSize } />
                 </div>
-                <StatusPanel otherPlayer={ otherPlayer } thisPlayer={ thisPlayer } shootout={ this.props.currentGame.shootout } />
+                <StatusPanel 
+                    otherPlayer={ otherPlayer } 
+                    thisPlayer={ thisPlayer } 
+                    currentGame={ this.props.currentGame }
+                    spectating={ this.state.spectating }
+                    onPauseClick={ this.onPauseClick }/>
                 <div id='play-area' className='play-area' onDragOver={ this.onDragOver }>
                     <div id='otherstreet' className='player-street other-side'>
                         <PlayerStreet onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop }
