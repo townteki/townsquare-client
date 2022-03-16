@@ -34,15 +34,6 @@ jobs:
     needs: build
     steps:
     - uses: actions/checkout@v2
-    - name: Stop services
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_TEST_HOST }}
-        username: ${{ secrets.REMOTE_TEST_USER }}
-        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
-        script: |
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl stop townsquare.service
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl stop gamenode.service
     - name: Git update
       uses: appleboy/ssh-action@master
       with:
@@ -90,12 +81,12 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_TEST_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_TEST_USER }}
           TARGET: ${{ secrets.REMOTE_TEST_TARGET }}/public
-    - name: Start services
+    - name: Restart pm2 processes
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.REMOTE_TEST_HOST }}
         username: ${{ secrets.REMOTE_TEST_USER }}
         key: ${{ secrets.TEST_SERVER_SSH_KEY }}
         script: |
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl start townsquare.service
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl start gamenode.service
+          pm2 restart 0
+          pm2 restart 1
