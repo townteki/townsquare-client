@@ -96,9 +96,8 @@ class PendingGame extends React.Component {
         return this.props.currentGame.owner === this.props.user.username;
     }
 
-    onSelectDeckClick() {
-        // TODO M2 solo - in final version, this will not be set to false  
-        this.setState({ selectSoloDeck: false });
+    onSelectDeckClick(player) {
+        this.setState({ selectSoloDeck: player.isAutomaton });
         $('#decks-modal').modal('show');
     }
 
@@ -113,6 +112,10 @@ class PendingGame extends React.Component {
         return Object.values(props.currentGame.players).length;
     }
 
+    getSelectDeckLink(player, className, deckLinkText) {
+        return <span className={ className } onClick={ this.onSelectDeckClick.bind(this, player) }>{ deckLinkText }</span>;
+    }
+
     getPlayerStatus(player, username) {
         let playerIsMe = player && player.name === username;
 
@@ -123,20 +126,22 @@ class PendingGame extends React.Component {
         if(player.isAutomaton) {
             let soloPlayer = this.props.currentGame.soloPlayer;
             if(soloPlayer && soloPlayer.deck && soloPlayer.deck.selected) {
-                deck = <span className='deck-selection'>{ soloPlayer.deck.name }</span>;
+                deck = this.getSelectDeckLink(soloPlayer, 'deck-selection clickable', soloPlayer.deck.name);
                 status = <DeckStatus status={ soloPlayer.deck.status } />;
+            } else {
+                selectLink = this.getSelectDeckLink(soloPlayer, 'card-link', 'Select deck...');
             }
         } else {
             if(player && player.deck && player.deck.selected) {
                 if(playerIsMe) {
-                    deck = <span className='deck-selection clickable' onClick={ this.onSelectDeckClick }>{ player.deck.name }</span>;
+                    deck = this.getSelectDeckLink(player, 'deck-selection clickable', player.deck.name);
                 } else {
-                    deck = <span className='deck-selection'>Deck Selected</span>;
+                    deck = this.getSelectDeckLink(player, 'deck-selection', player.deck.name);
                 }
 
                 status = <DeckStatus status={ player.deck.status } />;
             } else if(player && playerIsMe) {
-                selectLink = <span className='card-link' onClick={ this.onSelectDeckClick }>Select deck...</span>;
+                selectLink = this.getSelectDeckLink(player, 'card-link', 'Select deck...');
             }
         }
 
@@ -227,17 +232,7 @@ class PendingGame extends React.Component {
             this.props.navigate('/');
 
             return <div>You must be logged in to play, redirecting...</div>;
-        }
-
-        // TODO M2 solo - select default deck for now, but let user select deck for Automaton in final version
-        if(this.props.currentGame.gameType === 'solo' && this.props.standaloneDecks &&
-            this.props.currentGame.soloPlayer && (!this.props.currentGame.soloPlayer.deck || 
-            !this.props.currentGame.soloPlayer.deck.selected)) {
-            let soloDeck = this.props.standaloneDecks.find(deck => deck.standaloneDeckId === 'LDSolo');
-            if(soloDeck) {
-                this.props.socket.emit('selectdeck', this.props.currentGame.id, soloDeck._id, true);
-            }
-        }           
+        }     
 
         const { currentGame } = this.props;
         const title = currentGame.event.name ? `${currentGame.name} - ${currentGame.event.name}` : currentGame.name;
@@ -285,7 +280,8 @@ class PendingGame extends React.Component {
                     id='decks-modal'
                     loading={ this.props.loading }
                     onDeckSelected={ this.selectDeck.bind(this) }
-                    standaloneDecks={ this.props.standaloneDecks } />
+                    standaloneDecks={ this.props.standaloneDecks } 
+                    isSolo = { this.state.selectSoloDeck }/>
             </div >);
     }
 }
