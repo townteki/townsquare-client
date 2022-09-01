@@ -59,8 +59,8 @@ jobs:
           git clean -fd
           cp -r server/game/cards/XX-PT ${{ secrets.REMOTE_TEST_TARGET }}/server/game/cards 2>/dev/null || :
           cp /townsquare-dev/pt-data/public/img/cards/* /townsquare-dev/townsquare/public/img/cards
-          cp /townsquare-dev/pt-data/* /townsquare/townsquare/townsquare-json-data/
-          cp /townsquare-dev/pt-data/packs/* /townsquare/townsquare/townsquare-json-data/packs
+          cp /townsquare-dev/pt-data/* /townsquare-dev/townsquare/townsquare-json-data/
+          cp /townsquare-dev/pt-data/packs/* /townsquare-dev/townsquare/townsquare-json-data/packs
     - name: Cleanup
       uses: appleboy/ssh-action@master
       with:
