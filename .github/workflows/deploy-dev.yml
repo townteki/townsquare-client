@@ -46,6 +46,21 @@ jobs:
           git reset --hard origin/development
           git clean -fd
           git submodule update --remote
+    - name: Update from PT
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_TEST_HOST }}
+        username: ${{ secrets.REMOTE_TEST_USER }}
+        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
+        script: |
+          cd ${{ secrets.REMOTE_TEST_TARGET }}/../townsquare-ptdt
+          git fetch
+          git reset --hard origin/playtest
+          git clean -fd
+          cp -r server/game/cards/XX-PT ${{ secrets.REMOTE_TEST_TARGET }}/server/game/cards 2>/dev/null || :
+          cp /townsquare-dev/pt-data/public/img/cards/* /townsquare-dev/townsquare/public/img/cards
+          cp /townsquare-dev/pt-data/* /townsquare/townsquare/townsquare-json-data/
+          cp /townsquare-dev/pt-data/packs/* /townsquare/townsquare/townsquare-json-data/packs
     - name: Cleanup
       uses: appleboy/ssh-action@master
       with:
@@ -88,5 +103,4 @@ jobs:
         username: ${{ secrets.REMOTE_TEST_USER }}
         key: ${{ secrets.TEST_SERVER_SSH_KEY }}
         script: |
-          pm2 restart 0
-          pm2 restart 1
+          pm2 ls | grep "online" | grep "fork" | awk '{print $4}' | xargs -I{} pm2 restart {}
