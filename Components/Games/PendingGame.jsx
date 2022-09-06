@@ -93,6 +93,11 @@ class PendingGame extends React.Component {
             return false;
         }
 
+        if(this.props.currentGame.soloPlayer && 
+            (!this.props.currentGame.soloPlayer.deck || !this.props.currentGame.soloPlayer.deck.selected)) {
+            return false;
+        }
+
         return this.props.currentGame.owner === this.props.user.username;
     }
 
