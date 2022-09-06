@@ -34,15 +34,6 @@ jobs:
     needs: build
     steps:
     - uses: actions/checkout@v2
-    - name: Stop services
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_TEST_HOST }}
-        username: ${{ secrets.REMOTE_TEST_USER }}
-        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
-        script: |
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl stop townsquare.service
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl stop gamenode.service
     - name: Git update
       uses: appleboy/ssh-action@master
       with:
@@ -55,6 +46,20 @@ jobs:
           git reset --hard origin/development
           git clean -fd
           git submodule update --remote
+    - name: Update from PT
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_TEST_HOST }}
+        username: ${{ secrets.REMOTE_TEST_USER }}
+        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
+        script: |
+          cd ${{ secrets.REMOTE_TEST_TARGET }}/../townsquare-ptdt
+          git fetch
+          git reset --hard origin/playtest
+          git clean -fd
+          cp -r server/game/cards/XX-PT ${{ secrets.REMOTE_TEST_TARGET }}/server/game/cards 2>/dev/null || :
+          cp /townsquare-dev/pt-data/public/img/cards/* /townsquare-dev/townsquare/public/img/cards/
+          cp -r /townsquare-dev/pt-data/townsquare-json-data/* /townsquare-dev/townsquare/townsquare-json-data/
     - name: Cleanup
       uses: appleboy/ssh-action@master
       with:
@@ -90,12 +95,11 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_TEST_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_TEST_USER }}
           TARGET: ${{ secrets.REMOTE_TEST_TARGET }}/public
-    - name: Start services
+    - name: Restart pm2 processes
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.REMOTE_TEST_HOST }}
         username: ${{ secrets.REMOTE_TEST_USER }}
         key: ${{ secrets.TEST_SERVER_SSH_KEY }}
         script: |
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl start townsquare.service
-          echo ${{ secrets.REMOTE_TEST_PWD }} | sudo -S systemctl start gamenode.service
+          pm2 ls | grep "online" | grep "fork" | awk '{print $4}' | xargs -I{} pm2 restart {}

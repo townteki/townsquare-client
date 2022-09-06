@@ -249,8 +249,8 @@ export class GameBoard extends React.Component {
         this.props.sendGameMessage('shuffleDeck');
     }
 
-    onDragDrop(card, source, target) {
-        this.props.sendGameMessage('drop', card.uuid, target);
+    onDragDrop(card, source, target, gameLocation, targetPlayerName) {
+        this.props.sendGameMessage('drop', card.uuid, target, gameLocation, targetPlayerName);
     }
 
     onCommand(button) {
@@ -301,12 +301,12 @@ export class GameBoard extends React.Component {
             <div key='board-middle' className='board-middle'>
                 <div className='player-home-row'>
                     <div className='player-stats-row other-side'>
-                        <PlayerStats stats={ otherPlayer.stats } user={ otherPlayer.user } 
+                        <PlayerStats stats={ otherPlayer.stats } user={ otherPlayer.user } sendGameMessage={ this.props.sendGameMessage }
                             firstPlayer={ otherPlayer.firstPlayer } inCheck={ otherPlayer.inCheck } />
                     </div>
                     <PlayerRow
                         hand={ otherPlayer.cardPiles.hand } isMe={ false }
-                        drawHand={ otherPlayer.cardPiles.drawHand } isMe={ false }						
+                        drawHand={ otherPlayer.cardPiles.drawHand }					
                         numDrawCards={ otherPlayer.numDrawCards }
                         discardPile={ otherPlayer.cardPiles.discardPile }
                         deadPile={ otherPlayer.cardPiles.deadPile }
@@ -315,12 +315,14 @@ export class GameBoard extends React.Component {
                         onCardClick={ this.onCardClick }
                         onMouseOver={ this.onMouseOver }
                         onMouseOut={ this.onMouseOut }
+                        onDragDrop={ this.onDragDrop }
                         outOfGamePile={ otherPlayer.cardPiles.outOfGamePile }
                         username={ this.props.user.username }
                         revealTopCard={ otherPlayer.revealTopCard }
                         spectating={ this.state.spectating }
-                        title={ otherPlayer.title }
+                        playerName={ otherPlayer.name }
                         side='top'
+                        isSolo={ this.props.currentGame.gameType === 'solo' }
                         cardSize={ this.props.user.settings.cardSize } />
                 </div>
                 <StatusPanel 
@@ -399,6 +401,8 @@ export class GameBoard extends React.Component {
                         onMenuItemClick={ this.onMenuItemClick }
                         cardSize={ this.props.user.settings.cardSize }
                         popupStayOpen={ thisPlayer.popupStayOpen }
+                        playerName={ thisPlayer.name }
+                        isSolo={ this.props.currentGame.gameType === 'solo' }
                         side='bottom' />
                 </div>
             </div>
@@ -500,13 +504,10 @@ GameBoard.propTypes = {
     navigate: PropTypes.func,
     packs: PropTypes.array,
     restrictedList: PropTypes.array,
-    rookeryDeck: PropTypes.object,
-    rookeryPromptId: PropTypes.string,
     sendGameMessage: PropTypes.func,
     setContextMenu: PropTypes.func,
     socket: PropTypes.object,
     stopAbilityTimer: PropTypes.func,
-    submitRookeryPrompt: PropTypes.func,
     timerLimit: PropTypes.number,
     timerStartTime: PropTypes.instanceOf(Date),
     user: PropTypes.object,
@@ -520,8 +521,6 @@ function mapStateToProps(state) {
         currentGame: state.lobby.currentGame,
         packs: state.cards.packs,
         restrictedList: state.cards.restrictedList,
-        rookeryDeck: state.prompt.rookeryDeck,
-        rookeryPromptId: state.prompt.rookeryPromptId,
         socket: state.lobby.socket,
         timerLimit: state.prompt.timerLimit,
         timerStartTime: state.prompt.timerStartTime,
