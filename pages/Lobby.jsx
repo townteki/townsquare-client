@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
+import WidgetBot from '@widgetbot/react-embed';
 
 import News from '../Components/News/News';
 import AlertPanel from '../Components/Site/AlertPanel';
@@ -24,7 +25,8 @@ class Lobby extends React.Component {
         this.onRemoveMessageClick = this.onRemoveMessageClick.bind(this);
 
         this.state = {
-            message: ''
+            message: '',
+            chatType: 'discord'
         };
     }
 
@@ -36,6 +38,11 @@ class Lobby extends React.Component {
 
     componentWillReceiveProps(props) {
         this.checkChatError(props);
+        this.setState({ chatType: 'discord' });
+    }
+
+    handleChatTypeClick(chatType) {
+        this.setState({ chatType: chatType });
     }
 
     checkChatError(props) {
@@ -120,6 +127,29 @@ class Lobby extends React.Component {
                         { this.props.newsSuccess && <News news={ this.props.news } /> }
                     </Panel>
                 </div>
+                <div className='col-sm-offset-1 btn-group col-xs-12'>
+                    { isLoggedIn && 
+                        <div>
+                            <button 
+                                className={ 'btn btn-' + (this.state.chatType === 'lobby' ? 'secondary' : 'primary') }
+                                onClick={ this.handleChatTypeClick.bind(this, 'lobby') }>Lobby</button>
+                            <button 
+                                className={ 'btn btn-' + (this.state.chatType === 'discord' ? 'secondary' : 'primary') } 
+                                onClick={ this.handleChatTypeClick.bind(this, 'discord') }>Discord</button>
+                        </div>
+                    }
+                </div> 
+                { this.state.chatType === 'discord' && isLoggedIn &&
+                    <WidgetBot
+                        server='700253812132413440'
+                        channel='700253812132413443'
+                        className='col-sm-offset-1 col-sm-10 chat-container discord'
+                        username={ this.props.user.username + ' [doomtown.online]' }
+                        avatar={ this.props.user.avatarLink }
+                    />
+                }
+                                   
+                { (this.state.chatType === 'lobby' || !isLoggedIn) && 
                 <div className='col-sm-offset-1 col-sm-10 chat-container'>
                     <Panel title={ `Lobby Chat (${this.props.users.length} online)` }>
                         <div>
@@ -139,7 +169,7 @@ class Lobby extends React.Component {
                             </div>
                         </div>
                     </form>
-                </div>
+                </div> }
             </div>);
     }
 }
