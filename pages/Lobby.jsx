@@ -38,7 +38,6 @@ class Lobby extends React.Component {
 
     componentWillReceiveProps(props) {
         this.checkChatError(props);
-        this.setState({ chatType: 'discord' });
     }
 
     handleChatTypeClick(chatType) {
@@ -128,7 +127,7 @@ class Lobby extends React.Component {
                     </Panel>
                 </div>
                 <div className='col-sm-offset-1 btn-group col-xs-12'>
-                    { isLoggedIn && 
+                    { isLoggedIn && this.props.user.discord.server &&
                         <div>
                             <button 
                                 className={ 'btn btn-' + (this.state.chatType === 'lobby' ? 'secondary' : 'primary') }
@@ -139,17 +138,17 @@ class Lobby extends React.Component {
                         </div>
                     }
                 </div> 
-                { this.state.chatType === 'discord' && isLoggedIn &&
+                { (!this.state.chatType || this.state.chatType === 'discord') && isLoggedIn && this.props.user.discord.server &&
                     <WidgetBot
-                        server='700253812132413440'
-                        channel='700253812132413443'
+                        server={ this.props.user.discord.server }
+                        channel={ this.props.user.discord.channel }
                         className='col-sm-offset-1 col-sm-10 chat-container discord'
                         username={ this.props.user.username + ' [doomtown.online]' }
                         avatar={ this.props.user.avatarLink }
                     />
                 }
                                    
-                { (this.state.chatType === 'lobby' || !isLoggedIn) && 
+                { (this.state.chatType === 'lobby' || !isLoggedIn || !this.props.user.discord.server) && 
                 <div className='col-sm-offset-1 col-sm-10 chat-container'>
                     <Panel title={ `Lobby Chat (${this.props.users.length} online)` }>
                         <div>
