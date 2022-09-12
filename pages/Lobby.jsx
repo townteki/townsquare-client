@@ -144,7 +144,7 @@ class Lobby extends React.Component {
                         channel={ this.props.user.discord.channel }
                         className='col-sm-offset-1 col-sm-10 chat-container discord'
                         username={ this.props.user.username + ' [doomtown.online]' }
-                        avatar={ this.props.user.avatarLink }
+                        avatar={ this.props.user.avatarLink + '&s=48' }
                     />
                 }
                                    
