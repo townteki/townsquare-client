@@ -237,8 +237,8 @@ export class GameBoard extends React.Component {
         this.props.sendGameMessage('chat', message);
     }
 
-    onDiscardFromDrawHandClick() {
-        this.props.sendGameMessage('discardFromDrawHand');
+    onDiscardFromDrawHandClick(discardType) {
+        this.props.sendGameMessage('discardFromDrawHand', discardType);
     }
 
     onDrawPopupClose() {
