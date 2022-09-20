@@ -332,7 +332,7 @@ class DeckEditor extends React.Component {
                         onChange={ this.onLegendChange.bind(this) } value={ this.state.legend ? this.state.legend.code : undefined }
                         valueKey='code' nameKey='title' blankOption={ { title: '- Select -', code: '' } } />
 
-                    <Typeahead label='Card' labelClass={ 'col-sm-3' } fieldClass='col-sm-9' labelKey={ option => this.cardOptionLabel(option) } 
+                    <Typeahead id='deck-editor' label='Card' labelClass={ 'col-sm-3' } fieldClass='col-sm-9' labelKey={ option => this.cardOptionLabel(option) } 
                         options={ this.getCardOptions(this.props.cards) } onChange={ this.addCardChange.bind(this) }/>
                     <Input name='numcards' type='text' label='Num' labelClass='col-sm-offset-3 col-sm-1' fieldClass='col-sm-2'
                         value={ this.state.numberToAdd.toString() } onChange={ this.onNumberToAddChange.bind(this) } >
