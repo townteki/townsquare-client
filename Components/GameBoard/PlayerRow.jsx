@@ -6,6 +6,7 @@ import SquishableCardPanel from './SquishableCardPanel';
 import DrawDeck from './DrawDeck';
 import Droppable from './Droppable';
 import DrawHandPanel from './DrawHandPanel';
+import DiscardPile from './DiscardPile';
 
 class PlayerRow extends React.Component {
     getOutOfGamePile() {
@@ -96,8 +97,7 @@ class PlayerRow extends React.Component {
             showDeck={ this.props.showDeck }
             spectating={ this.props.spectating }
             { ...cardPileProps } />);
-        let discardPile = (<CardPile className='discard' title='Discard' source='discard pile' cards={ this.props.discardPile }
-            { ...cardPileProps } />);
+        let discardPile = <DiscardPile cards={ this.props.discardPile } { ...cardPileProps } />;
         let deadPile = (<CardPile className='dead' title='Boot Hill' source='dead pile' cards={ this.props.deadPile }
             orientation='booted'
             { ...cardPileProps } />);

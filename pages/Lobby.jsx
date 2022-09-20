@@ -160,8 +160,8 @@ class Lobby extends React.Component {
                     <form className='form form-hozitontal chat-box-container' onSubmit={ event => this.onSendClick(event) }>
                         <div className='form-group'>
                             <div className='chat-box'>
-                                <Typeahead disabled={ !isLoggedIn } ref='message' value={ this.state.message } placeholder={ placeholder }
-                                    labelKey={ 'name' } onKeyDown={ this.onKeyPress }
+                                <Typeahead id='lobby-chat' disabled={ !isLoggedIn } ref='message' value={ this.state.message } 
+                                    placeholder={ placeholder } labelKey={ 'name' } onKeyDown={ this.onKeyPress }
                                     options={ this.props.users } onInputChange={ this.onChange } autoFocus
                                     dropup emptyLabel={ '' }
                                     minLength={ 2 } />

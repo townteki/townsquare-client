@@ -37,6 +37,10 @@
       border-bottom: none;
       text-align: center;
       position: relative;
+
+      &.other-side {
+        background-color: darkred;
+      }
     }
 }
 
@@ -109,6 +113,48 @@
   a {
     flex: 1;
     margin: 8px;
+  }
+
+  .btn-keyword-on {
+    margin-bottom: 0px;
+  }
+}
+
+.card-pile-keywords {
+  display: flex;
+  height: 45px;
+
+  a {
+    flex: 1;
+    margin: 8px;
+  }
+
+  .keyword-lookup {
+    display: flex;
+    flex: 1;
+
+    div {
+      flex: 1;
+    }
+
+    .form-group {
+      margin-right: 5px;
+    }
+
+    .rbt-input {
+      height: 45px;
+    }
+
+    .rbt-input-wrapper {
+      display: flex;
+      width: fit-content;
+      flex-wrap: wrap;
+    }
+
+    .rbt-token {
+      flex: 1 auto;
+      max-width: 110px;
+    }
   }
 }
 
@@ -275,7 +321,11 @@
 
     .inner {
       .calculate-tiled-card-prop(min-height, 1, height);
-      .calculate-tiled-card-prop(width, 5, width, @scrollbar-width);
+      .calculate-tiled-card-prop(width, 7, width, @scrollbar-width);
+    }
+
+    .card-pile-keywords {
+      .calculate-tiled-card-prop(width, 7, width, @scrollbar-width);
     }
   }
 }
@@ -293,6 +343,10 @@
   .popup {
     .inner {
       .calculate-tiled-card-prop(min-height, 1, height);
+      .calculate-tiled-card-prop(width, 7, width, @scrollbar-width);
+    }
+
+    .card-pile-keywords {
       .calculate-tiled-card-prop(width, 7, width, @scrollbar-width);
     }
   }

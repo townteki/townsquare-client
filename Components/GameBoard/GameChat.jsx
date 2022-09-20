@@ -151,7 +151,7 @@ class GameChat extends React.Component {
                     <Messages messages={ this.props.messages } onCardMouseOver={ this.props.onCardMouseOver } onCardMouseOut={ this.props.onCardMouseOut } />
                 </div>
                 <form className='form chat-form'>
-                    <Typeahead ref='message' options={ commands } labelKey={ option => option.label } emptyLabel={ '' } minLength={ this.state.minLength } dropup
+                    <Typeahead id='game-chat' ref='message' options={ commands } labelKey={ option => option.label } emptyLabel={ '' } minLength={ this.state.minLength } dropup
                         placeholder='Chat...' onKeyDown={ this.onKeyPress } onInputChange={ this.onInputChange } renderMenuItemChildren={ this.renderMenuItemChildren } />
                 </form>
             </div>);

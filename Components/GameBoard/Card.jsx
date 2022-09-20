@@ -233,7 +233,7 @@ class InnerCard extends React.Component {
     }
 
     isFacedown() {
-        return this.props.card.facedown || !this.props.card.code;
+        return this.props.card.facedown || !this.props.card.code || this.isFiltered();
     }
 
     getDragFrame(image) {
@@ -269,6 +269,27 @@ class InnerCard extends React.Component {
         return (<div className='card-unscripted'>
             <img className={ unscriptImageClass } src='/img/tokens/scripted_skull.png' />;
         </div>);        
+    }
+
+    isFiltered() {
+        if(!this.props.filter) {
+            return false;
+        }
+        if(this.props.filter.suit && this.props.card.suit !== this.props.filter.suit) {
+            return true;
+        }
+        if(!this.getCardKeywords().length && this.props.filter.keywords && this.props.filter.keywords.length) {
+            return true;
+        }
+        return this.props.filter.keywords && !this.props.filter.keywords.every(keyword => 
+            this.getCardKeywords().includes(keyword));
+    }
+
+    getCardKeywords() {
+        if(!this.props.card.printedStats || !this.props.card.printedStats.keywords) {
+            return [];
+        }
+        return this.props.card.printedStats.keywords;
     }
 
     getCard() {
@@ -406,10 +427,12 @@ InnerCard.propTypes = {
         name: PropTypes.string,
         new: PropTypes.bool,
         order: PropTypes.number,
+        printedStats: PropTypes.object,
         production: PropTypes.number,
         selectable: PropTypes.bool,
         selected: PropTypes.bool,
         scripted: PropTypes.bool,
+        suit: PropTypes.string,
         tokens: PropTypes.object,
         type_code: PropTypes.string,
         unselectable: PropTypes.bool,
@@ -420,6 +443,7 @@ InnerCard.propTypes = {
     connectDragSource: PropTypes.func,
     disableMouseOver: PropTypes.bool,
     dragOffset: PropTypes.object,
+    filter: PropTypes.object,
     handleExpand: PropTypes.func,
     handleMenuChange: PropTypes.func,
     hideTokens: PropTypes.bool,

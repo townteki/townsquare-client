@@ -5,7 +5,7 @@ import Draggable from 'react-draggable';
 import AbilityTargeting from './AbilityTargeting';
 import AbilityTimer from './AbilityTimer';
 import CardNameLookup from './CardNameLookup';
-import TraitNameLookup from './TraitNameLookup';
+import KeywordLookup from './KeywordLookup';
 import { processKeywords } from './MessagesTokens';
 
 class ActivePlayerPrompt extends React.Component {
@@ -134,7 +134,7 @@ class ActivePlayerPrompt extends React.Component {
                 case 'card-name':
                     return <CardNameLookup cards={ this.props.cards } onValueSelected={ this.handleLookupValueSelected.bind(this, control.command, control.method, control.promptId) } />;
                 case 'trait-name':
-                    return <TraitNameLookup cards={ this.props.cards } onValueSelected={ this.handleLookupValueSelected.bind(this, control.command, control.method, control.promptId) } />;
+                    return <KeywordLookup cards={ this.props.cards } onKeywordsSelected={ this.handleLookupValueSelected.bind(this, control.command, control.method, control.promptId) } />;
             }
         });
     }
