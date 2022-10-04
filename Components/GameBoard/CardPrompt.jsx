@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class AbilityTargeting extends React.Component {
+class CardPrompt extends React.Component {
     onMouseOver(event, card) {
         if(card && this.props.onMouseOver) {
             this.props.onMouseOver(card);
@@ -25,23 +25,29 @@ class AbilityTargeting extends React.Component {
             </div>);
     }
 
+    renderTargerCards() {
+        if(!this.props.targets || !this.props.targets.length) {
+            return;
+        }
+        return this.props.targets.map(target => this.renderSimpleCard(target));       
+    }    
+
     render() {
-        let targetCards = this.props.targets.map(target => this.renderSimpleCard(target));
         return (
             <div className='prompt-control-targeting'>
                 { this.renderSimpleCard(this.props.source) }
-                <span className='glyphicon glyphicon-arrow-right targeting-arrow' />
-                { targetCards }
+                { this.props.targets && this.props.targets.length && <span className='glyphicon glyphicon-arrow-right targeting-arrow' /> }
+                { this.renderTargerCards() }
             </div>);
     }
 }
 
-AbilityTargeting.displayName = 'AbilityTargeting';
-AbilityTargeting.propTypes = {
+CardPrompt.displayName = 'CardPrompt';
+CardPrompt.propTypes = {
     onMouseOut: PropTypes.func,
     onMouseOver: PropTypes.func,
     source: PropTypes.object,
     targets: PropTypes.array
 };
 
-export default AbilityTargeting;
+export default CardPrompt;
