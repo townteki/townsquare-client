@@ -141,7 +141,7 @@ class PendingGame extends React.Component {
                 if(playerIsMe) {
                     deck = this.getSelectDeckLink(player, 'deck-selection clickable', player.deck.name);
                 } else {
-                    deck = this.getSelectDeckLink(player, 'deck-selection', player.deck.name);
+                    deck = this.getSelectDeckLink(player, 'deck-selection', 'Deck Selected');
                 }
 
                 status = <DeckStatus status={ player.deck.status } />;

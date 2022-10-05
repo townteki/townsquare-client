@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Draggable from 'react-draggable';
 
-import AbilityTargeting from './AbilityTargeting';
+import CardPrompt from './CardPrompt';
 import AbilityTimer from './AbilityTimer';
 import CardNameLookup from './CardNameLookup';
 import KeywordLookup from './KeywordLookup';
@@ -124,9 +124,15 @@ class ActivePlayerPrompt extends React.Component {
 
         return this.props.controls.map(control => {
             switch(control.type) {
+                case 'card-image':
+                    return (
+                        <CardPrompt
+                            onMouseOut={ this.props.onMouseOut }
+                            onMouseOver={ this.props.onMouseOver }
+                            source={ control.source } />);                
                 case 'targeting':
                     return (
-                        <AbilityTargeting
+                        <CardPrompt
                             onMouseOut={ this.props.onMouseOut }
                             onMouseOver={ this.props.onMouseOver }
                             source={ control.source }
