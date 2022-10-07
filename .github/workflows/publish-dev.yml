@@ -1,6 +1,6 @@
 # This is a deploy workflow to test server
 
-name: CI Publish Prod
+name: CI Publish Dev
 
 # Controls when the action will run. 
 on:
@@ -23,5 +23,5 @@ jobs:
     uses: townteki/townsquare-client/.github/workflows/build.yml@master
     needs: bump-version
   call-workflow-deploy:
-    uses: townteki/townsquare-client/.github/workflows/build.yml@master
+    uses: townteki/townsquare-client/.github/workflows/deploy-dev.yml@master
     needs: call-workflow-build
