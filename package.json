@@ -1,6 +1,6 @@
 {
   "name": "townsquare-client",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The client code for Doomtown Online, a browser based implementation of the Doomtown card game",
   "main": "index.jsx",
   "scripts": {
