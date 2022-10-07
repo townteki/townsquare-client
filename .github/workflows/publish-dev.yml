@@ -24,9 +24,9 @@ jobs:
       - run: git tag ${VERSION}
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
       - run: git push "https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
-  call-workflow-build:
-    uses: townteki/townsquare-client/.github/workflows/build.yml@master
-    needs: bump-version
+#  call-workflow-build:
+#    uses: townteki/townsquare-client/.github/workflows/build.yml@master
+#    needs: bump-version
 #  call-workflow-deploy:
 #    uses: townteki/townsquare-client/.github/workflows/deploy-dev.yml@master
 #    needs: call-workflow-build
