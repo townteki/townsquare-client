@@ -11,7 +11,7 @@ jobs:
   call-workflow-bump-version:
      uses: townteki/townsquare/.github/workflows/bump-version.yml@bump-version
   call-workflow-build:
-    uses: townteki/townsquare-client/.github/workflows/build.yml@master
+    uses: townteki/townsquare-client/.github/workflows/build.yml@version-bumping
     needs: call-workflow-bump-version
 #  call-workflow-deploy:
 #    uses: townteki/townsquare-client/.github/workflows/deploy-dev.yml@master
