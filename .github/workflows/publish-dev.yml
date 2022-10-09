@@ -8,11 +8,17 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  call-workflow-bump-version:
-     uses: townteki/townsquare/.github/workflows/bump-version.yml@bump-version
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger bump-version in townsquare
+        run: |
+          curl -X POST -u $GITHUB_ACTOR:${{secrets.ACCESS_TOKEN}} \
+            -H "Accept:application/vnd.github" -H "Content-Type:application/json" \
+            https://api.github.com/repos/townteki/townsquare/actions/workflows/bump-version.yml/dispatches --data '{"ref": "bump-version" }'
   call-workflow-build:
     uses: townteki/townsquare-client/.github/workflows/build.yml@version-bumping
-    needs: call-workflow-bump-version
+    needs: bump-version
 #  call-workflow-deploy:
 #    uses: townteki/townsquare-client/.github/workflows/deploy-dev.yml@master
 #    needs: call-workflow-build
