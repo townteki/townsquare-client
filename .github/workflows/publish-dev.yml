@@ -13,10 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger bump-version in townsquare
-        run: |
-          curl -X POST -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-            -H "Accept:application/vnd.github" -H "Content-Type:application/json" \
-            https://api.github.com/repos/townteki/townsquare/actions/workflows/bump-version.yml/dispatches --data '{"ref": "bump-version" }'
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: townteki
+          repo: townsquare
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_user: ${{ secrets.GITHUB_ACTOR }}
+          workflow_file_name: bump-version.yml
+          ref: bump-version
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
   call-workflow-build:
     uses: townteki/townsquare-client/.github/workflows/build.yml@version-bumping
     needs: bump-version
