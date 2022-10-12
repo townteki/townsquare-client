@@ -17,7 +17,7 @@ jobs:
         with:
           owner: townteki
           repo: townsquare
-          github_token: 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
+          github_token: ${{ secrets.MMELDO_PAT }}
           github_user: ${{ secrets.GITHUB_ACTOR }}
           workflow_file_name: bump-version.yml
           ref: bump-version
