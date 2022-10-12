@@ -16,7 +16,7 @@ jobs:
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
           owner: townteki
-          repo: townsquare
+          repo: townsquare/.github
           github_token: ${{ secrets.MMELDO_PAT }}
           github_user: ${{ secrets.GITHUB_ACTOR }}
           workflow_file_name: bump-version.yml
