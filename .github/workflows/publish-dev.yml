@@ -9,18 +9,17 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   bump-version:
-    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: Trigger bump-version in townsquare
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
           owner: townteki
-          repo: townsquare/.github
+          repo: townsquare
           github_token: ${{ secrets.MMELDO_PAT }}
           github_user: ${{ secrets.GITHUB_ACTOR }}
-          workflow_file_name: bump-version.yml
-          ref: bump-version
+          workflow_file_name: test.yml
+          ref: bumpversion
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
