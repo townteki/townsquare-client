@@ -61,4 +61,4 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_PROD_USER }}
           TARGET: ${{ secrets.REMOTE_PROD_TARGET }}/public
   call-server-restart:
-    uses: townteki/townsquare-client/.github/workflows/server-restart.yml@master          
+    uses: townteki/townsquare-client/.github/workflows/prod-restart.yml@master          
