@@ -1,37 +1,16 @@
-# This is a deploy workflow to test server
+# This is a deploy workflow to production server
 
 name: CI Deploy Prod
 
-# Controls when the action will run. 
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
-
+  call-workflow-build:
+    uses: townteki/townsquare-client/.github/workflows/build.yml@master
+  deploy-prod:
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Install Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
-    - name: Install npm dependencies
-      run: npm install
-    - name: Run build task
-      id: build_task
-      run: npm run build --if-present
-    - name: Archive dist
-      uses: actions/upload-artifact@v2
-      with:
-        name: dist
-        path: dist/
-        retention-days: 1
-  deploy_prod:
-    runs-on: ubuntu-latest
-    needs: build
+    needs: call-workflow-build    
     steps:
     - uses: actions/checkout@v2
     - name: Git update
@@ -81,12 +60,6 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_PROD_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_PROD_USER }}
           TARGET: ${{ secrets.REMOTE_PROD_TARGET }}/public
-    - name: Restart pm2 processes
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_PROD_HOST }}
-        username: ${{ secrets.REMOTE_PROD_USER }}
-        key: ${{ secrets.PROD_SERVER_SSH_KEY }}
-        script: |
-          pm2 restart 0
-          pm2 restart 1
+  call-server-restart:
+    uses: townteki/townsquare-client/.github/workflows/prod-restart.yml@master          
+    needs: deploy-prod
