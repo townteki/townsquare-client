@@ -16,7 +16,7 @@ jobs:
         with:
           owner: townteki
           repo: townsquare
-          github_token: ${{ secrets.MMELDO_PAT }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           github_user: ${{ secrets.GITHUB_ACTOR }}
           workflow_file_name: test.yml
           ref: bumpversion
