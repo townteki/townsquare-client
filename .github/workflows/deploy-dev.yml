@@ -2,15 +2,11 @@
 
 name: CI Deploy Dev
 
-# Controls when the action will run. 
 on:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
-
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -95,11 +91,5 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_TEST_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_TEST_USER }}
           TARGET: ${{ secrets.REMOTE_TEST_TARGET }}/public
-    - name: Restart pm2 processes
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_TEST_HOST }}
-        username: ${{ secrets.REMOTE_TEST_USER }}
-        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
-        script: |
-          pm2 ls | grep "online" | grep "fork" | awk '{print $4}' | xargs -I{} pm2 restart {}
+  call-server-restart:
+    uses: townteki/townsquare-client/.github/workflows/dev-restart.yml@master             
