@@ -62,4 +62,5 @@ jobs:
           TARGET: ${{ secrets.REMOTE_PROD_TARGET }}/public
   call-server-restart:
     uses: townteki/townsquare-client/.github/workflows/prod-restart.yml@master          
+    secrets: inherit
     needs: deploy-prod
