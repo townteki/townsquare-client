@@ -76,4 +76,5 @@ jobs:
           TARGET: ${{ secrets.REMOTE_TEST_TARGET }}/public
   call-server-restart:
     uses: townteki/townsquare-client/.github/workflows/dev-restart.yml@master   
+    secrets: inherit
     needs: deploy-dev
