@@ -29,7 +29,7 @@ module.exports = {
         publicPath: '/'
     },
     optimization: {
-        moduleIds: 'hashed',
+        moduleIds: 'deterministic',
         runtimeChunk: 'single',
         splitChunks: {
             cacheGroups: {
@@ -49,7 +49,7 @@ module.exports = {
             { test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader'] },
             { test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader'] },
             { test: /\.json/, exclude: /node_modules/, type: 'javascript/auto', use: [require.resolve('json-loader')] },
-            { test: /\.pug$/, include: path.join(__dirname, 'views'), loaders: ['pug-loader'] }
+            { test: /\.pug$/, include: path.join(__dirname, 'views'), loader: 'pug-loader' }
         ]
     }
 };
