@@ -5,6 +5,7 @@ import $ from 'jquery';
 
 import { ItemTypes } from '../../constants';
 import PopupDefaults from './PopupDefaults';
+import classNames from 'classnames';
 
 const panelSource = {
     beginDrag(props) {
@@ -72,11 +73,14 @@ class MovablePanel extends React.Component {
 
     render() {
         let style = this.state.position;
+        let panelClass = classNames('panel-title', {
+            'other-side': this.props.side === 'top'
+        });
 
         let content = (<div ref='popup' className='popup' style={ style }>
             {
                 this.props.connectDragSource(
-                    <div className='panel-title' onClick={ event => event.stopPropagation() }>
+                    <div className={ panelClass } onClick={ event => event.stopPropagation() }>
                         <span className='text-center'>{ this.props.title }</span>
                         <span className='pull-right'>
                             <a className='close-button glyphicon glyphicon-remove' onClick={ this.props.onCloseClick } />

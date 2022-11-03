@@ -161,7 +161,7 @@ class EventEditor extends React.Component {
                         type='text' onChange={ this.onChange.bind(this, 'name') } value={ this.state.name } />
 
                     <Typeahead label='Card' labelClass={ 'col-sm-3 col-xs-2' } fieldClass='col-sm-4 col-xs-5' labelKey={ 'label' } options={ allCards }
-                        onChange={ this.addCardChange.bind(this) }>
+                        id='event-editor' onChange={ this.addCardChange.bind(this) }>
                         <div className='col-xs-1 no-x-padding'>
                             <div className='btn-group'>
                                 <button className='btn btn-primary dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>

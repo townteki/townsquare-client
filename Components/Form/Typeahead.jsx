@@ -13,10 +13,11 @@ class Input extends React.Component {
             <div>
                 { label }
                 <div className={ this.props.fieldClass }>
-                    <Typeahead ref='typeahead' options={ this.props.options } labelKey={ this.props.labelKey } emptyLabel={ this.props.emptyLabel }
+                    <Typeahead id={ this.props.id } ref='typeahead' options={ this.props.options } labelKey={ this.props.labelKey } emptyLabel={ this.props.emptyLabel }
                         onChange={ this.props.onChange } placeholder={ this.props.placeholder } autoFocus={ this.props.autoFocus } dropup={ this.props.dropup }
                         minLength={ this.props.minLength } onInputChange={ this.props.onInputChange } renderMenuItemChildren={ this.props.renderMenuItemChildren }
-                        submitFormOnEnter={ this.props.submitFormOnEnter } onKeyDown={ this.props.onKeyDown } disabled={ this.props.disabled }/>
+                        submitFormOnEnter={ this.props.submitFormOnEnter } onKeyDown={ this.props.onKeyDown } disabled={ this.props.disabled } defaultSelected={ this.props.defaultSelected }
+                        clearButton={ this.props.clearButton } multiple={ this.props.multiple } />
                     { this.props.validationMessage ? <span className='help-block'>{ this.props.validationMessage } </span> : null }
                 </div>
                 { this.props.children }
@@ -38,14 +39,18 @@ Input.displayName = 'TypeAhead';
 Input.propTypes = {
     autoFocus: PropTypes.bool,
     children: PropTypes.object,
+    clearButton: PropTypes.bool,
+    defaultSelected: PropTypes.array,
     disabled: PropTypes.bool,
     dropup: PropTypes.bool,
     emptyLabel: PropTypes.string,
     fieldClass: PropTypes.string,
+    id: PropTypes.string,
     label: PropTypes.string,
     labelClass: PropTypes.string,
     labelKey: PropTypes.string,
     minLength: PropTypes.number,
+    multiple: PropTypes.bool,
     name: PropTypes.string,
     noGroup: PropTypes.bool,
     onChange: PropTypes.func,

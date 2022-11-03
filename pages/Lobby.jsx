@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { toastr } from 'react-redux-toastr';
+import WidgetBot from '@widgetbot/react-embed';
 
 import News from '../Components/News/News';
 import AlertPanel from '../Components/Site/AlertPanel';
@@ -24,7 +25,8 @@ class Lobby extends React.Component {
         this.onRemoveMessageClick = this.onRemoveMessageClick.bind(this);
 
         this.state = {
-            message: ''
+            message: '',
+            chatType: 'discord'
         };
     }
 
@@ -36,6 +38,10 @@ class Lobby extends React.Component {
 
     componentWillReceiveProps(props) {
         this.checkChatError(props);
+    }
+
+    handleChatTypeClick(chatType) {
+        this.setState({ chatType: chatType });
     }
 
     checkChatError(props) {
@@ -120,6 +126,29 @@ class Lobby extends React.Component {
                         { this.props.newsSuccess && <News news={ this.props.news } /> }
                     </Panel>
                 </div>
+                <div className='col-sm-offset-1 btn-group col-xs-12'>
+                    { isLoggedIn && this.props.user.discord.server &&
+                        <div>
+                            <button 
+                                className={ 'btn btn-' + (this.state.chatType === 'lobby' ? 'secondary' : 'primary') }
+                                onClick={ this.handleChatTypeClick.bind(this, 'lobby') }>Lobby</button>
+                            <button 
+                                className={ 'btn btn-' + (this.state.chatType === 'discord' ? 'secondary' : 'primary') } 
+                                onClick={ this.handleChatTypeClick.bind(this, 'discord') }>Discord</button>
+                        </div>
+                    }
+                </div> 
+                { (!this.state.chatType || this.state.chatType === 'discord') && isLoggedIn && this.props.user.discord.server &&
+                    <WidgetBot
+                        server={ this.props.user.discord.server }
+                        channel={ this.props.user.discord.channel }
+                        className='col-sm-offset-1 col-sm-10 chat-container discord'
+                        username={ this.props.user.username + ' [doomtown.online]' }
+                        avatar={ this.props.user.avatarLink + '&s=48' }
+                    />
+                }
+                                   
+                { (this.state.chatType === 'lobby' || !isLoggedIn || !this.props.user.discord.server) && 
                 <div className='col-sm-offset-1 col-sm-10 chat-container'>
                     <Panel title={ `Lobby Chat (${this.props.users.length} online)` }>
                         <div>
@@ -131,15 +160,15 @@ class Lobby extends React.Component {
                     <form className='form form-hozitontal chat-box-container' onSubmit={ event => this.onSendClick(event) }>
                         <div className='form-group'>
                             <div className='chat-box'>
-                                <Typeahead disabled={ !isLoggedIn } ref='message' value={ this.state.message } placeholder={ placeholder }
-                                    labelKey={ 'name' } onKeyDown={ this.onKeyPress }
+                                <Typeahead id='lobby-chat' disabled={ !isLoggedIn } ref='message' value={ this.state.message } 
+                                    placeholder={ placeholder } labelKey={ 'name' } onKeyDown={ this.onKeyPress }
                                     options={ this.props.users } onInputChange={ this.onChange } autoFocus
                                     dropup emptyLabel={ '' }
                                     minLength={ 2 } />
                             </div>
                         </div>
                     </form>
-                </div>
+                </div> }
             </div>);
     }
 }

@@ -16,11 +16,16 @@ class SelectDeckModal extends React.Component {
         } else {
             decks = (
                 <div>
-                    <DeckList className='deck-list-popup' decks={ this.props.decks } onSelectDeck={ this.props.onDeckSelected } />
+                    { !this.props.isSolo && <DeckList className='deck-list-popup' decks={ this.props.decks } onSelectDeck={ this.props.onDeckSelected } />
+                    }
                     { this.props.standaloneDecks && this.props.standaloneDecks.length !== 0 && (
                         <div>
                             <h3 className='deck-list-header'>Or choose a standalone deck:</h3>
-                            <DeckList className='deck-list-popup' decks={ this.props.standaloneDecks } onSelectDeck={ this.props.onDeckSelected } />
+                            <DeckList 
+                                className='deck-list-popup' 
+                                decks={ this.props.standaloneDecks } 
+                                onSelectDeck={ this.props.onDeckSelected } 
+                                isSolo={ this.props.isSolo } />
                         </div>)
                     }
                 </div>
@@ -39,6 +44,7 @@ SelectDeckModal.propTypes = {
     apiError: PropTypes.string,
     decks: PropTypes.array,
     id: PropTypes.string,
+    isSolo: PropTypes.bool,
     loading: PropTypes.bool,
     onDeckSelected: PropTypes.func,
     standaloneDecks: PropTypes.array

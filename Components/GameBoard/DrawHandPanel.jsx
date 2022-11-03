@@ -12,7 +12,6 @@ class DrawHandPanel extends React.Component {
         };
         this.state.popupCardSize = this.getCurrentCardSize(true);
         this.handleResizeClick = this.handleResizeClick.bind(this);
-        this.handleDiscardClick = this.handleDiscardClick.bind(this);
         this.handleOrderClick = this.handleOrderClick.bind(this);
     }
 
@@ -31,9 +30,9 @@ class DrawHandPanel extends React.Component {
         });
     }
 
-    handleDiscardClick() {
+    handleDiscardClick(discardType) {
         if(this.props.onDiscardSelectedClick) {
-            this.props.onDiscardSelectedClick();
+            this.props.onDiscardSelectedClick(discardType);
         }
     }
 
@@ -67,18 +66,19 @@ class DrawHandPanel extends React.Component {
         let drawHandPopupMenu = [];
 
         if(this.props.isMe) {
-            drawHandPopupMenu.push({ text: 'Discard Selected', icon: 'share', handler: this.handleDiscardClick, disabled: this.props.cards.some(card => card.selectable) });
-            drawHandPopupMenu.push({ text: 'Change size', icon: 'resize-full', handler: this.handleResizeClick });
-            drawHandPopupMenu.push({ text: 'Ordered by ' + this.state.orderType, icon: 'sort-by-attributes', handler: this.handleOrderClick });
+            drawHandPopupMenu.push({ text: 'Discard Selected', icon: 'share', handler: this.handleDiscardClick.bind(this, 'discard'), disabled: this.props.cards.some(card => card.selectable) });
+            drawHandPopupMenu.push({ text: 'Size', icon: 'resize-full', handler: this.handleResizeClick });
+            drawHandPopupMenu.push({ text: ' by ' + this.state.orderType, icon: 'sort-by-attributes', handler: this.handleOrderClick });
+            drawHandPopupMenu.push({ text: 'Keep Selected', icon: 'check', handler: this.handleDiscardClick.bind(this, 'keep'), disabled: this.props.cards.some(card => card.selectable) });
         }
 
         return (
             <SquishableCardPanel
                 cards={ this.getOrderedCards() }
-                className='panel hand'
+                className='panel draw'
                 groupVisibleCards
-                username={ this.props.username }
                 maxCards={ 5 }
+                playerName={ this.props.playerName }
                 onCardClick={ this.props.onCardClick }
                 onDragDrop={ this.props.onCardClick }
                 onMenuItemClick={ this.props.onMenuItemClick }
@@ -112,6 +112,7 @@ DrawHandPanel.propTypes = {
     onMouseOut: PropTypes.func,
     onMouseOver: PropTypes.func,
     onPopupClose: PropTypes.func,
+    playerName: PropTypes.string,
     popupLocation: PropTypes.oneOf(['top', 'bottom']),
     popupStayOpen: PropTypes.bool,
     size: PropTypes.number,

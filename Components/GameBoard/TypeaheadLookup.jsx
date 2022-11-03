@@ -8,35 +8,46 @@ class TypeaheadLookup extends React.Component {
         super(props);
 
         this.state = {
-            selectedValue: ''
+            selectedValues: []
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleDoneClick = this.handleDoneClick.bind(this);
     }
 
-    handleChange(value) {
-        this.setState({ selectedValue: value[0] });
+    handleChange(values) {
+        this.setState({ selectedValues: values });
     }
 
     handleDoneClick() {
-        if(this.props.onValueSelected) {
-            this.props.onValueSelected(this.state.selectedValue);
+        if(this.props.onValuesSelected) {
+            this.props.onValuesSelected(this.state.selectedValues);
         }
     }
 
     render() {
         return (
-            <div>
-                <Typeahead labelKey={ 'label' } options={ this.props.values } dropup onChange={ this.handleChange } />
-                <button type='button' onClick={ this.handleDoneClick } className='btn btn-primary'>Done</button>
+            <div className='keyword-lookup'>
+                <Typeahead 
+                    id={ this.props.id }
+                    clearButton
+                    labelKey={ 'label' } 
+                    options={ this.props.values } 
+                    defaultSelected={ this.props.defaultSelected } 
+                    multiple
+                    onChange={ this.handleChange } 
+                />
+                <button type='button' onClick={ this.handleDoneClick } className='btn btn-primary'>{ this.props.buttonTitle || 'Done' }</button>
             </div>);
     }
 }
 
-TypeaheadLookup.displayName = 'TraitNameLookup';
+TypeaheadLookup.displayName = 'TypeaheadLookup';
 TypeaheadLookup.propTypes = {
-    onValueSelected: PropTypes.func,
+    buttonTitle: PropTypes.string,
+    defaultSelected: PropTypes.array,
+    id: PropTypes.string,
+    onValuesSelected: PropTypes.func,
     values: PropTypes.array
 };
 

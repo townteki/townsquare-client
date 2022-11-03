@@ -1,0 +1,20 @@
+# This is a workflow to restart the development server
+
+name: Restart Dev Server
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:    
+  server-restart:
+    runs-on: ubuntu-latest
+    steps:    
+    - name: Restart pm2 processes
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_TEST_HOST }}
+        username: ${{ secrets.REMOTE_TEST_USER }}
+        key: ${{ secrets.TEST_SERVER_SSH_KEY }}
+        script: |
+          pm2 ls | grep "online" | grep "fork" | awk '{print $4}' | xargs -I{} pm2 restart {}

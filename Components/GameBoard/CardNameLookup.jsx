@@ -6,7 +6,7 @@ import TypeaheadLookup from './TypeaheadLookup';
 function CardNameLookup(props) {
     let cardNames = [...new Set(Object.values(props.cards).map(card => card.name))];
 
-    return <TypeaheadLookup values={ cardNames } onValueSelected={ props.onValueSelected } />;
+    return <TypeaheadLookup id='card-name-lookup' values={ cardNames } onValuesSelected={ props.onValueSelected } />;
 }
 
 CardNameLookup.displayName = 'CardNameLookup';

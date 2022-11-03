@@ -130,7 +130,7 @@ class SquishableCardPanel extends React.Component {
 
         popup = (
             <MovablePanel title={ this.props.title } name={ this.props.source } onCloseClick={ this.onCloseClick } side={ this.props.popupLocation }>
-                <Droppable onDragDrop={ this.props.onDragDrop } source={ this.props.source }>
+                <Droppable onDragDrop={ this.props.onDragDrop } source={ this.props.source } playerName={ this.props.playerName }>
                     <div className={ popupClass } onClick={ event => event.stopPropagation() }>
                         { popupMenu }                  
                         <div className={ innerClass }>
@@ -266,13 +266,13 @@ SquishableCardPanel.propTypes = {
     onMouseOut: PropTypes.func,
     onMouseOver: PropTypes.func,
     onPopupClose: PropTypes.func,
+    playerName: PropTypes.string,
     popupCardSize: PropTypes.string,
     popupLocation: PropTypes.string,
     popupMenu: PropTypes.array,
     popupStayOpen: PropTypes.bool,    
     source: PropTypes.string,
-    title: PropTypes.string,
-    username: PropTypes.string
+    title: PropTypes.string
 };
 SquishableCardPanel.defaultProps = {
     popupLocation: 'bottom',

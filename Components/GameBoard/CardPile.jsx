@@ -6,6 +6,7 @@ import Card from './Card';
 import CardTiledList from './CardTiledList';
 import Droppable from './Droppable';
 import MovablePanel from './MovablePanel';
+import KeywordLookup from './KeywordLookup';
 
 class CardPile extends React.Component {
     constructor(props) {
@@ -141,6 +142,7 @@ class CardPile extends React.Component {
 
         let listProps = {
             disableMouseOver: this.props.disableMouseOver,
+            filter: this.props.filter,
             onCardClick: this.onCardClick.bind(this),
             onCardMouseOut: this.props.onMouseOut,
             onCardMouseOver: this.props.onMouseOver,
@@ -178,21 +180,45 @@ class CardPile extends React.Component {
         let linkIndex = 0;
 
         let popupMenu = this.props.popupMenu && (
-            <div className='card-pile-buttons'>
-                { this.props.popupMenu.map(menuItem => {
-                    return (
-                        <a className='btn btn-default' key={ linkIndex++ } onClick={ () => this.onPopupMenuItemClick(menuItem) }>
-                            { menuItem.icon && <span className={ `glyphicon glyphicon-${menuItem.icon}` }/> }
-                            { ' ' }
-                            { menuItem.text }
-                        </a>);
-                }) }
+            <div>
+                <div className='card-pile-buttons'>
+                    { this.props.popupMenu.filter(menuItem => !menuItem.isKeywordFilter).map(menuItem => {
+                        let className = 'btn btn-default';
+                        if(menuItem.filterProperty === 'keywords' && this.props.isKeywordFilter) {
+                            className = className + ' btn-keyword-on';
+                        }
+                        if(menuItem.filterProperty && this.props.filter && this.props.filter[menuItem.filterProperty]) {
+                            if(Array.isArray(this.props.filter[menuItem.filterProperty])) {
+                                if(this.props.filter[menuItem.filterProperty].length) {
+                                    className = className + ' btn-tertiary';
+                                }
+                            } else {
+                                className = className + ' btn-tertiary';
+                            }
+                        }
+                        return (
+                            <a className={ className } key={ linkIndex++ } onClick={ () => this.onPopupMenuItemClick(menuItem) }>
+                                { menuItem.icon && <span className={ `glyphicon glyphicon-${menuItem.icon}` }/> }
+                                { ' ' }
+                                { menuItem.text }
+                            </a>);
+                    }) }
+                </div>
+                { this.props.isKeywordFilter && <div className='card-pile-keywords'>
+                    { this.props.popupMenu.filter(menuItem => menuItem.isKeywordFilter).map(menuItem =>
+                        (<KeywordLookup 
+                            cards={ this.props.cards } 
+                            onKeywordsSelected={ menuItem.keywordHandler } 
+                            selectedKeywords={ this.props.filter ? this.props.filter.keywords : [] }
+                        />)
+                    ) }
+                </div> }
             </div>
         );
 
         popup = (
             <MovablePanel title={ this.props.title } name={ this.props.source } onCloseClick={ this.onCloseClick } side={ this.props.popupLocation }>
-                <Droppable onDragDrop={ this.props.onDragDrop } source={ this.props.source }>
+                <Droppable onDragDrop={ this.props.onDragDrop } source={ this.props.source } playerName={ this.props.playerName }>
                     <div className={ popupClass } onClick={ event => event.stopPropagation() }>
                         { popupMenu }
                         <div className={ innerClass }>
@@ -259,8 +285,10 @@ CardPile.propTypes = {
     closeOnClick: PropTypes.bool,
     disableMouseOver: PropTypes.bool,
     disablePopup: PropTypes.bool,
+    filter: PropTypes.object,
     handleMenuChange: PropTypes.func,
     hiddenTopCard: PropTypes.bool,
+    isKeywordFilter: PropTypes.bool,
     menu: PropTypes.array,
     onCardClick: PropTypes.func,
     onDragDrop: PropTypes.func,
@@ -270,6 +298,7 @@ CardPile.propTypes = {
     onPopupChange: PropTypes.func,
     onTouchMove: PropTypes.func,
     orientation: PropTypes.string,
+    playerName: PropTypes.string,
     popupLocation: PropTypes.string,
     popupMenu: PropTypes.array,
     showIfVisible: PropTypes.bool,
