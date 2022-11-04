@@ -7,7 +7,7 @@ module.exports = merge(common, {
         'bundle': ['react-hot-loader/patch', './index.jsx']
     },
     output: {
-        filename: '[name].[hash].js'
+        filename: '[name].[fullhash].js'
     },
     mode: 'development',
     devtool: 'inline-source-map',
