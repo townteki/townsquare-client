@@ -12,7 +12,7 @@ module.exports = merge(common, {
     mode: 'development',
     devtool: 'inline-source-map',
     devServer: {
-        contentBase: './assets',
+        static: './assets',
         hot: true,
         host: process.env.HOST || 'localhost',
         historyApiFallback: true,
