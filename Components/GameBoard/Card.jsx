@@ -372,6 +372,9 @@ class InnerCard extends React.Component {
         } else if(this.props.card.selectable) {
             return 'selectable';
         } else if(this.props.card.shootoutStatus === 'calling out' || this.props.card.shootoutStatus === 'called out') {
+            if(this.props.card.controlled) {
+                return 'callout controlled';
+            }
             return 'callout';
         } else if(this.props.card.shootoutStatus === 'leader shooter') {
             return 'shooter-attack';
@@ -383,8 +386,6 @@ class InnerCard extends React.Component {
             return 'defending';
         } else if(this.props.card.controlled) {
             return 'controlled';
-        } else if(this.props.card.new) {
-            return 'new';
         }
 
         return '';
