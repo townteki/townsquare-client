@@ -517,6 +517,7 @@ span.down-arrow {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  overflow-x: auto;
 
   .panel {
     padding-left: 5px;
@@ -634,7 +635,7 @@ span.down-arrow {
 
 .board-middle {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr fit-content(20%);
   grid-template-rows: auto 1fr auto auto;
   flex-grow: 1;
 }
