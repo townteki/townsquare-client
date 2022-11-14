@@ -359,6 +359,7 @@ export class GameBoard extends React.Component {
                     </div>								
 
                 </div>
+                <div className='cliff'/>
                 <div className='out-of-town-area'>
                     <div className='out-of-town' onDragOver={ this.onDragOver }>
                         <OutOfTown onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onMenuItemClick={ this.onMenuItemClick }
@@ -367,7 +368,7 @@ export class GameBoard extends React.Component {
 
                     <div className='out-of-town' onDragOver={ this.onDragOver }>
                         <OutOfTown onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onMenuItemClick={ this.onMenuItemClick }
-                            handleMenuChange={ this.handleMenuChange } owner={ thisPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
+                            handleMenuChange={ this.handleMenuChange } className={ 'our-side' } owner={ thisPlayer } otherPlayer={ otherPlayer } thisPlayer={ thisPlayer }/>
                     </div>
                 </div>
                 <div className='player-home-row our-side'>

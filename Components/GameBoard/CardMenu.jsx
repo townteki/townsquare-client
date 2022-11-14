@@ -25,9 +25,13 @@ class CardMenu extends React.Component {
                 { ' ' + menuItem.text }
             </div>);
         });
+        var divClass = classNames('panel', 'menu', {
+            'bottom': this.props.isBottom,
+            'booted': this.props.isBooted
+        });
 
         return (
-            <div className='panel menu'>
+            <div className={ divClass }>
                 { menuItems }
             </div>
         );
@@ -36,6 +40,8 @@ class CardMenu extends React.Component {
 
 CardMenu.displayName = 'CardMenu';
 CardMenu.propTypes = {
+    isBooted: PropTypes.bool,
+    isBottom: PropTypes.bool,
     menu: PropTypes.array.isRequired,
     onMenuItemClick: PropTypes.func
 };

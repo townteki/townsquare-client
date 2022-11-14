@@ -58,7 +58,7 @@ export class PlayerStats extends React.Component {
                 { playerAvatar }
                 { this.props.firstPlayer || this.props.inCheck ? <div className='state badges'>
                     { this.props.firstPlayer ? <div className='single-badge'>
-                        <img src='/img/icons/dice.png'/>
+                        <img src='/img/icons/dealer.png'/>
                     </div> : null }
                     { this.props.inCheck ? <div className='single-badge'>
                         <img src='/img/icons/noose.png'/>

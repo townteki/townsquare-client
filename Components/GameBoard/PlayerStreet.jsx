@@ -30,8 +30,8 @@ class PlayerStreet extends React.Component {
                                 onMouseOver={ this.props.onMouseOver }
                                 onMouseOut={ this.props.onMouseOut }
                                 otherPlayer={ this.props.otherPlayer }
-                                thisPlayer={ this.props.thisPlayer }/>
-
+                                thisPlayer={ this.props.thisPlayer }
+                                side={ this.props.className }/>
                         );
                     }
                 });
