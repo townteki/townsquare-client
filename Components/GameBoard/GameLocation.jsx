@@ -72,6 +72,7 @@ export class InnerGameLocation extends React.Component {
                     onClick={ this.onCardClick } 
                     onDragDrop={ this.onDragDrop } 
                     isOpponent={ this.props.otherPlayer === player }
+                    side={ this.props.side }
                 />);
             }
         });
@@ -159,6 +160,7 @@ InnerGameLocation.propTypes = {
     otherPlayer: PropTypes.object,
     sendGameMessage: PropTypes.func,
     setTownsquareComponent: PropTypes.func,
+    side: PropTypes.string,    
     source: PropTypes.string,
     style: PropTypes.object,
     thisPlayer: PropTypes.object,

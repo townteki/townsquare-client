@@ -310,6 +310,11 @@
       z-index: @layer-hover - @i;
     }
   }
+
+  .card-wrapper.expanded-@{i} {
+    margin-top: 15px * @i;
+  }
+
   .generate-attachments(@n, (@i + 1));
 }
 

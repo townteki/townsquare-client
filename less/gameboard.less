@@ -513,10 +513,19 @@ span.down-arrow {
   min-height: 0;
 }
 
+.cliff {
+  grid-column: 3;
+  grid-row-start: 2;
+  grid-row-end: 4;
+}
+
 .out-of-town-area {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  justify-content: flex-end;
+  overflow-x: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
   .panel {
     padding-left: 5px;
@@ -525,7 +534,23 @@ span.down-arrow {
 
   .menu {
     position: absolute;
-    left: -135px;
+    top: 82px;
+    left: -40px;
+
+    &.bottom {
+      top: unset;
+      bottom: 82px;
+
+      &.booted {
+        left: -25px;
+        bottom: 55px;
+      }
+    }
+
+    &.booted:not(.bottom) {
+      top: 55px;
+      left: -28px;
+    }
   }
 }
 
@@ -543,7 +568,7 @@ span.down-arrow {
   overflow-y: hidden;
   grid-row: 1;
   grid-column-start: 1;
-  grid-column-end: 4;
+  grid-column-end: 5;
   justify-self: stretch;
 
   &.our-side {
@@ -634,7 +659,7 @@ span.down-arrow {
 
 .board-middle {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr 20px fit-content(20%);
   grid-template-rows: auto 1fr auto auto;
   flex-grow: 1;
 }
