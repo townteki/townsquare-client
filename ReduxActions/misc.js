@@ -20,19 +20,6 @@ export function setContextMenu(menu) {
     };
 }
 
-export function zoomCard(card) {
-    return {
-        type: 'ZOOM_CARD',
-        card: card
-    };
-}
-
-export function clearZoom() {
-    return {
-        type: 'CLEAR_ZOOM'
-    };
-}
-
 export function receiveBannerNotice(notice) {
     return {
         type: 'RECEIVE_BANNER_NOTICE',

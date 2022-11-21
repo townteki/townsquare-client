@@ -13,6 +13,29 @@
     cursor: url(/img/crosshairs.cur), default;
   }
 
+  .effects {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .effects-panel {
+      margin: 0px 1px 1px 1px;
+      display: flex;
+      flex-direction: column;
+
+      .text-center {
+        background-color: @brand-tertiary;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      &.extended {
+        height: 350px;
+        z-index: @layer-top + 1;
+      }
+    }
+  }
+
   .panel {
     position: relative;
     margin: 5px;
@@ -633,6 +656,51 @@ span.down-arrow {
 .player-board .card-wrapper {
   margin-right: 10px;
   margin-bottom: 5px;
+}
+
+.effects-title {
+  height: 35px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.effect-source {
+  color: @brand-secondary;
+  align-content: right;
+}
+
+.effects-list {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px 5px;
+  height: 100%;
+
+  .text-left {
+    padding: 2px;
+  }
+}
+
+.effect-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: solid;
+
+  .text-left {
+    width: 100%;
+    margin-left: 5px;
+  }
+
+  &.negative {
+    background-color: rgba(88, 0, 0, 0.3);
+  }
+
+  &.positive {
+    background-color: rgba(0, 102, 0, 0.3);
+  }
 }
 
 //RIGHT SIDE

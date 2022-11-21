@@ -271,6 +271,36 @@ class InnerCard extends React.Component {
         </div>);        
     }
 
+    showEffects(card, classOrientation) {
+        if(!card.effects || !card.effects.length || this.isFacedown()) {
+            return null;
+        }
+        const gameActionsWithIcons = ['increaseBullets', 'decreaseBullets', 'increaseInfluence', 'decreaseInfluence',
+            'increaseControl', 'decreaseControl', 'increaseValue', 'decreaseValue', 'increaseProduction', 'decreaseProduction',
+            'increaseUpkeep', 'decreaseUpkeep', 'setAsDraw', 'setAsStud'];
+        let effects = card.effects.filter(effect => {
+            if(!effect.fromTrait && effect.duration === 'persistent') {
+                return false;
+            }
+            if(!effect.gameAction || effect.gameAction === '') {
+                return true;
+            }
+            if(gameActionsWithIcons.includes(effect.gameAction)) {
+                return false;
+            }
+            return true;
+        });
+        if(!effects.length) {
+            return null;
+        }
+
+        let effectsImageClass = classNames('effects-image', this.sizeClass, classOrientation);
+
+        return (<div className='card-effects'>
+            <img className={ effectsImageClass } src='/img/tokens/effects.png' />;
+        </div>);        
+    }
+
     isFiltered() {
         if(!this.props.filter) {
             return false;
@@ -338,6 +368,7 @@ class InnerCard extends React.Component {
                     </div>
                     { this.showCounters() ? <CardCounters counters={ this.getCountersForCard(this.props.card) } /> : null }
                     { this.showUnscripted(classOrientation) }
+                    { this.showEffects(this.props.card, classOrientation) }
                 </div>
                 { this.showMenu() ? 
                     <CardMenu menu={ this.props.card.menu } isBottom={ !this.props.isOpponent && this.props.side === 'our-side' }

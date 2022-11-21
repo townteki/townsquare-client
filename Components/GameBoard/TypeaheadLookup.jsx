@@ -36,6 +36,7 @@ class TypeaheadLookup extends React.Component {
                     defaultSelected={ this.props.defaultSelected } 
                     multiple
                     onChange={ this.handleChange } 
+                    autoFocus={ this.props.autoFocus }
                 />
                 <button type='button' onClick={ this.handleDoneClick } className='btn btn-primary'>{ this.props.buttonTitle || 'Done' }</button>
             </div>);
@@ -44,6 +45,7 @@ class TypeaheadLookup extends React.Component {
 
 TypeaheadLookup.displayName = 'TypeaheadLookup';
 TypeaheadLookup.propTypes = {
+    autoFocus: PropTypes.bool,
     buttonTitle: PropTypes.string,
     defaultSelected: PropTypes.array,
     id: PropTypes.string,

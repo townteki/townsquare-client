@@ -15,6 +15,7 @@ function KeywordLookup(props) {
         onValuesSelected={ props.onKeywordsSelected } 
         defaultSelected={ props.selectedKeywords || [] } 
         buttonTitle='Set'
+        autoFocus
     />);
 }
 

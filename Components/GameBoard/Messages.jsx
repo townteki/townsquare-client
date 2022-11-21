@@ -84,13 +84,13 @@ class Messages extends React.Component {
                 }
             } else if(fragment.message) {
                 messages.push(this.formatMessageText(fragment.message));
-            } else if(fragment.code && fragment.label) {
+            } else if(fragment.code && fragment.title) {
                 messages.push(
                     <span key={ index++ }
                         className='card-link'
                         onMouseOver={ this.props.onCardMouseOver.bind(this, fragment) }
                         onMouseOut={ this.props.onCardMouseOut.bind(this) }>
-                        { fragment.label }
+                        { fragment.title }
                     </span>
                 );
             } else if(fragment.name && fragment.argType === 'player') {

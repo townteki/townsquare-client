@@ -17,6 +17,7 @@ import GameChat from './GameChat';
 import GameConfigurationModal from './GameConfigurationModal';
 import * as actions from '../../actions';
 import StatusPanel from './StatusPanel';
+import EffectsPanel from './EffectsPanel';
 
 const placeholderPlayer = {
     legend: null,
@@ -60,16 +61,18 @@ export class GameBoard extends React.Component {
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.sendChatMessage = this.sendChatMessage.bind(this);
         this.onSettingsClick = this.onSettingsClick.bind(this);
+        this.onEffectsClick = this.onEffectsClick.bind(this);
         this.onMessagesClick = this.onMessagesClick.bind(this);
         this.onOutfitCardClick = this.onOutfitCardClick.bind(this);	
         this.onPauseClick = this.onPauseClick.bind(this);	
-        this.setTownsquareComponent = this.setTownsquareComponent.bind(this);	
+        this.setTownsquareComponent = this.setTownsquareComponent.bind(this);
+        this.getUpdatedEffectsObject = this.getUpdatedEffectsObject.bind(this);		
 
         this.state = {
             cardToZoom: undefined,
             spectating: true,
-            showActionWindowsMenu: false,
-            showCardMenu: {},
+            showEffectsWindows: false,
+            effectsObject: {},
             showMessages: true,
             lastMessageCount: 0,
             newMessages: 0
@@ -92,6 +95,27 @@ export class GameBoard extends React.Component {
         } else {
             this.setState({ newMessages: currentMessageCount - lastMessageCount });
         }
+    }
+
+    getUpdatedEffectsObject(effectsObject) {
+        if(!this.props || !effectsObject || effectsObject.classType === 'shootout') {
+            return effectsObject;
+        }
+        for(let playerName in this.props.currentGame.players) {
+            const player = this.props.currentGame.players[playerName];
+            if(effectsObject.classType === 'player' && player.id === effectsObject.id) {
+                return player;
+            }
+            let allCards = [];
+            for(let cardPile in player.cardPiles) {
+                allCards = allCards.concat(player.cardPiles[cardPile]);
+            }
+            let foundEffectsObject = allCards.find(card => card.uuid === effectsObject.uuid);
+            if(foundEffectsObject) {
+                return foundEffectsObject;
+            }
+        }
+        return effectsObject;
     }
 
     updateContextMenu(props) {
@@ -193,12 +217,19 @@ export class GameBoard extends React.Component {
         this.props.closeGameSocket();
     }
 
-    onMouseOver(card) {
-        this.props.zoomCard(card);
+    onMouseOver(object) {
+        let newState = {};
+        if(object) {
+            newState.effectsObject = object;
+        }
+        if(object && (object.classType === 'card' || object.argType === 'card')) {
+            newState.cardToZoom = object;
+        }
+        this.setState(newState);
     }
 
     onMouseOut() {
-        this.props.clearZoom();
+        this.setState({ cardToZoom: undefined, effectsObject: undefined });
     }
 
     onCardClick(card) {
@@ -270,6 +301,10 @@ export class GameBoard extends React.Component {
         $('#settings-modal').modal('show');
     }
 
+    onEffectsClick() {
+        this.setState({ showEffectsWindows: !this.state.showEffectsWindows });
+    }
+
     onPauseClick() {
         this.props.sendGameMessage('togglePauseTimer');
     }
@@ -301,8 +336,8 @@ export class GameBoard extends React.Component {
             <div key='board-middle' className='board-middle'>
                 <div className='player-home-row'>
                     <div className='player-stats-row other-side'>
-                        <PlayerStats stats={ otherPlayer.stats } user={ otherPlayer.user } sendGameMessage={ this.props.sendGameMessage }
-                            firstPlayer={ otherPlayer.firstPlayer } inCheck={ otherPlayer.inCheck } />
+                        <PlayerStats player={ otherPlayer } sendGameMessage={ this.props.sendGameMessage } 
+                            onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut }/>
                     </div>
                     <PlayerRow
                         hand={ otherPlayer.cardPiles.hand } isMe={ false }
@@ -330,6 +365,8 @@ export class GameBoard extends React.Component {
                     thisPlayer={ thisPlayer } 
                     currentGame={ this.props.currentGame }
                     spectating={ this.state.spectating }
+                    onMouseOver={ this.onMouseOver }
+                    onMouseOut={ this.onMouseOut }
                     onPauseClick={ this.onPauseClick }/>
                 <div id='play-area' className='play-area' onDragOver={ this.onDragOver }>
                     <div id='otherstreet' className='player-street other-side'>
@@ -373,9 +410,9 @@ export class GameBoard extends React.Component {
                 </div>
                 <div className='player-home-row our-side'>
                     <div className='player-stats-row'>
-                        <PlayerStats { ...boundActionCreators } stats={ thisPlayer.stats } showControls={ !this.state.spectating } user={ thisPlayer.user }
-                            firstPlayer={ thisPlayer.firstPlayer } inCheck={ thisPlayer.inCheck } onSettingsClick={ this.onSettingsClick } showMessages
-                            onMessagesClick={ this.onMessagesClick } numMessages={ this.state.newMessages } />
+                        <PlayerStats { ...boundActionCreators } player={ thisPlayer } showControls={ !this.state.spectating } onSettingsClick={ this.onSettingsClick }
+                            onEffectsClick={ this.onEffectsClick } onMessagesClick={ this.onMessagesClick } numMessages={ this.state.newMessages } showMessages
+                            onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut }/>
                     </div>
                     <PlayerRow isMe={ !this.state.spectating }
                         hand={ thisPlayer.cardPiles.hand }
@@ -437,6 +474,11 @@ export class GameBoard extends React.Component {
         thisPlayer = this.defaultPlayerInfo(thisPlayer);
         otherPlayer = this.defaultPlayerInfo(otherPlayer);
 
+        let effectsObject = this.state.effectsObject;
+        if(effectsObject && !effectsObject.effects) {
+            effectsObject = this.getUpdatedEffectsObject(this.state.effectsObject);
+        }
+
         let boardClass = classNames('game-board', {
             'select-cursor': thisPlayer && thisPlayer.selectCard
         });
@@ -468,11 +510,15 @@ export class GameBoard extends React.Component {
                             timerStartTime={ this.props.timerStartTime }
                             stopAbilityTimer={ this.props.stopAbilityTimer } />
                     </div>
-                    <CardZoom imageUrl={ this.props.cardToZoom ? '/img/cards/' + this.props.cardToZoom.code + '.jpg' : '' }
+                    <CardZoom imageUrl={ this.state.cardToZoom ? '/img/cards/' + this.state.cardToZoom.code + '.jpg' : '' }
                         orientation='vertical'
-                        show={ !!this.props.cardToZoom } cardName={ this.props.cardToZoom ? this.props.cardToZoom.title : null }
-                        card={ this.props.cardToZoom ? this.props.cards[this.props.cardToZoom.code] : null } />
+                        show={ !!this.state.cardToZoom } cardName={ this.state.cardToZoom ? this.state.cardToZoom.title : null }
+                        card={ this.state.cardToZoom ? this.props.cards[this.state.cardToZoom.code] : null } />
                     { this.state.showMessages && <div className='right-side'>
+                        <div className='effects'>
+                            <EffectsPanel show={ this.state.showEffectsWindows } onEffectsClick={ this.onEffectsClick } 
+                                effectsObject={ effectsObject } updateEffectsObject={ this.getUpdatedEffectsObject }/>
+                        </div>
                         <div className='gamechat'>
                             <GameChat key='gamechat'
                                 messages={ this.props.currentGame.messages }
@@ -496,7 +542,6 @@ export class GameBoard extends React.Component {
 
 GameBoard.displayName = 'GameBoard';
 GameBoard.propTypes = {
-    cardToZoom: PropTypes.object,
     cards: PropTypes.object,
     clearZoom: PropTypes.func,
     closeGameSocket: PropTypes.func,
@@ -511,13 +556,11 @@ GameBoard.propTypes = {
     stopAbilityTimer: PropTypes.func,
     timerLimit: PropTypes.number,
     timerStartTime: PropTypes.instanceOf(Date),
-    user: PropTypes.object,
-    zoomCard: PropTypes.func
+    user: PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
-        cardToZoom: state.cards.zoomCard,
         cards: state.cards.cards,
         currentGame: state.lobby.currentGame,
         packs: state.cards.packs,
