@@ -11,15 +11,16 @@ export class PlayerStats extends React.Component {
     }
 
     sendUpdate(type, direction) {
-        this.props.sendGameMessage('changeStat', type, direction === 'up' ? 1 : -1, this.props.user ? !!this.props.user.isAutomaton : undefined);
+        this.props.sendGameMessage('changeStat', type, direction === 'up' ? 1 : -1, 
+            this.props.player.user ? !!this.props.player.user.isAutomaton : undefined);
     }
 
     getStatValueOrDefault(stat) {
-        if(!this.props.stats) {
+        if(!this.props.player.stats) {
             return 0;
         }
 
-        return this.props.stats[stat] || 0;
+        return this.props.player.stats[stat] || 0;
     }
 
     getButton(stat, name, showControls = true) {
@@ -46,31 +47,43 @@ export class PlayerStats extends React.Component {
         }
     }
 
+    onEffectsClick(event) {
+        event.preventDefault();
+
+        if(this.props.onEffectsClick) {
+            this.props.onEffectsClick();
+        }
+    }
+
     render() {
         var playerAvatar = (
             <div className='player-avatar'>
-                <Avatar username={ this.props.user ? this.props.user.username : undefined } />
-                <b>{ this.props.user ? this.props.user.username : 'Noone' }</b>
+                <Avatar username={ this.props.player.user ? this.props.player.user.username : undefined } />
+                <b>{ this.props.player.user ? this.props.player.user.username : 'Noone' }</b>
             </div>);
 
         return (
-            <div className='panel player-stats'>
+            <div className='panel player-stats' onMouseOver={ this.props.onMouseOver.bind(this, this.props.player) } onMouseOut={ this.props.onMouseOut }>
                 { playerAvatar }
-                { this.props.firstPlayer || this.props.inCheck ? <div className='state badges'>
-                    { this.props.firstPlayer ? <div className='single-badge'>
+                { this.props.player.firstPlayer || this.props.player.inCheck ? <div className='state badges'>
+                    { this.props.player.firstPlayer ? <div className='single-badge'>
                         <img src='/img/icons/dealer.png'/>
                     </div> : null }
-                    { this.props.inCheck ? <div className='single-badge'>
+                    { this.props.player.inCheck ? <div className='single-badge'>
                         <img src='/img/icons/noose.png'/>
                     </div> : null }
                 </div> : null }           
 
-                { this.getButton('ghostrock', 'ghostrock', !!this.props.showControls || (this.props.user && !!this.props.user.isAutomaton)) }
+                { this.getButton('ghostrock', 'ghostrock', !!this.props.showControls || (this.props.player.user && !!this.props.player.user.isAutomaton)) }
                 { this.getButton('control', 'control', false) }
                 { this.getButton('influence', 'influence', false) }
 
                 { this.props.showControls ? <div className='state settings'>
                     <button className='btn btn-transparent' onClick={ this.onSettingsClick.bind(this) }><span className='glyphicon glyphicon-cog' />Settings</button>
+                    <button className='btn btn-transparent' onClick={ this.onEffectsClick.bind(this) }>
+                        <span className='glyphicon glyphicon-flash' />
+                        Effects{ '(' + (this.props.player.effects ? this.props.player.effects.length : '0') + ')' }
+                    </button>
                 </div> : null }
 
             </div>
@@ -80,14 +93,13 @@ export class PlayerStats extends React.Component {
 
 PlayerStats.displayName = 'PlayerStats';
 PlayerStats.propTypes = {
-    firstPlayer: PropTypes.bool,
-    inCheck: PropTypes.bool,
+    onEffectsClick: PropTypes.func,
+    onMouseOut: PropTypes.func,
+    onMouseOver: PropTypes.func,
     onSettingsClick: PropTypes.func,
-    playerName: PropTypes.string,
+    player: PropTypes.object,
     sendGameMessage: PropTypes.func,
-    showControls: PropTypes.bool,
-    stats: PropTypes.object,	
-    user: PropTypes.object
+    showControls: PropTypes.bool
 };
 
 export default PlayerStats;

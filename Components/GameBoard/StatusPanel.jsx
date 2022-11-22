@@ -25,6 +25,14 @@ class StatusPanel extends React.Component {
         this.props.onPauseClick();
     }
 
+    onEffectsClick(event) {
+        event.preventDefault();
+
+        if(this.props.onEffectsClick) {
+            this.props.onEffectsClick();
+        }
+    }    
+
     getShootoutStatus(player) {
         if(!player) {
             return (<div/>);
@@ -78,12 +86,14 @@ class StatusPanel extends React.Component {
             <div className={ 'prompt-area' + (showPanel ? '' : ' hiddenStatus') }>
                 { this.getTimer() }
                 <div className='shootout-status'>
-                    <div className={ 'shootout-player panel' + (showPanel ? '' : ' hiddenStatus') }>
+                    <div className={ 'shootout-player panel' + (showPanel ? '' : ' hiddenStatus') }
+                        onMouseOver={ this.props.onMouseOver.bind(this, this.props.currentGame.shootout) } onMouseOut={ this.props.onMouseOut }>
                         <div className={ showPanel ? '' : ' hidden' }>
                             { this.getShootoutStatus(otherPlayerStats) }
                         </div>
                     </div>
-                    <div className={ 'shootout-main panel' + (showPanel ? '' : ' hiddenStatus') }>
+                    <div className={ 'shootout-main panel' + (showPanel ? '' : ' hiddenStatus') }
+                        onMouseOver={ this.props.onMouseOver.bind(this, this.props.currentGame.shootout) } onMouseOut={ this.props.onMouseOut }>
                         <div className='shootout-status-icon' onClick={ this.onShootoutStatusClick }>
                             <button className='btn btn-transparent'>
                                 <span className='glyphicon glyphicon-screenshot' style={ { color: buttonColor } }/>
@@ -93,9 +103,14 @@ class StatusPanel extends React.Component {
                             { 'SHOOTOUT' + (this.props.currentGame.shootout ? ' round ' + this.props.currentGame.shootout.round : '') }
                         </div>
                     </div>
-                    <div className={ 'shootout-player panel' + (showPanel ? '' : ' hiddenStatus') }>
-                        <div className={ this.state.showShootoutStatus ? '' : ' hidden' }>
+                    <div className={ 'shootout-player panel' + (showPanel ? '' : ' hiddenStatus') }
+                        onMouseOver={ this.props.onMouseOver.bind(this, this.props.currentGame.shootout) } onMouseOut={ this.props.onMouseOut }>
+                        <div className={ showPanel ? '' : ' hidden' }>
                             { this.getShootoutStatus(thisPlayerStats) }
+                            <button className='btn btn-transparent' onClick={ this.onEffectsClick.bind(this) }>
+                                <span className='glyphicon glyphicon-flash' />
+                                { 'Effects(' + (this.props.currentGame.shootout && this.props.currentGame.shootout.effects ? this.props.currentGame.shootout.effects.length : '0') + ')' }
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -106,6 +121,9 @@ class StatusPanel extends React.Component {
 StatusPanel.displayName = 'StatusPanel';
 StatusPanel.propTypes = {
     currentGame: PropTypes.object,
+    onEffectsClick: PropTypes.func,
+    onMouseOut: PropTypes.func,
+    onMouseOver: PropTypes.func,
     onPauseClick: PropTypes.func,
     otherPlayer: PropTypes.object,
     spectating: PropTypes.bool,
