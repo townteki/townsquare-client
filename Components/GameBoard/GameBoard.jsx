@@ -365,6 +365,7 @@ export class GameBoard extends React.Component {
                     thisPlayer={ thisPlayer } 
                     currentGame={ this.props.currentGame }
                     spectating={ this.state.spectating }
+                    onEffectsClick={ this.onEffectsClick }
                     onMouseOver={ this.onMouseOver }
                     onMouseOut={ this.onMouseOut }
                     onPauseClick={ this.onPauseClick }/>

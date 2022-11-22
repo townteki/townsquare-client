@@ -80,7 +80,10 @@ export class PlayerStats extends React.Component {
 
                 { this.props.showControls ? <div className='state settings'>
                     <button className='btn btn-transparent' onClick={ this.onSettingsClick.bind(this) }><span className='glyphicon glyphicon-cog' />Settings</button>
-                    <button className='btn btn-transparent' onClick={ this.onEffectsClick.bind(this) }><span className='glyphicon glyphicon-flash' />Effects</button>
+                    <button className='btn btn-transparent' onClick={ this.onEffectsClick.bind(this) }>
+                        <span className='glyphicon glyphicon-flash' />
+                        Effects{ '(' + (this.props.player.effects ? this.props.player.effects.length : '0') + ')' }
+                    </button>
                 </div> : null }
 
             </div>
