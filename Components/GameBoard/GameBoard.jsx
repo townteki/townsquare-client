@@ -58,6 +58,7 @@ export class GameBoard extends React.Component {
         this.onDiscardFromDrawHandClick = this.onDiscardFromDrawHandClick.bind(this);
         this.onDrawPopupClose = this.onDrawPopupClose.bind(this);
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
+        this.onOotExpandClick = this.onOotExpandClick.bind(this);
         this.sendChatMessage = this.sendChatMessage.bind(this);
         this.onSettingsClick = this.onSettingsClick.bind(this);
         this.onMessagesClick = this.onMessagesClick.bind(this);
@@ -72,7 +73,8 @@ export class GameBoard extends React.Component {
             showCardMenu: {},
             showMessages: true,
             lastMessageCount: 0,
-            newMessages: 0
+            newMessages: 0,
+            ootExpanded: false
         };
     }
 
@@ -289,6 +291,10 @@ export class GameBoard extends React.Component {
         this.setState(newState);
     }
 
+    onOotExpandClick() {
+        this.setState({ ootExpanded: !this.state.ootExpanded });
+    }
+
     defaultPlayerInfo(source) {
         let player = Object.assign({}, placeholderPlayer, source);
         player.cardPiles = Object.assign({}, placeholderPlayer.cardPiles, player.cardPiles);
@@ -297,8 +303,9 @@ export class GameBoard extends React.Component {
 
     renderBoard(thisPlayer, otherPlayer) {
         let boundActionCreators = bindActionCreators(actions, this.props.dispatch);
+        let boardClassName = classNames('board-middle', { 'oot-expanded': this.state.ootExpanded });
         return [
-            <div key='board-middle' className='board-middle'>
+            <div key='board-middle' className={ boardClassName }>
                 <div className='player-home-row'>
                     <div className='player-stats-row other-side'>
                         <PlayerStats stats={ otherPlayer.stats } user={ otherPlayer.user } sendGameMessage={ this.props.sendGameMessage }
@@ -359,7 +366,11 @@ export class GameBoard extends React.Component {
                     </div>								
 
                 </div>
-                <div className='cliff'/>
+                <div className='cliff'>
+                    <div className='panel' onClick={ this.onOotExpandClick }>
+                        <span className={ 'glyphicon ' + (this.state.ootExpanded ? 'glyphicon-arrow-right' : 'glyphicon-arrow-left') }/>
+                    </div>
+                </div>
                 <div className='out-of-town-area'>
                     <div className='out-of-town' onDragOver={ this.onDragOver }>
                         <OutOfTown onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onMenuItemClick={ this.onMenuItemClick }

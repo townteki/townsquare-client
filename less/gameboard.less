@@ -519,6 +519,13 @@ span.down-arrow {
   grid-row-end: 4;
 }
 
+.cliff > .panel {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
 .out-of-town-area {
   display: flex;
   flex: 1;
@@ -662,6 +669,10 @@ span.down-arrow {
   grid-template-columns: auto 1fr 20px fit-content(20%);
   grid-template-rows: auto 1fr auto auto;
   flex-grow: 1;
+
+  &.oot-expanded {
+    grid-template-columns: auto 1fr 20px fit-content(75%);
+  }
 }
 
 .close-button {
