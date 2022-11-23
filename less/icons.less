@@ -120,72 +120,72 @@
 .effects-image {
   position: absolute;
   pointer-events: none;
-  width: 10px;
-  height: 10px;
+  width: 15px;
+  height: 15px;
 
   &.vertical {
-    left: @card-width - 10px;
+    left: @card-width - 12px;
     top: 0;
     //margin-left: -5px;
   }
 
   &.horizontal, &.booted {
     right: 0;
-    top: @card-width - 10px;
+    top: @card-width - 12px;
     //margin-top: -5px;
     transform: rotate(90deg);  
   }
 
   &.small {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
 
     &.vertical {
       left: @card-sm-width / 2;
-      bottom: 0;
-      margin-left: -4px;
-    }
-  
-    &.horizontal, &.booted {
-      left: 0;
-      top: @card-sm-width / 2;
-      margin-top: -4px;
-      transform: rotate(90deg);  
-    }
-  }
-
-  &.large {
-    width: 14px;
-    height: 14px;
-
-    &.vertical {
-      left: @card-lg-width / 2;
-      bottom: 0;
-      margin-left: -7px;
-    }
-  
-    &.horizontal, &.booted {
-      left: 0;
-      top: @card-lg-width / 2;
-      margin-top: -7px;
-      transform: rotate(90deg);  
-    }
-  }
-
-  &.x-large {
-    width: 18px;
-    height: 18px;
-
-    &.vertical {
-      left: @card-xl-width / 2;
       bottom: 0;
       margin-left: -8px;
     }
   
     &.horizontal, &.booted {
       left: 0;
-      top: @card-xl-width / 2;
+      top: @card-sm-width / 2;
       margin-top: -8px;
+      transform: rotate(90deg);  
+    }
+  }
+
+  &.large {
+    width: 20px;
+    height: 20px;
+
+    &.vertical {
+      left: @card-lg-width / 2;
+      bottom: 0;
+      margin-left: -15px;
+    }
+  
+    &.horizontal, &.booted {
+      left: 0;
+      top: @card-lg-width / 2;
+      margin-top: -15px;
+      transform: rotate(90deg);  
+    }
+  }
+
+  &.x-large {
+    width: 25px;
+    height: 25px;
+
+    &.vertical {
+      left: @card-xl-width / 2;
+      bottom: 0;
+      margin-left: -17px;
+    }
+  
+    &.horizontal, &.booted {
+      left: 0;
+      top: @card-xl-width / 2;
+      margin-top: -17px;
       transform: rotate(90deg);  
     }
   }
