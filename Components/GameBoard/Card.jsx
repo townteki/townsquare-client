@@ -271,6 +271,36 @@ class InnerCard extends React.Component {
         </div>);        
     }
 
+    showEffects(card, classOrientation) {
+        if(!card.effects || !card.effects.length || this.isFacedown()) {
+            return null;
+        }
+        const gameActionsWithIcons = ['increaseBullets', 'decreaseBullets', 'increaseInfluence', 'decreaseInfluence',
+            'increaseControl', 'decreaseControl', 'increaseValue', 'decreaseValue', 'increaseProduction', 'decreaseProduction',
+            'increaseUpkeep', 'decreaseUpkeep', 'setAsDraw', 'setAsStud'];
+        let effects = card.effects.filter(effect => {
+            if(!effect.fromTrait && effect.duration === 'persistent') {
+                return false;
+            }
+            if(!effect.gameAction || effect.gameAction === '') {
+                return true;
+            }
+            if(gameActionsWithIcons.includes(effect.gameAction)) {
+                return false;
+            }
+            return true;
+        });
+        if(!effects.length) {
+            return null;
+        }
+
+        let effectsImageClass = classNames('effects-image', this.sizeClass, classOrientation);
+
+        return (<div className='card-effects'>
+            <img className={ effectsImageClass } src='/img/tokens/effects.png' />;
+        </div>);        
+    }
+
     isFiltered() {
         if(!this.props.filter) {
             return false;
@@ -338,8 +368,12 @@ class InnerCard extends React.Component {
                     </div>
                     { this.showCounters() ? <CardCounters counters={ this.getCountersForCard(this.props.card) } /> : null }
                     { this.showUnscripted(classOrientation) }
+                    { this.showEffects(this.props.card, classOrientation) }
                 </div>
-                { this.showMenu() ? <CardMenu menu={ this.props.card.menu } onMenuItemClick={ this.onMenuItemClick } /> : null }
+                { this.showMenu() ? 
+                    <CardMenu menu={ this.props.card.menu } isBottom={ !this.props.isOpponent && this.props.side === 'our-side' }
+                        isBooted={ this.props.card.booted } onMenuItemClick={ this.onMenuItemClick } /> 
+                    : null }
             </div>);
 
         return this.props.connectDragPreview(content);
@@ -393,8 +427,14 @@ class InnerCard extends React.Component {
 
     render() {
         let className = 'card-wrapper';
-        if(this.state.isExpanded) {
-            className += ' expanded';
+        let isOppInOtherSide = this.props.isOpponent && this.props.side === 'other-side';
+        let attNumber = this.props.card.attachments ? this.props.card.attachments.length : 0;
+        if((this.state.isExpanded || attNumber === 2) && isOppInOtherSide) {
+            if(attNumber > 2) {
+                className += ' expanded-' + (this.props.card.attachments.length - 1);
+            } else {
+                className += ' expanded';
+            }
         }
         if(this.props.wrapped) {
             return (
@@ -455,6 +495,7 @@ InnerCard.propTypes = {
     onMouseOut: PropTypes.func,
     onMouseOver: PropTypes.func,
     orientation: PropTypes.oneOf(['horizontal', 'booted', 'vertical']),
+    side: PropTypes.string,
     size: PropTypes.string,
     source: PropTypes.oneOf(['hand', 'discard pile', 'play area', 'dead pile', 'draw deck', 'draw hand', 'attachment', 'legend', 'outfit', 'additional']).isRequired,
     style: PropTypes.object,

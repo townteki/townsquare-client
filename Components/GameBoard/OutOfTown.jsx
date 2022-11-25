@@ -7,44 +7,36 @@ class OutOfTown extends React.Component {
     buildOutOfTown(player) {
         let onStreet = [];
 
-        let className = 'out-of-town ';
-        if(this.props.className) {
-            className = className + this.props.className;
-        }
+        let className = 'out-of-town ' + this.props.className;
 
         if(player) {
             let filteredLocations = _.filter(player.locations, (location) => location.order === null);
             _.each(filteredLocations, (location) => {
                 _.map(player.cardPiles.cardsInPlay, (card) => {
                     if(card.uuid === location.uuid) {
-                        onStreet.push(<GameLocation key={location.uuid}
-                                    location={card}
-                                    handleMenuChange={ this.props.handleMenuChange }
-                                    onMenuItemClick={this.props.onMenuItemClick}
-                                    onMouseOver={this.props.onMouseOver}
-                                    onMouseOut={this.props.onMouseOut}
-                                    onDragDrop={this.props.onDragDrop}
-                                    otherPlayer={this.props.otherPlayer}
-                                    thisPlayer={this.props.thisPlayer}/>
-                                );
+                        onStreet.push(<GameLocation key={ location.uuid }
+                            location={ card }
+                            handleMenuChange={ this.props.handleMenuChange }
+                            onMenuItemClick={ this.props.onMenuItemClick }
+                            onMouseOver={ this.props.onMouseOver }
+                            onMouseOut={ this.props.onMouseOut }
+                            onDragDrop={ this.props.onDragDrop }
+                            otherPlayer={ this.props.otherPlayer }
+                            thisPlayer={ this.props.thisPlayer } 
+                            side={ this.props.className }/>
+                        );
                     }
                 });
             });
         }
 
-        /*
-        if(onStreet.length === 0) {
-            onStreet.push(<GameLocation key='empty' location={{facedown:true}}/>);
-        }
-        */
-
-        return <div className={className}>{onStreet}</div>;
+        return <div className= { className } >{ onStreet }</div>;
     }
 
     render() {
         return (
-            <div style={this.props.style} >
-                {this.buildOutOfTown(this.props.owner)}
+            <div style={ this.props.style } >
+                { this.buildOutOfTown(this.props.owner) }
             </div>
         );
     }

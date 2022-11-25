@@ -236,7 +236,7 @@
 
 .card-large {
   right: 5px;
-  top: 5px;
+  top: 8px;
   position: absolute;
   z-index: @layer-top;
   pointer-events: none;
@@ -310,6 +310,11 @@
       z-index: @layer-hover - @i;
     }
   }
+
+  .card-wrapper.expanded-@{i} {
+    margin-top: 15px * @i;
+  }
+
   .generate-attachments(@n, (@i + 1));
 }
 

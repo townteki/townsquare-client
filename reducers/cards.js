@@ -91,14 +91,6 @@ export default function(state = { decks: [] }, action) {
             return Object.assign({}, state, {
                 standaloneDecks: processDecks(action.response.decks, state)
             });
-        case 'ZOOM_CARD':
-            return Object.assign({}, state, {
-                zoomCard: action.card
-            });
-        case 'CLEAR_ZOOM':
-            return Object.assign({}, state, {
-                zoomCard: undefined
-            });
         case 'RECEIVE_DECKS':
             newState = Object.assign({}, state, {
                 singleDeck: false,

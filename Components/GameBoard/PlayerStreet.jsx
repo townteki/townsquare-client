@@ -26,12 +26,13 @@ class PlayerStreet extends React.Component {
                             <GameLocation key={ location.uuid }
                                 location={ card }
                                 handleMenuChange={ this.props.handleMenuChange }
+                                onClick={ this.props.onClick }
                                 onMenuItemClick={ this.props.onMenuItemClick }
                                 onMouseOver={ this.props.onMouseOver }
                                 onMouseOut={ this.props.onMouseOut }
                                 otherPlayer={ this.props.otherPlayer }
-                                thisPlayer={ this.props.thisPlayer }/>
-
+                                thisPlayer={ this.props.thisPlayer }
+                                side={ this.props.className }/>
                         );
                     }
                 });

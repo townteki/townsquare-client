@@ -9,7 +9,7 @@ import Droppable from './Droppable';
 
 import * as actions from '../../actions';
 
-export class InnerGameLocation extends React.Component {
+export class GameLocation extends React.Component {
     constructor() {
         super();
 
@@ -34,11 +34,15 @@ export class InnerGameLocation extends React.Component {
     }
 
     onMouseOut() {
-        this.props.clearZoom();
+        if(this.props.onMouseOut) {
+            this.props.onMouseOut();
+        }
     }
 
     onMouseOver(card) {
-        this.props.zoomCard(card);
+        if(this.props.onMouseOver) {
+            this.props.onMouseOver(card);
+        }
     }
 
     onDragDrop(card, source, target) {
@@ -69,9 +73,10 @@ export class InnerGameLocation extends React.Component {
                     onMenuItemClick={ this.props.onMenuItemClick }
                     onMouseOver={ this.onMouseOver } 
                     onMouseOut={ this.onMouseOut } 
-                    onClick={ this.onCardClick } 
+                    onClick={ this.props.onClick } 
                     onDragDrop={ this.onDragDrop } 
                     isOpponent={ this.props.otherPlayer === player }
+                    side={ this.props.side }
                 />);
             }
         });
@@ -86,7 +91,8 @@ export class InnerGameLocation extends React.Component {
     getCardLocation(card) {
         return (
             <Card key={ card.uuid } source='play area' card={ card } disableMouseOver={ card.facedown && !card.code } onMenuItemClick={ this.props.onMenuItemClick }
-                handleMenuChange={ this.props.handleMenuChange } onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.onCardClick } onDragDrop={ this.onDragDrop } />
+                handleMenuChange={ this.props.handleMenuChange } onMouseOver={ this.onMouseOver } onMouseOut={ this.onMouseOut } onClick={ this.props.onClick } 
+                onDragDrop={ this.onDragDrop }/>
         );
     }
 
@@ -143,8 +149,8 @@ export class InnerGameLocation extends React.Component {
     }
 }
 
-InnerGameLocation.displayName = 'GameLocation';
-InnerGameLocation.propTypes = {
+GameLocation.displayName = 'GameLocation';
+GameLocation.propTypes = {
     cards: PropTypes.array,
     className: PropTypes.string,
     clearZoom: PropTypes.func,
@@ -159,18 +165,10 @@ InnerGameLocation.propTypes = {
     otherPlayer: PropTypes.object,
     sendGameMessage: PropTypes.func,
     setTownsquareComponent: PropTypes.func,
+    side: PropTypes.string,    
     source: PropTypes.string,
     style: PropTypes.object,
-    thisPlayer: PropTypes.object,
-    zoomCard: PropTypes.func
+    thisPlayer: PropTypes.object
 };
 
-function mapStateToProps(state) {
-    return {
-        cardToZoom: state.cards.zoomCard
-    };
-}
-
-const GameLocation = connect(mapStateToProps, actions, null, {withRef: true})(InnerGameLocation);
-
-export default GameLocation;
+export default connect(null, actions, null, {withRef: true})(GameLocation);
