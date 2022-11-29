@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TimeLimitClock from './TimeLimitClock';
+import classNames from 'classnames';
 
 class StatusPanel extends React.Component {
     constructor() {
@@ -33,16 +34,25 @@ class StatusPanel extends React.Component {
         }
     }    
 
-    getShootoutStatus(player) {
+    getShootoutStatus(player, showCheatin = false) {
         if(!player) {
             return (<div/>);
         }
         return (<div>
-            Player: { player.player } <br/>
-            Shooter: { player.shooter } <br/>
-            Stud/Draw: { player.studBonus + '/' + player.drawBonus } <br/>
-            Hand Rank: { player.handRank } <br/>
-            Casualties: { player.casualties }
+            <span className='bold secondary-color'>Player: </span>
+            { player.player } <br/>
+            <span className='bold secondary-color'>Shooter: </span>
+            { player.shooter } <br/>
+            <span className='bold secondary-color'>Draw Bonus: </span>
+            { player.studBonus }<img className='icon-bullet' src='/img/icons/bullet_stud.png'/> / { player.drawBonus }<img className='icon-bullet' src='/img/icons/bullet_draw.png'/> <br/>
+            <span className='bold secondary-color'>Hand Rank: </span>
+            { player.handRank } { (player.baseHandRank !== player.handRank) && `(Base: ${player.baseHandRank})` } <br/>
+            <span className='bold secondary-color'>Casualties: </span>
+            { player.casualties } <br/>
+            <span className={ showCheatin ? 'is-cheatin' : '' }>
+                <span className='bold secondary-color'>{ showCheatin && <span className='bold secondary-color glyphicon glyphicon-exclamation-sign' /> } Cheatin' Resolutions: </span>
+                <span className='stat-number'>{ player.cheatinResNum }</span>
+            </span> <br/>
         </div>);
     }
 
@@ -82,11 +92,14 @@ class StatusPanel extends React.Component {
                 }
             });
         }
+        let playerClassName = classNames('shootout-player', 'panel', {
+            'hiddenStatus': !showPanel
+        });
         return (
             <div className={ 'prompt-area' + (showPanel ? '' : ' hiddenStatus') }>
                 { this.getTimer() }
                 <div className='shootout-status'>
-                    <div className={ 'shootout-player panel' + (showPanel ? '' : ' hiddenStatus') }
+                    <div className={ playerClassName }
                         onMouseOver={ this.props.onMouseOver.bind(this, this.props.currentGame.shootout) } onMouseOut={ this.props.onMouseOut }>
                         <div className={ showPanel ? '' : ' hidden' }>
                             { this.getShootoutStatus(otherPlayerStats) }
@@ -103,10 +116,10 @@ class StatusPanel extends React.Component {
                             { 'SHOOTOUT' + (this.props.currentGame.shootout ? ' round ' + this.props.currentGame.shootout.round : '') }
                         </div>
                     </div>
-                    <div className={ 'shootout-player panel' + (showPanel ? '' : ' hiddenStatus') }
+                    <div className={ playerClassName }
                         onMouseOver={ this.props.onMouseOver.bind(this, this.props.currentGame.shootout) } onMouseOut={ this.props.onMouseOut }>
                         <div className={ showPanel ? '' : ' hidden' }>
-                            { this.getShootoutStatus(thisPlayerStats) }
+                            { this.getShootoutStatus(thisPlayerStats, thisPlayerStats && thisPlayerStats.cheatinResNum > 0) }
                             <button className='btn btn-transparent' onClick={ this.onEffectsClick.bind(this) }>
                                 <span className='glyphicon glyphicon-flash' />
                                 { 'Effects(' + (this.props.currentGame.shootout && this.props.currentGame.shootout.effects ? this.props.currentGame.shootout.effects.length : '0') + ')' }

@@ -259,6 +259,31 @@ a {
 .bold {
   font-weight: bold;
   color: white;
+
+  &.secondary-color {
+    color: @brand-secondary;
+  }
+}
+
+.is-cheatin {
+  background-color:pink;
+  color: darken(@brand-danger, 20%);
+  border-radius: 2px;
+  margin-left: -1px;
+  padding-left: 1px;
+  padding-right: 5px;
+
+  .glyphicon {
+    top: 2px;
+  }
+
+  .stat-number {
+    font-weight: lighter;
+  }
+
+  .bold.secondary-color {
+    color: darken(@brand-danger, 20%);
+  }
 }
 
 .slider.slider-horizontal {

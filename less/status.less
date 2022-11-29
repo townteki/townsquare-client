@@ -90,11 +90,16 @@
 .shootout-player {
   &.panel {
     height: 150px;
+    padding-top: 2px;
 
     &.hiddenStatus {
       background-color: transparent;
       border: 0;
     }
+  }
+
+  .btn-transparent {
+    padding-top: 2px;
   }
 }
 
@@ -108,14 +113,19 @@
   margin-left: -5px;
   overflow: hidden;
   align-items: center;
+  background-color: @brand-tertiary;
 
   &.hiddenStatus {
     width: 30px;
   }
 }
 
-.shootout-caption.hiddenStatus {
-  display: none;
+.shootout-caption {
+  font-weight: bold;
+
+  &.hiddenStatus {
+    display: none;
+  }
 }
 
 .shootout-status-icon {
