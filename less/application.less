@@ -44,7 +44,8 @@
 }
 
 .main-header {
-  font-family: western;
+  display: flex;
+  flex-direction: column;
   background-color: fade(@brand-primary, 50%);
   height: 100%;
   vertical-align: center;
@@ -52,6 +53,12 @@
   padding-top: 1px;
   padding-bottom: 2px;
   border-radius: 4px;
+}
+
+.main-logo {
+  height: 50px;
+  width: 200px;
+  align-self: center;
 }
 
 .news-item {
@@ -239,4 +246,16 @@ ul.htp-sub-list {
 .motd-button {
   margin-left: 15px;
   margin-top: 15px;
+}
+
+.footer-logo {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: -10px;
+  right: 20px;
+
+  &.panel {
+    background-color: rgba(255, 255, 255, 0.15)
+  }
 }

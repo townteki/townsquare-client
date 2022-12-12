@@ -353,17 +353,17 @@
 
 .counter {
   padding: 0;
-  font-size: @counter-dia*0.6;
+  font-size: @counter-dia*0.8;
   width: @counter-dia;
   height: @counter-dia;
-  line-height: @counter-dia;
+  line-height: @counter-dia - 5;
   text-align: center;
   margin: 2px;
   text-shadow: 1px 1px 2px #000;
   border: @counter-dia*0.1 dashed @out-color;
   border-radius: @counter-dia/2;
   color: white;
-  font-family: 'akenaten';
+  font-family: doomtown;
 
   &.fade-out {
     opacity: 0.8;
@@ -491,13 +491,6 @@
   }
 }
 
-.card-cost {
-  background: url('/img/Gold.png') no-repeat;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-}
-
 .card-icon {
   width: 40px;
   height: 40px;
@@ -505,47 +498,6 @@
   background-size: cover;
   color: white;
   font-family: 'thronesdb';
-}
-
-.plot-income {
-  background-image: url('/img/Gold.png');
-  background-repeat: no-repeat;
-}
-
-.plot-initiative {
-  background-image: url('/img/Initiative.png');
-  background-repeat: no-repeat;
-}
-
-.plot-claim {
-  background-image: url('/img/Claim.png');
-  background-repeat: no-repeat;
-}
-
-.plot-stats {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  line-height: 35px;
-  font-size: 1.8em;
-  margin-left: 10px;
-}
-
-.plot-reserve {
-  width: 40px;
-  height: 40px;
-  border-radius: 25px;
-  background-color: darkred;
-  position: absolute;
-  bottom: 20px;
-  right: 0;
-  text-align: center;
-  line-height: 40px;
-  font-size: 1.5em;
-}
-
-.card-cost-number {
-  font-size: 2em;
 }
 
 .card-alt {

@@ -26,6 +26,12 @@ class TimeLimitClock extends React.Component {
         this.updateProps(props);
     }
 
+    componentWillUnmount() {
+        if(this.state.timer) {
+            clearInterval(this.state.timer);
+        }
+    }
+
     updateProps(props) {
         if(!this.state.timer) {
             if(props.timeLimitStarted && this.state.timeLimit) {

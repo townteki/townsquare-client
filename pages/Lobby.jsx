@@ -102,12 +102,16 @@ class Lobby extends React.Component {
 
         return (
             <div className='flex-container'>
+                <div className='footer-logo panel'>
+                    <img src='/img/pbe_logo.png' />
+                    <img src='/img/peg_logo.png' />
+                </div>
                 <SideBar>
                     <UserList users={ this.props.users } />
                 </SideBar>
                 <div className='col-sm-offset-1 col-sm-10'>
                     <div className='main-header'>
-                        <span className='text-center'><h1>Doomtown Online</h1></span>
+                        <img className='main-logo' src='/img/dt_logo.png' />
                     </div>
                 </div>
                 { this.props.motd && this.props.motd.message &&

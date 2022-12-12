@@ -20,6 +20,10 @@
   &.other-side {
     justify-content: flex-start;
   }
+
+  .location-wrapper {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
 }
   
 .out-of-town-divide {
@@ -67,7 +71,6 @@
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.75), inset 0 0 0 1px @box-shadow-color;
   margin: @location-margin;
   border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.3);
   
   & .card-row {
     min-height: @card-height;
@@ -75,6 +78,61 @@
 
   .card-wrapper {
     padding: 2px;
+  }
+}
+
+.townsquare-bg {
+  position: absolute;
+  height: 100%;
+  opacity: 0.8;
+  border-radius: 4px;
+  background-image: url('/img/sidewalk_ts2.png');
+  background-size: contain;
+  margin-left: 2px;
+}
+
+.deed-bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  opacity: 0.5;
+  padding-left: 2px;
+  z-index: 1;
+  padding-top: 2px;
+  padding-bottom: 2px;
+
+  .bg-left {
+    background-image: url('/img/deed_bg_left.jpg');
+    background-size: 100% 100%;  
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 35px;
+    padding-left: 2px;
+    border-radius: 5px 0 0 5px;
+  }
+
+  .bg-middle {
+    background-image: url('/img/deed_bg_middle.jpg');
+    background-size: contain;  
+    background-repeat: repeat-x;
+    height: 100%;
+    flex: 1;
+    padding-left: 2px;
+  }
+
+  .bg-right {
+    background-image: url('/img/deed_bg_right.jpg');
+    background-size: 100% 100%;  
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 35px;  
+    margin-right: -2px;  
+    padding-left: 2px;
+    border-radius: 0 5px 5px 0;    
   }
 }
 
@@ -187,7 +245,8 @@
   justify-content: space-between;
 
   box-shadow: 0 0 12px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(255,255,255,0.1);
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 2;
 
   & .card-row {
     min-height: @card-height;
@@ -208,4 +267,74 @@
     & .location-image {
       z-index: 0;
     }    
+}
+
+.sidewalk {
+  background-image: url('/img/sidewalk_deed.png');
+  background-repeat: repeat-y;
+  position: absolute;
+  height: 25px;
+  margin-left: 10px;  
+  align-self: center;
+  z-index: 1;
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+
+  &.our-side {
+    width: 30px;
+    top: -23px;
+
+    img {
+      transform: rotate(90deg);
+      padding-right: 2px;
+
+      &.outfit {
+        transform: rotate(270deg);
+        margin-bottom: -2px;
+      }
+    }
+  }
+
+  &.other-side {
+    width: 30px;
+    bottom: -23px;
+
+    img {
+      transform: rotate(270deg);
+      padding-right: 2px;
+    }
+  } 
+  
+  &.horizontal {
+    background-image: url('/img/sidewalk_deed_horizontal.png');
+    top: 50%;
+    bottom: 50%;
+    width: 20px;
+    min-width: unset;
+    margin: auto;
+    background-position: center;
+    background-repeat: repeat-x;    
+
+    &.street-left {
+      left: -18px;
+
+      img {
+        transform: rotate(180deg);
+        margin-left: -4px;
+        margin-right: -4px;
+      }
+    }
+  
+    &.street-right {
+      right: -22px;
+
+      img {
+        margin-left: -4px;
+        margin-right: -4px;
+      }
+    }
+  }
 }

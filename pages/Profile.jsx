@@ -36,8 +36,8 @@ class Profile extends React.Component {
 
         this.backgrounds = [
             { name: 'none', label: 'None', imageUrl: 'img/blank.png' },
-            { name: 'BG1', label: 'Standard', imageUrl: 'img/background.png' },
-            { name: 'BG2', label: 'Winter', imageUrl: 'img/background3.png' }
+            { name: 'BG1', label: 'Standard', imageUrl: 'img/background.jpg' },
+            { name: 'BG2', label: 'Winter', imageUrl: 'img/background2.png' }
         ];
 
         this.cardSizes = [
