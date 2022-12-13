@@ -88,7 +88,6 @@ class DrawHandPanel extends React.Component {
                 popupLocation={ this.props.popupLocation }
                 popupMenu={ drawHandPopupMenu }
                 popupStayOpen={ this.props.popupStayOpen }
-                size={ this.props.size }
                 source='draw hand'
                 title='Draw Hand'
                 popupCardSize={ this.state.popupCardSize }
@@ -115,7 +114,6 @@ DrawHandPanel.propTypes = {
     playerName: PropTypes.string,
     popupLocation: PropTypes.oneOf(['top', 'bottom']),
     popupStayOpen: PropTypes.bool,
-    size: PropTypes.number,
     source: PropTypes.string,
     title: PropTypes.string,
     username: PropTypes.string

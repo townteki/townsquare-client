@@ -48,7 +48,10 @@ Input.propTypes = {
     id: PropTypes.string,
     label: PropTypes.string,
     labelClass: PropTypes.string,
-    labelKey: PropTypes.string,
+    labelKey: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.func
+    ]),
     minLength: PropTypes.number,
     multiple: PropTypes.bool,
     name: PropTypes.string,

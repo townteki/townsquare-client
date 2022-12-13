@@ -85,6 +85,9 @@ export class GameLocation extends React.Component {
     }
 
     getImageLocation(imageClass) {
+        if(this.props.location.uuid === 'townsquare') {
+            return <div/>;
+        }
         return (<img className={ imageClass } src={ '/img/' + (this.props.location.uuid + '.jpg') } />);
     }
 
@@ -96,13 +99,10 @@ export class GameLocation extends React.Component {
         );
     }
 
-    getLocation() {
+    getLocation(isCard) {
         var locationClass = 'location';
         var imageClass = 'location-image';
         var frameClass = 'location-frame';
-
-        var cardRegEx = /\d{5}/;
-        var isCard = cardRegEx.test(this.props.location.code) || this.props.location.facedown;
 
         if(!this.props.location || this.isStreetSide()) {
             return <div />;
@@ -135,12 +135,37 @@ export class GameLocation extends React.Component {
         }
         const style = this.props.style || {};
         style.width = this.state.width;
+        var cardRegEx = /\d{5}/;
+        var isCard = cardRegEx.test(this.props.location.code) || this.props.location.facedown;        
 
         return (
             <Droppable onDragDrop={ this.onDragDrop } source='play area' location={ this.props.location }>
+                { isCard && !this.props.isOutOfTown && 
+                    <div className={ 'sidewalk ' + this.props.side }>
+                        <img className={ this.props.order === 0 ? 'outfit' : '' } src='img/arrow_move.png'/>
+                    </div>
+                }
+                { this.props.hasLeftDeed && 
+                    <div className={ 'sidewalk horizontal street-left' }>
+                        <img src='img/arrow_move.png'/>
+                    </div> 
+                }
+                { this.props.hasRightDeed && 
+                    <div className={ 'sidewalk horizontal street-right' }>
+                        <img src='img/arrow_move.png'/>
+                    </div>
+                }
+                { this.props.className !== 'townsquare' && !this.props.isOutOfTown &&
+                    <div className='deed-bg'>
+                        <div className='bg-left'/>
+                        <div className='bg-middle'/>
+                        <div className='bg-right'/>
+                    </div>
+                }
+                { this.props.className === 'townsquare' && <div className='townsquare-bg' style={ style }/> }
                 <div className={ className } style={ style }>
                     { this.cardsHereByPlayer(this.props.otherPlayer) }
-                    { this.getLocation() }
+                    { this.getLocation(isCard) }
                     { this.cardsHereByPlayer(this.props.thisPlayer) }
                 </div>
             </Droppable>
@@ -155,6 +180,9 @@ GameLocation.propTypes = {
     className: PropTypes.string,
     clearZoom: PropTypes.func,
     handleMenuChange: PropTypes.func,
+    hasLeftDeed: PropTypes.bool,
+    hasRightDeed: PropTypes.bool,
+    isOutOfTown: PropTypes.bool,
     location: PropTypes.object.isRequired,
     name: PropTypes.string,
     onClick: PropTypes.func,

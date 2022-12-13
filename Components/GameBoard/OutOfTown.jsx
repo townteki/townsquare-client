@@ -24,7 +24,8 @@ class OutOfTown extends React.Component {
                             onDragDrop={ this.props.onDragDrop }
                             otherPlayer={ this.props.otherPlayer }
                             thisPlayer={ this.props.thisPlayer } 
-                            side={ this.props.className }/>
+                            side={ this.props.className }
+                            isOutOfTown />
                         );
                     }
                 });

@@ -463,7 +463,7 @@ InnerCard.propTypes = {
         facedown: PropTypes.bool,
         gamelocation: PropTypes.string,
         shootoutStatus: PropTypes.string,
-        location: PropTypes.array,
+        location: PropTypes.string,
         menu: PropTypes.array,
         name: PropTypes.string,
         new: PropTypes.bool,
