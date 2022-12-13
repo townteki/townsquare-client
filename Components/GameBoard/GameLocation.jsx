@@ -142,17 +142,17 @@ export class GameLocation extends React.Component {
             <Droppable onDragDrop={ this.onDragDrop } source='play area' location={ this.props.location }>
                 { isCard && !this.props.isOutOfTown && 
                     <div className={ 'sidewalk ' + this.props.side }>
-                        <img className={ this.props.order === 0 ? 'outfit' : '' } src='img/arrow_move_2.png'/>
+                        <img className={ this.props.order === 0 ? 'outfit' : '' } src='img/arrow_move.png'/>
                     </div>
                 }
                 { this.props.hasLeftDeed && 
                     <div className={ 'sidewalk horizontal street-left' }>
-                        <img src='img/arrow_move_2.png'/>
+                        <img src='img/arrow_move.png'/>
                     </div> 
                 }
                 { this.props.hasRightDeed && 
                     <div className={ 'sidewalk horizontal street-right' }>
-                        <img src='img/arrow_move_2.png'/>
+                        <img src='img/arrow_move.png'/>
                     </div>
                 }
                 { this.props.className !== 'townsquare' && !this.props.isOutOfTown &&
