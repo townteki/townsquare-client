@@ -61,8 +61,8 @@ class PlayerStreet extends React.Component {
                     thisPlayer={ this.props.thisPlayer }
                     side={ this.props.className }
                     order={ onStreet[outfitIndex].location.order }
-                    hasLeftDeed={ outfitIndex > 0 }
-                    hasRightDeed={ outfitIndex < onStreet.length - 1 }/>
+                    hasLeftDeed={ player.id === this.props.thisPlayer.id && outfitIndex > 0 }
+                    hasRightDeed={ player.id === this.props.thisPlayer.id && outfitIndex < onStreet.length - 1 }/>
             );
         }
 
