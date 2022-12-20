@@ -136,33 +136,39 @@ export class GameLocation extends React.Component {
         const style = this.props.style || {};
         style.width = this.state.width;
         var cardRegEx = /\d{5}/;
-        var isCard = cardRegEx.test(this.props.location.code) || this.props.location.facedown;        
+        var isCard = cardRegEx.test(this.props.location.code) || this.props.location.facedown;      
+        var showBgTexture = this.props.thisPlayer && this.props.thisPlayer.showBgTexture;
+        if(!showBgTexture) {
+            style['background-color'] = 'rgba(0, 0, 0, 0.3)';
+        }
 
         return (
             <Droppable onDragDrop={ this.onDragDrop } source='play area' location={ this.props.location }>
-                { isCard && !this.props.isOutOfTown && 
+                { isCard && !this.props.isOutOfTown && showBgTexture &&
                     <div className={ 'sidewalk ' + this.props.side }>
                         <img className={ this.props.order === 0 ? 'outfit' : '' } src='img/arrow_move.png'/>
                     </div>
                 }
-                { this.props.hasLeftDeed && 
+                { this.props.hasLeftDeed && showBgTexture &&
                     <div className={ 'sidewalk horizontal street-left' }>
                         <img src='img/arrow_move.png'/>
                     </div> 
                 }
-                { this.props.hasRightDeed && 
+                { this.props.hasRightDeed && showBgTexture &&
                     <div className={ 'sidewalk horizontal street-right' }>
                         <img src='img/arrow_move.png'/>
                     </div>
                 }
-                { this.props.className !== 'townsquare' && !this.props.isOutOfTown &&
+                { this.props.className !== 'townsquare' && !this.props.isOutOfTown && showBgTexture &&
                     <div className='deed-bg'>
                         <div className='bg-left'/>
                         <div className='bg-middle'/>
                         <div className='bg-right'/>
                     </div>
                 }
-                { this.props.className === 'townsquare' && <div className='townsquare-bg' style={ style }/> }
+                { this.props.className === 'townsquare' && showBgTexture && 
+                    <div className='townsquare-bg' style={ style }/> 
+                }
                 <div className={ className } style={ style }>
                     { this.cardsHereByPlayer(this.props.otherPlayer) }
                     { this.getLocation(isCard) }

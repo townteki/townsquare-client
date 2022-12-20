@@ -485,6 +485,8 @@ export class GameBoard extends React.Component {
         // Default any missing information
         thisPlayer = this.defaultPlayerInfo(thisPlayer);
         otherPlayer = this.defaultPlayerInfo(otherPlayer);
+        // Additional settings for the player
+        thisPlayer.showBgTexture = this.props.user.settings.showBgTexture;
 
         let effectsObject = this.state.effectsObject;
         if(effectsObject && !effectsObject.effects) {

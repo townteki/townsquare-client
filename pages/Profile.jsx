@@ -20,6 +20,7 @@ class Profile extends React.Component {
         this.handleSelectBackground = this.handleSelectBackground.bind(this);
         this.handleSelectCardSize = this.handleSelectCardSize.bind(this);
         this.onUpdateAvatarClick = this.onUpdateAvatarClick.bind(this);
+        this.onBGTextureToggle = this.onBGTextureToggle.bind(this);
         this.onSaveClick = this.onSaveClick.bind(this);
         this.onUnlinkClick = this.onUnlinkClick.bind(this);
 
@@ -31,7 +32,8 @@ class Profile extends React.Component {
             timerSettings: {
                 actions: false,
                 shootoutAbilities: false
-            }
+            },
+            showBgTexture: true
         };
 
         this.backgrounds = [
@@ -89,6 +91,7 @@ class Profile extends React.Component {
             enableGravatar: props.user.enableGravatar,
             windowTimer: props.user.settings.windowTimer,
             timerSettings: props.user.settings.timerSettings,
+            showBgTexture: props.user.settings.showBgTexture,
             selectedBackground: props.user.settings.background,
             selectedCardSize: props.user.settings.cardSize
         });
@@ -112,6 +115,10 @@ class Profile extends React.Component {
         this.setState(newState);
     }
 
+    onBGTextureToggle() {
+        this.setState({ showBgTexture: !this.state.showBgTexture });
+    }    
+
     onSaveClick(state) {
         this.setState({ 
             newPassword: state.newPassword, 
@@ -129,6 +136,7 @@ class Profile extends React.Component {
                 windowTimer: this.state.windowTimer,
                 timerSettings: this.state.timerSettings,
                 background: this.state.selectedBackground,
+                showBgTexture: this.state.showBgTexture,
                 cardSize: this.state.selectedCardSize
             }
         });
@@ -239,6 +247,8 @@ class Profile extends React.Component {
                                                 selected={ this.state.selectedBackground === background.name } />
                                         ))
                                     }
+                                    <Checkbox name='showGameBoardTexture' noGroup label={ 'Show Game Board background texture' } fieldClass='col-sm-6'
+                                        onChange={ this.onBGTextureToggle } checked={ this.state.showBgTexture } />
                                 </div>
                             </Panel>
                         </div>

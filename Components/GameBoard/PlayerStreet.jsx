@@ -67,10 +67,25 @@ class PlayerStreet extends React.Component {
         }
 
         if(onStreet.length === 0) {
-            onStreet.push(<GameLocation key='empty' side={ this.props.className } location={ {facedown:true} }/>);
+            onStreet.push(<GameLocation 
+                key='empty' 
+                side={ this.props.className } 
+                location={ {facedown:true} } 
+                thisPlayer={ this.props.thisPlayer }
+            />);
         } else {
-            onStreet.unshift(<GameLocation source='street-left' key='empty-left' location={ {} }/>);
-            onStreet.push(<GameLocation source='street-right' key='empty-right' location={ {} }/>);
+            onStreet.unshift(<GameLocation 
+                source='street-left' 
+                key='empty-left' 
+                location={ {} } 
+                thisPlayer={ this.props.thisPlayer }/>
+            );
+            onStreet.push(<GameLocation 
+                source='street-right' 
+                key='empty-right' 
+                location={ {} } 
+                thisPlayer={ this.props.thisPlayer }/>
+            );
         }
 
         return <div className={ className }>{ onStreet }</div>;
