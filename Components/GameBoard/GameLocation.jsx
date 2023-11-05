@@ -29,6 +29,7 @@ export class GameLocation extends React.Component {
         }
     }
 
+    // TODO M2 remove
     onCardClick(card) {
         this.props.sendGameMessage('cardClicked', card.uuid);
     }

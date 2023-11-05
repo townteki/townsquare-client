@@ -41,8 +41,7 @@ class About extends React.Component {
                     <p>Also, a very special thank you to David Lapp and the rest of the Pinebox Entertainment crew for revitalizing this game and allowing us to bring Doomtown online for all to enjoy.</p>
 
                     <h2>Additional Notes</h2>
-                    <p>
-                    </p>
+                    <p/>
 
                     <h2>Copyright Information</h2>
                     <p>

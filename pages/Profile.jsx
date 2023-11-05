@@ -22,7 +22,6 @@ class Profile extends React.Component {
         this.onUpdateAvatarClick = this.onUpdateAvatarClick.bind(this);
         this.onBGTextureToggle = this.onBGTextureToggle.bind(this);
         this.onSaveClick = this.onSaveClick.bind(this);
-        this.onUnlinkClick = this.onUnlinkClick.bind(this);
 
         this.state = {
             newPassword: '',
@@ -172,14 +171,6 @@ class Profile extends React.Component {
         event.preventDefault();
 
         this.props.updateAvatar(this.props.user.username);
-    }
-
-    onUnlinkClick() {
-        //this.props.unlinkPatreon();
-    }
-
-    isPatreonLinked() {
-        return ['linked', 'pledged'].includes(this.props.user.patreon);
     }
 
     render() {

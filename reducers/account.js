@@ -59,10 +59,6 @@ export default function(state = {}, action) {
         case 'ACCOUNT_UNLINKED':
             var user = state.user;
 
-            if(user) {
-                user.patreon = undefined;
-            }
-
             return Object.assign({}, state, {
                 accountLinked: undefined,
                 user: user
