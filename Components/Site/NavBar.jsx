@@ -144,6 +144,8 @@ class NavBar extends React.Component {
                 <span className={ className } title={ toolTip } />
             </li>);
 
+        const title = window.innerWidth < 1024 ? 'DTO' : this.props.title;
+
         return (
             <nav className='navbar navbar-inverse navbar-fixed-top navbar-sm'>
                 <div className='container'>
@@ -154,7 +156,7 @@ class NavBar extends React.Component {
                             <span className='icon-bar' />
                             <span className='icon-bar' />
                         </button>
-                        <Link href='/' className='navbar-brand'>{ this.props.title }</Link>
+                        <Link href='/' className='navbar-brand'>{ title }</Link>
                     </div>
                     <div id='navbar' className='collapse navbar-collapse'>
                         <ul className='nav navbar-nav'>
