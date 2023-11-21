@@ -7,20 +7,36 @@ import { ItemTypes } from '../../constants';
 import PopupDefaults from './PopupDefaults';
 import classNames from 'classnames';
 
+function getPopupStyle(popup, offsetX, offsetY) {
+    let style = {
+        position: 'fixed',
+        left: Math.max(offsetX, 0),
+        top: Math.max(offsetY, 50)
+    };
+
+    if(!popup) {
+        return style;
+    }
+
+    if(style.left + popup.width() > window.innerWidth) {
+        style.left = window.innerWidth - popup.width();
+    }
+
+    if(style.top + popup.height() > window.innerHeight) {
+        style.top = window.innerHeight - popup.height();
+    }    
+    return style;
+}
+
 const panelSource = {
     beginDrag(props) {
         return {
             name: `${props.name}-${props.side}`
         };
     },
-    endDrag(props, monitor) {
+    endDrag(props, monitor, component) {
         const offset = monitor.getSourceClientOffset();
-        const style = {
-            left: offset.x,
-            top: offset.y,
-            position: 'fixed'
-        };
-
+        const style = getPopupStyle($(component.refs.popup), offset.x, offset.y);
         localStorage.setItem(`${props.name}-${props.side}`, JSON.stringify(style));
     }
 };
@@ -49,22 +65,8 @@ class MovablePanel extends React.Component {
 
     componentWillReceiveProps(props) {
         if(props.isDragging) {
-            let style = {
-                position: 'fixed',
-                left: Math.max(props.dragOffset.x, 0),
-                top: Math.max(props.dragOffset.y, 50)
-            };
-
-            const popup = $(this.refs.popup);
-
-            if(style.left + popup.width() > window.innerWidth) {
-                style.left = window.innerWidth - popup.width();
-            }
-
-            if(style.top + popup.height() > window.innerHeight) {
-                style.top = window.innerHeight - popup.height();
-            }
-
+            const popup = $(this.refs.popup);          
+            let style = getPopupStyle(popup, props.dragOffset.x, props.dragOffset.y);
             this.setState({
                 position: style
             });
